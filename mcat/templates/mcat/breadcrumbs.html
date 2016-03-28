@@ -1,0 +1,11 @@
+{% load i18n %}
+
+{% if not disable_breadcrumbs %}
+	<ul class="breadcrumb">
+		<li><a href="{% url 'category-home' %}#main_content">{% trans 'Home' %}</a></li>
+		{% for node in ancestors %}
+			<li><a href="{% url 'category-list' slug=node.slug %}#main_content">{{ node.name }}</a></li>
+		{% endfor %}
+		 <li>{{ category.name }}</li>
+	</ul>
+{% endif %}

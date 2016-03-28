@@ -1,0 +1,22 @@
+{% load thumbnail staticfiles %}
+
+<div class="category_inline">
+	<p>
+		{% if leaf %}
+			<a href="{% url 'product-list' slug=category.slug %}#main_content">{{ category.name }}</a>
+		{% else %}
+			<a href="{% url 'category-list' slug=category.slug %}#main_content">{{ category.name }}</a>
+		{% endif %}
+	</p>
+	<div>
+		{% if leaf %}
+			<a href="{% url 'product-list' slug=category.slug %}#main_content">
+		{% else %}
+			<a href="{% url 'category-list' slug=category.slug %}#main_content">
+		{% endif %}
+		{% thumbnail category.image "200x200" as img %}
+			<img src="{{ img.url }}" alt="" style="margin:{{ img|margin:"200x200" }}" />
+		{% endthumbnail %}
+		</a>
+	</div>
+</div>

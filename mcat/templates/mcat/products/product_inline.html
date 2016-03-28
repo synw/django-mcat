@@ -1,0 +1,21 @@
+{% load thumbnail staticfiles %}
+
+<div class="product_inline">
+	<p class="text-center">
+		<a href="{% url 'product-list' slug=category.slug %}#main_content">{{ product.name }}</a>
+	</p>
+	<div>
+		{% with product.images.all.0 as image_obj %}
+			{% if image_obj.status == 0 %}
+				<a href="{% url 'product-detail' slug=product.slug category_slug=category.slug %}#main_content">
+				{% thumbnail image_obj.image "200x200" as img %}
+					<img src="{{ img.url }}" alt="" style="margin:{{ img|margin:"200x200" }}" />
+				{% endthumbnail %}
+				</a>
+			{% endif %}
+		{% endwith %}
+		<div class="text-center">
+			{{ product.short_description|safe }}
+		</div>
+	</div>
+</div>

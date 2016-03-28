@@ -1,0 +1,30 @@
+{% extends "mbase/layouts/smooth-md.html" %}
+{% load i18n staticfiles %}
+
+{% block extra_head %}
+	<link rel="stylesheet" media="screen, projection" href="{% static 'mcat/mcat.css' %}" />
+{% endblock extra_head %}
+
+{% block title %}{% trans 'Categories' %}{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="col-xs-12 text-center">
+		<h1>{% trans 'Categories' %}</h1>
+	    <a name="main_content"></a>
+	    {% if categories %}
+		    {% for category in categories %}
+	            {% if category.is_leaf_node %}
+	            	{% with leaf=True %}
+	             		{% include 'mcat/categories/category_inline.html' %}
+	             	{% endwith %}
+		        {% else %}
+		        	{% include 'mcat/categories/category_inline.html' %}
+		        {% endif %}
+		    {% endfor %}
+		{% else %}
+			<div class="jumbotron text-center gbf">{% trans "There are no categories yet" %}</div>
+		{% endif %}
+	</div>
+</div>
+{% endblock content %}

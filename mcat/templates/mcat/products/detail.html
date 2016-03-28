@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load i18n thumbnail mptt_tags staticfiles mcat_tags %}
+
+{% block extra_head %}
+	<link rel="stylesheet" media="screen, projection" href="{% static 'mcat/mcat.css' %}" />
+{% endblock extra_head %}
+
+{% block title %}{{ category.name }}{% endblock %}
+
+{% block content %}
+	<div id="product" class="row">
+		<div class="col-xs-12">	
+			<h1 class="text-center{% if disable_breadcrumbs %} gds{% endif %}"><a name="title"></a>{{ product.name }}</h1>
+			{% include 'mcat/breadcrumbs.html' %}
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12 col-md-8 gnp gds">
+			{% with product.images.all as slides %}
+				<a name="main_content"></a>{% include "jssor/images_slider.html" %}
+			{% endwith %}
+		</div>
+		<div class="col-xs-12 col-md-4">
+			<div class="hidden-md hidden-lg text-center gus">
+				{% if product.price %}
+					<div class="label label-primary gbf-md">{{ product|format_price }}</div>
+				{% endif %}
+			</div>
+			{{ product.description|safe }}
+			<div class="hidden-xs hidden-sm text-center gus-l">
+				{% if product.price %}
+					<span class="label label-primary gbf-md">{{ product|format_price }}</span>
+				{% endif %}
+			</div>
+			
+		</div>
+	</div>
+	{% include 'mbase/return_btn.html' %}
+{% endblock content %}
