@@ -2,11 +2,11 @@
 <div class="col-xs-12 gc">
     <ul class="pagination">
         {% if page_obj.has_previous %}
-            <li><a href="{% url 'products-list' slug=category.slug %}?page={{ page_obj.previous_page_number }}#main_content">Précédente</a></li>
+            <li><a href="{% url 'product-list' slug=category.slug %}?page={{ page_obj.previous_page_number }}#main_content">Précédente</a></li>
         {% endif %}
             <li class="disabled"><a href="#">Page {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</a></li>
         {% if page_obj.has_next %}
-            <li><a href="{% url 'products-list' slug=category.slug %}?page={{ page_obj.next_page_number }}#main_content">Suivante</a></li>
+            <li><a href="{% url 'product-list' slug=category.slug %}?page={{ page_obj.next_page_number }}#main_content">Suivante</a></li>
         {% endif %}
     </ul>
 </div>
