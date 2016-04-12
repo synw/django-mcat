@@ -1,0 +1,23 @@
+{% load i18n %}
+{% if caracteristics %}
+	<div class="gf text-center">
+		{% for filter in caracteristics %}
+			<div class="btn-group{% if filters_position == 'side' %} btn-group-justified{% endif %}">
+				<div class="btn-group gds grs gls">
+					{% if filter.type == 'choices' %}
+						<a href="" class="btn btn-primary disabled">{{ filter.name }}</a> 
+						{% for choice in filter.get_choices %}
+							<a href="" class="btn btn-default">{{ choice }}</a>
+						{% endfor %}
+					{% elif filter.type == 'boolean' %}
+						<a href="" class="btn btn-primary disabled">{{ filter.name }}</a>
+						<a href="" class="btn btn-default">{% trans 'Yes' %}</a>
+						<a href="" class="btn btn-default">{% trans 'No' %}</a>
+					{% else %}
+						<a href="" class="btn btn-primary disabled">{{ filter.name }}</a>
+					{% endif %}
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+{% endif %}

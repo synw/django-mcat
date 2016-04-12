@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
 
+from django.db.models import Q
 from django.views.generic import TemplateView
 from django.views.generic import ListView
 from django.shortcuts import get_object_or_404
+from django.utils.html import strip_tags
 from mcat.models import Category, Product, Brand
 from mcat.conf import DISABLE_BREADCRUMBS
+
 
 class CategoryHomeView(TemplateView):
     template_name = 'mcat/categories/index.html'
@@ -15,6 +18,7 @@ class CategoryHomeView(TemplateView):
         context['categories'] = categories
         context['num_categories'] = len(categories)
         return context
+    
     
 class CategoryView(TemplateView):
     template_name = 'mcat/categories/browse.html'
@@ -40,7 +44,8 @@ class ProductsInCategoryView(ListView):
     context_object_name = 'products'
     
     def get_queryset(self):
-        self.category=get_object_or_404(Category, slug=self.kwargs['slug'], status=0)
+        self.category=get_object_or_404(Category.objects.prefetch_related('generic_caracteristics'), slug=self.kwargs['slug'], status=0)
+        self.caracteristics = self.category.generic_caracteristics.all()
         products=Product.objects.filter(category=self.category, status=0).prefetch_related('images')
         return products
 
@@ -55,7 +60,9 @@ class ProductsInCategoryView(ListView):
             context['ancestors'] = category.get_ancestors()
         context['category'] = category
         context['categories'] = categories
+        context['caracteristics'] = self.caracteristics
         context['num_categories'] = len(categories)
+        context['filters_position'] = 'side'
         return context
     
     
@@ -81,4 +88,26 @@ class ProductView(TemplateView):
         context['num_categories'] = len(categories)
         return context
 
+
+class SearchView(ListView):
+    template_name = 'mcat/search.html'
+    paginate_by = 10 
+    context_object_name = 'products'
+    
+    def get_queryset(self):
+        products = Product.objects.filter(status=0).prefetch_related('images', 'category')
+        if "q" in self.request.GET.keys():
+            q = strip_tags(self.request.GET['q'])
+            products = products.filter(Q(name__icontains=q)|Q(upc__icontains=q))
+        #self.category=get_object_or_404(Category, slug=self.kwargs['slug'], status=0)
+        #products=Product.objects.filter(category=self.category, status=0).prefetch_related('images')
+        return products
+    
+    def get_context_data(self, **kwargs):
+        context = super(SearchView, self).get_context_data(**kwargs)
+
+        return context
+
+
+    
 

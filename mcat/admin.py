@@ -3,14 +3,11 @@
 from django import forms
 from django.contrib import admin
 from mptt.admin import MPTTModelAdmin
-from mcat.models import Product, ProductImage, Category, Brand
+from mcat.models import Product, ProductImage, ProductCaracteristic, CategoryCaracteristic, Category, Brand
 
 
-class ProductImageInline(admin.TabularInline):
-    model = ProductImage
-    extra = 0
-    
-    
+#~ ========================================= Forms ==================================
+ 
 class BrandForm(forms.ModelForm):
     class Meta:
         model = Brand
@@ -37,12 +34,55 @@ class ProductImageForm(forms.ModelForm):
         model = ProductImage
         fields = ['image', 'order', 'product', 'status', 'editor']
         widgets = {'status': forms.RadioSelect}
+
+
+class ProductCaracteristicInlineForm(forms.ModelForm):
         
-        
+    def __init__(self, *args, **kwargs):
+        super(ProductCaracteristicInlineForm, self).__init__(*args, **kwargs)
+        product = self.obj
+        category = product.category
+        caracteristics = CategoryCaracteristic.objects.filter(category=category)
+        names = ()
+        for carac in caracteristics:
+            names += ((carac.slug, carac.name),)
+        self.fields['name'] = forms.ChoiceField(choices=names)
+
+    class Meta:
+        model = ProductCaracteristic
+        fields = ['name', 'value']
+
+
+#~ ========================================= Inlines ==================================
+
+class ProductImageInline(admin.TabularInline):
+    model = ProductImage
+    fields = ['image', 'order']
+    extra = 0
+    
+
+class ProductCaracteristicInline(admin.TabularInline):
+    model = ProductCaracteristic
+    form = ProductCaracteristicInlineForm
+    extra = 0
+    
+    def get_formset(self, request, obj=None, **kwargs):
+        ProductCaracteristicInlineForm.obj = obj
+        return super(ProductCaracteristicInline, self).get_formset(request, obj, **kwargs)
+
+
+class CategoryCaracteristicInline(admin.TabularInline):
+    model = CategoryCaracteristic
+    fields = ['name', 'slug','type','choices','order']
+    prepopulated_fields = {"slug": ("name",)}
+    extra = 0
+
+#~ ========================================= Admin classes ==================================
+
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     form = ProductForm
-    inlines = [ProductImageInline]
+    inlines = [ProductImageInline, ProductCaracteristicInline]
     date_hierarchy = 'edited'
     raw_id_fields = ['category','brand']
     prepopulated_fields = {"slug": ("name",)}
@@ -77,6 +117,7 @@ class ProductAdmin(admin.ModelAdmin):
 @admin.register(Category)    
 class CategoryAdmin(MPTTModelAdmin):
     form = CategoryForm
+    inlines = [CategoryCaracteristicInline]
     date_hierarchy = 'edited'
     prepopulated_fields = {"slug": ("name",)}
     readonly_fields = ['editor']

@@ -2,10 +2,10 @@
 
 <div class="product_inline">
 	<p class="text-center">
-		<a href="{% url 'product-list' slug=category.slug %}#main_content">{{ product.name }}</a>
+		<a href="{% url 'product-list' slug=product.category.slug %}#main_content">{{ product.name }}</a>
 	</p>
 	<div>
-		<a href="{% url 'product-detail' slug=product.slug category_slug=category.slug %}#main_content">
+		<a href="{% url 'product-detail' slug=product.slug category_slug=product.category.slug %}#main_content">
 		{% thumbnail product.navimage "200x200" as img %}
 			<img src="{{ img.url }}" alt="" style="margin:{{ img|margin:"200x200" }}" />
 		{% endthumbnail %}
@@ -17,6 +17,6 @@
 			<div class="text-center">
 				{% trans "Ref" %}: {{ product.upc }}
 			</div>
-		{% endif %}
+		{% endif %}	
 	</div>
 </div>

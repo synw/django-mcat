@@ -6,14 +6,14 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth import get_user_model
 from ckeditor.fields import RichTextField
 from mptt.models import TreeForeignKey, MPTTModel
-from mbase.models import default_statuses, MetaBaseModel, MetaBaseUniqueSlugModel, MetaBaseNameModel, MetaBaseTitleModel, MetaBaseStatusModel
+import django_filters
+from mbase.models import default_statuses, OrderedModel, MetaBaseModel, MetaBaseUniqueSlugModel, MetaBaseNameModel, MetaBaseStatusModel
 from mqueue.models import MonitoredModel
-from mcat.conf import USE_PRICES, PRICES_AS_INTEGER
+from mcat.forms import FilterForm
+from mcat.conf import USE_PRICES, PRICES_AS_INTEGER, CARACTERISTIC_TYPES
 
 
 STATUSES = getattr(settings, 'STATUSES', default_statuses)
-from django.contrib.auth.models import User
-USER_MODEL = getattr(settings, 'AUTH_USER_MODEL', User)
     
 
 class Brand(MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel, MetaBaseUniqueSlugModel, MonitoredModel):
@@ -70,14 +70,12 @@ class Product(MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel, MetaBaseUni
         return price
     
     
-class ProductImage(MetaBaseModel, MetaBaseStatusModel):
+class ProductImage(MetaBaseModel, MetaBaseStatusModel, OrderedModel):
     image = models.ImageField(upload_to='products', verbose_name=_(u'Image'))
-    order = models.PositiveSmallIntegerField(null=True, verbose_name=_(u'Order'))
     #~ external key
     product = models.ForeignKey(Product, related_name="images", verbose_name=_(u'Product'))
     
     class Meta:
-        ordering = ('order', 'created')
         verbose_name=_(u'Product image')
         verbose_name_plural = _(u'Product images')
 
@@ -85,8 +83,38 @@ class ProductImage(MetaBaseModel, MetaBaseStatusModel):
         return unicode(self.image.url)
 
 
+class ProductCaracteristic(MetaBaseModel, MetaBaseNameModel):
+    product = models.ForeignKey(Product, related_name="caracteristics", verbose_name=_(u'Product'))
+    value = models.CharField(max_length=255, verbose_name=_(u'Value'))
 
+    class Meta:
+        verbose_name=_(u'Product caracteristic')
+        verbose_name_plural =_( u'Product caracteristics')
+        ordering = ('name', 'created')
 
+    def __unicode__(self):
+        return unicode(self.name)
+    
+    
+class CategoryCaracteristic(MetaBaseModel, MetaBaseNameModel, MetaBaseUniqueSlugModel, OrderedModel):
+    category = models.ForeignKey(Category, related_name="generic_caracteristics", verbose_name=_(u'Category'))
+    type = models.CharField(max_length=255, choices=CARACTERISTIC_TYPES, default=CARACTERISTIC_TYPES[0][0])
+    choices = models.TextField(blank=True, verbose_name=_(u'Choices'))
+    
+    class Meta:
+        verbose_name=_(u'Caracteristic for category')
+        verbose_name_plural =_( u'Caracteristics for category')
 
+    def __unicode__(self):
+        return unicode(self.name)
+    
+    def get_choices(self):
+        output = []
+        for choice in self.choices.split('\n'):
+            output.append(choice)
+        return output
+            
+        
+        
 
 

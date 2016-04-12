@@ -1,37 +1,23 @@
 {% extends "mbase/layouts/smooth-lg.html" %}
 {% load staticfiles i18n bootstrap %}
 
-{% block title %}{{ category.name }}{% endblock %}
+{% block title %}{% trans 'Search' %}{% endblock %}
 {% block extra_head %}
 	<link rel="stylesheet" media="screen, projection" href="{% static 'mcat/mcat.css' %}" />
 {% endblock extra_head %}
 
 {% block content %}
 	<h1 class="text-center"><a name="title"></a>{{ category.name }}</h1>
-	{% include 'mcat/breadcrumbs.html' %}
 	<a name="main_content"></a>
-	{% if not filters_position == 'side' %}
-		{% include 'mcat/render_filters.html' %}
-	{% else %}
-		<div class="row">
-			<div class="col-xs-12 col-sm-9 col-sm-push-3">
-	{% endif %}
 	{% if products %}
 	    <div class="text-center">
 		    {% for product in products %}
 		        {% include 'mcat/products/product_inline.html' %}
 		    {% endfor %}
 		</div>
-		{% if filters_position == 'side' %}
-			</div>
-			<div class="col-xs-12 col-sm-3 col-sm-pull-9">
-				{% include 'mcat/render_filters.html' %}
-			</div>
-		{% endif %}
 	    <div class="row gus-l">{% include "mcat/products/paginate.html" %}</div>
 	{% else %}
-		<div class="jumbotron text-center gbf">{% trans "There is no products in this category" %}</div>
+		<div class="jumbotron text-center gbf">{% trans "No results found" %}</div>
 	{% endif %}
 	{% include 'mbase/return_btn.html' %}
 {% endblock %}
-
