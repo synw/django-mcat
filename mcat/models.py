@@ -7,7 +7,6 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth import get_user_model
 from ckeditor.fields import RichTextField
 from mptt.models import TreeForeignKey, MPTTModel
-import django_filters
 from mbase.models import default_statuses, OrderedModel, MetaBaseModel, MetaBaseUniqueSlugModel, MetaBaseNameModel, MetaBaseStatusModel
 from mqueue.models import MonitoredModel
 from mcat.forms import FilterForm
