@@ -28,7 +28,7 @@
 				{% include 'mcat/render_filters.html' %}
 			</div>
 		{% endif %}
-	    <div class="row gus-l">{% include "mcat/products/paginate.html" %}</div>
+	    <div class="gus-l gf text-center">{% include "mcat/products/paginate.html" %}</div>
 	{% else %}
 		<div class="jumbotron text-center gbf">{% trans "There is no products in this category" %}</div>
 	{% endif %}

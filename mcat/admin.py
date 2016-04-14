@@ -47,6 +47,7 @@ class ProductCaracteristicInlineForm(forms.ModelForm):
         for carac in caracteristics:
             names += ((carac.slug, carac.name),)
         self.fields['name'] = forms.ChoiceField(choices=names)
+        return
 
     class Meta:
         model = ProductCaracteristic
@@ -82,7 +83,6 @@ class CategoryCaracteristicInline(admin.TabularInline):
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
     form = ProductForm
-    inlines = [ProductImageInline, ProductCaracteristicInline]
     date_hierarchy = 'edited'
     raw_id_fields = ['category','brand']
     prepopulated_fields = {"slug": ("name",)}
@@ -112,6 +112,14 @@ class ProductAdmin(admin.ModelAdmin):
         if getattr(obj, 'editor', None) is None:
             obj.editor = request.user
         obj.save()
+        
+    def add_view(self, request, form_url='', extra_context=None):
+        self.inlines = [ProductImageInline]
+        return super(ProductAdmin, self).add_view(request, form_url, extra_context)
+
+    def change_view(self, request, object_id, form_url='', extra_context=None):
+        self.inlines = [ProductImageInline, ProductCaracteristicInline]
+        return super(ProductAdmin, self).change_view(request, object_id, form_url, extra_context)
         
         
 @admin.register(Category)    

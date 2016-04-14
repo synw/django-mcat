@@ -14,8 +14,9 @@ PRICES_AS_INTEGER = getattr(settings, 'MCAT_PRICES_AS_INTEGER', False)
 DISABLE_BREADCRUMBS = getattr(settings, 'MCAT_DISABLE_BREADCRUMBS', False)
 
 CARACTERISTIC_TYPES = (
-                        ('str', _(u'Text')),
-                        ('int', _(u'Numeric')),
                         ('choices', _(u'Choices')),
                         ('boolean', _(u'Yes / No')),
+                        ('int', _(u'Numeric')),
                        )
+
+FILTERS_POSITION = getattr(settings, 'MCAT_FILTERS_POSITION', 'side')

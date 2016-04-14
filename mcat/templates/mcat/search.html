@@ -12,7 +12,7 @@
 	{% if products %}
 	    <div class="text-center">
 		    {% for product in products %}
-		        {% include 'mcat/products/product_inline.html' %}
+		        {% include 'mcat/products/product_inline_search.html' %}
 		    {% endfor %}
 		</div>
 	    <div class="row gus-l">{% include "mcat/products/paginate.html" %}</div>

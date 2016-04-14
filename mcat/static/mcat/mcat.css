@@ -1,8 +1,0 @@
-.category_inline, .product_inline {
-	display:inline-block;
-	padding:1em;
-}
-.category_inline a, .category_inline a:visited, .product_inline a, .product_inline a:visited {
-	color:black;
-	font-size:120%;
-}

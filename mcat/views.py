@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
-from django.db.models import Q
+from django.db.models import Q, Prefetch
 from django.views.generic import TemplateView
 from django.views.generic import ListView
 from django.shortcuts import get_object_or_404
 from django.utils.html import strip_tags
-from mcat.models import Category, Product, Brand
-from mcat.conf import DISABLE_BREADCRUMBS
+from mcat.models import Category, Product, ProductCaracteristic
+from mcat.conf import DISABLE_BREADCRUMBS, FILTERS_POSITION
 
 
 class CategoryHomeView(TemplateView):
@@ -40,13 +40,25 @@ class CategoryView(TemplateView):
 
 class ProductsInCategoryView(ListView):
     template_name = 'mcat/products/index.html'
-    paginate_by = 10
+    paginate_by = 10 
     context_object_name = 'products'
     
     def get_queryset(self):
         self.category=get_object_or_404(Category.objects.prefetch_related('generic_caracteristics'), slug=self.kwargs['slug'], status=0)
         self.caracteristics = self.category.generic_caracteristics.all()
-        products=Product.objects.filter(category=self.category, status=0).prefetch_related('images')
+        
+        products=Product.objects.filter(category=self.category, status=0).prefetch_related('caracteristics')
+        #~ get the requested filters
+        self.filters = None
+        if self.request.GET:
+            filters = {}
+            for param, value in self.request.GET.items():
+                filters[param] = value.replace('+','')
+            #~ filter on products
+            for name, value in filters.items():
+                val = name+':'+value
+                products = products.filter(Q(carac1=val)|Q(carac2=val)|Q(carac3=val)|Q(carac4=val)|Q(carac5=val)|Q(carac6=val)|Q(carac7=val)|Q(carac8=val))
+            self.filters = filters
         return products
 
     def get_context_data(self, **kwargs):
@@ -62,7 +74,10 @@ class ProductsInCategoryView(ListView):
         context['categories'] = categories
         context['caracteristics'] = self.caracteristics
         context['num_categories'] = len(categories)
-        context['filters_position'] = 'side'
+        context['filters_position'] = FILTERS_POSITION
+        if self.filters:
+            context['active_filters'] = self.filters.keys()
+            context['active_values'] = self.filters.values()
         return context
     
     
