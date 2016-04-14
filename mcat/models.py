@@ -68,29 +68,7 @@ class Product(MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel, MetaBaseUni
 
     def __unicode__(self):
         return unicode(self.name)
-    """
-    def save(self, *args, **kwargs):
-        i = 1
-        for carac in self.caracteristics.all():
-            if i == 1:
-                self.carac1 = carac.name+':'+unicode.strip(carac.value)
-            if i == 2:
-                self.carac2 = carac.name+':'+unicode.strip(carac.value)
-            if i == 3:
-                self.carac3 = carac.name+':'+unicode.strip(carac.value)
-            if i == 4:
-                self.carac4 = carac.name+':'+unicode.strip(carac.value)
-            if i == 5:
-                self.carac5 = carac.name+':'+unicode.strip(carac.value)
-            if i == 6:
-                self.carac6 = carac.name+':'+unicode.strip(carac.value)
-            if i == 7:
-                self.carac7 = carac.name+':'+unicode.strip(carac.value)
-            if i == 8:
-                self.carac8 = carac.name+':'+unicode.strip(carac.value)
-            i += 1
-        super(Product, self).save()
-    """
+
     def get_price(self):
         price = None
         if USE_PRICES:
@@ -114,9 +92,9 @@ class ProductImage(MetaBaseModel, MetaBaseStatusModel, OrderedModel):
     
 
 def is_val_in_field(val, field_val):
-    name = field_val.split(':')
+    val = val.split(':')[0]
+    name = field_val.split(':')[0]
     if val == name:
-        print 'Val '+val+' = '+name
         return True
     return False
 
@@ -134,7 +112,6 @@ class ProductCaracteristic(MetaBaseModel, MetaBaseNameModel):
         return unicode(self.name)
     
     def save(self, *args, **kwargs):
-        print 'ssssssssssssssssssssssssssssssssssssssssssssssssssssssssss'
         product = self.product
         val = self.name+':'+unicode.strip(self.value)
         field = False

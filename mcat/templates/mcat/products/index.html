@@ -10,28 +10,24 @@
 	<h1 class="text-center"><a name="title"></a>{{ category.name }}</h1>
 	{% include 'mcat/breadcrumbs.html' %}
 	<a name="main_content"></a>
-	{% if not filters_position == 'side' %}
-		{% include 'mcat/render_filters.html' %}
-	{% else %}
-		<div class="row">
+	<div class="row">
+		{% if products %}
 			<div class="col-xs-12 col-sm-9 col-sm-push-3">
-	{% endif %}
-	{% if products %}
-	    <div class="text-center">
-		    {% for product in products %}
-		        {% include 'mcat/products/product_inline.html' %}
-		    {% endfor %}
-		</div>
-		{% if filters_position == 'side' %}
+			    <div class="text-center">
+				    {% for product in products %}
+				        {% include 'mcat/products/product_inline.html' %}
+				    {% endfor %}
+				</div>
+				</div>
+				<div class="col-xs-12 col-sm-3 col-sm-pull-9">
+					{% include 'mcat/render_filters.html' %}
+				</div>
+			    <div class="gus-l gf text-center">{% include "mcat/products/paginate.html" %}</div>
 			</div>
-			<div class="col-xs-12 col-sm-3 col-sm-pull-9">
-				{% include 'mcat/render_filters.html' %}
-			</div>
-		{% endif %}
-	    <div class="gus-l gf text-center">{% include "mcat/products/paginate.html" %}</div>
-	{% else %}
-		<div class="jumbotron text-center gbf">{% trans "There is no products in this category" %}</div>
-	{% endif %}
-	{% include 'mbase/return_btn.html' %}
+			{% else %}
+				<div class="jumbotron text-center gbf">{% trans "There is no products in this category" %}</div>
+			{% endif %}
+			{% include 'mbase/return_btn.html' %}
+	</div>
 {% endblock %}
 

@@ -80,7 +80,15 @@ class ProductsInCategoryView(ListView):
             context['active_values'] = self.filters.values()
         return context
     
-    
+    def get_template_names(self):
+        if not self.caracteristics:
+            return 'mcat/products/index_filters_top.html'
+        if FILTERS_POSITION == 'side':
+            return 'mcat/products/index.html'
+        else:
+            return 'mcat/products/index_filters_top.html'
+
+
 class ProductView(TemplateView):
     template_name = 'mcat/products/detail.html'
    
