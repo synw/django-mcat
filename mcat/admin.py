@@ -112,6 +112,7 @@ class ProductAdmin(admin.ModelAdmin):
         if getattr(obj, 'editor', None) is None:
             obj.editor = request.user
         obj.save()
+        return
         
     def add_view(self, request, form_url='', extra_context=None):
         self.inlines = [ProductImageInline]

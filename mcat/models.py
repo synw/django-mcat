@@ -69,7 +69,7 @@ class Product(MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel, MetaBaseUni
 
     def __unicode__(self):
         return unicode(self.name)
-    
+    """
     def save(self, *args, **kwargs):
         i = 1
         for carac in self.caracteristics.all():
@@ -91,7 +91,7 @@ class Product(MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel, MetaBaseUni
                 self.carac8 = carac.name+':'+unicode.strip(carac.value)
             i += 1
         super(Product, self).save()
-    
+    """
     def get_price(self):
         price = None
         if USE_PRICES:
@@ -112,6 +112,14 @@ class ProductImage(MetaBaseModel, MetaBaseStatusModel, OrderedModel):
 
     def __unicode__(self):
         return unicode(self.image.url)
+    
+
+def is_val_in_field(val, field_val):
+    name = field_val.split(':')
+    if val == name:
+        print 'Val '+val+' = '+name
+        return True
+    return False
 
 
 class ProductCaracteristic(MetaBaseModel, MetaBaseNameModel):
@@ -125,6 +133,38 @@ class ProductCaracteristic(MetaBaseModel, MetaBaseNameModel):
 
     def __unicode__(self):
         return unicode(self.name)
+    
+    def save(self, *args, **kwargs):
+        print 'ssssssssssssssssssssssssssssssssssssssssssssssssssssssssss'
+        product = self.product
+        val = self.name+':'+unicode.strip(self.value)
+        field = False
+        if product.carac1 == '' or is_val_in_field(val, product.carac1):
+            product.carac1 = val
+            field = True
+            print 'Field 1'
+        if not field and product.carac2 == '' or is_val_in_field(val, product.carac2):
+            product.carac2 = val
+            field = True
+        if not field and product.carac3 == '' or is_val_in_field(val, product.carac3):
+            product.carac3 = val
+            field = True
+        if not field and product.carac4 == '' or is_val_in_field(val, product.carac4):
+            product.carac4 = val
+            field = True
+        if not field and product.carac5 == '' or is_val_in_field(val, product.carac5):
+            product.carac5 = val
+            field = True
+        if not field and product.carac6 == '' or is_val_in_field(val, product.carac6):
+            product.carac6 = val
+            field = True
+        if not field and product.carac7 == '' or is_val_in_field(val, product.carac7):
+            product.carac7 = val
+            field = True
+        if not field and product.carac8 == '' or is_val_in_field(val, product.carac8):
+            product.carac8 = val
+        product.save()
+        super(ProductCaracteristic, self).save()
     
     
 class CategoryCaracteristic(MetaBaseModel, MetaBaseNameModel, MetaBaseUniqueSlugModel, OrderedModel):
