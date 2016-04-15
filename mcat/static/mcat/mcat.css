@@ -10,3 +10,9 @@ img {
 	color:black;
 	font-size:120%;
 }
+.product_inline {
+	max-width:220px;
+}
+.product_title {
+	max-height:1.8em;
+}

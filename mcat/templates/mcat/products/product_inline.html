@@ -1,8 +1,8 @@
 {% load i18n thumbnail staticfiles %}
 
 <div class="product_inline">
-	<p class="text-center">
-		<a href="{% url 'product-list' slug=category.slug %}">{{ product.name }}</a>
+	<p id="product_title" class="text-center">
+		<a href="{% url 'product-list' slug=category.slug %}">{{ product.name|truncatechars:38 }}</a>
 	</p>
 	<div>
 		<a href="{% url 'product-detail' slug=product.slug category_slug=category.slug %}">
