@@ -10,7 +10,6 @@
 {% block content %}
 	<div id="product" class="row">
 		<div class="col-xs-12">	
-			<h1 class="text-center{% if disable_breadcrumbs %} gds{% endif %}"><a name="title"></a>{{ product.name }}</h1>
 			{% include 'mcat/breadcrumbs.html' %}
 		</div>
 	</div>
@@ -21,18 +20,30 @@
 			{% endwith %}
 		</div>
 		<div class="col-xs-12 col-sm-6">
-			<div class="hidden-md hidden-lg text-center gus">
+			<h1 class="text-center"><a name="title"></a>{{ product.name }}</h1>
+			{% if product.upc %}
+				<div class="text-center gbf gds">
+					<i class="fa fa-barcode"></i>&nbsp;{{ product.upc }}
+				</div>
+			{% endif %}
+			<div class="hidden-md hidden-lg text-center gus gds-md">
 				{% if product.price %}
-					<div class="label label-primary gbf-md">{{ product|format_price }}</div>
+					<div class="label label-primary gbf-md">{{ product|format_price|safe }}</div>
 				{% endif %}
 			</div>
-			{{ product.description|safe }}
-			<div class="hidden-xs hidden-sm text-center gus-l">
+			{{ product.short_description|safe }}
+			<div class="hidden-xs hidden-sm text-center gus-l gds">
 				{% if product.price %}
-					<span class="label label-primary gbf-md">{{ product|format_price }}</span>
+					<span class="label label-primary gbf-md">{{ product|format_price|safe }}</span>
 				{% endif %}
 			</div>
-			
+			{% if product.description %}
+					</div>
+				</div>
+				<div class="row gus">
+					<div class="col-xs-12">
+						{{ product.description|safe }}
+			{% endif %}
 		</div>
 	</div>
 	{% include 'mbase/return_btn.html' %}

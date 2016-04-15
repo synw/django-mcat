@@ -3,13 +3,16 @@
 
 from django import template
 from django.template import Library, Node, resolve_variable
-from mcat.conf import CURRENCY
+from mcat.conf import CURRENCY, PRICES_AS_INTEGER
 
 register = template.Library()
 
 @register.filter
 def format_price(product):
-    return str(product.get_price())+'&nbsp;'+CURRENCY
+    price = product.get_price()
+    if PRICES_AS_INTEGER:
+        price = int(round(price))
+    return str(price)+'&nbsp;'+CURRENCY
 
 
 class AddGetParameter(Node):

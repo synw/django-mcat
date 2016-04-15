@@ -42,8 +42,8 @@ class Category(MPTTModel, MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel,
 
 class Product(MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel, MetaBaseUniqueSlugModel, MonitoredModel):
     #~ base content
-    short_description = models.CharField(blank=True, max_length=250, verbose_name=_(u'Short description'))
-    description = RichTextField(blank=True, verbose_name=_(u'Description'))
+    short_description = RichTextField(blank=True, verbose_name=_(u'Short description'))
+    description = RichTextField(blank=True, verbose_name=_(u'Long description'))
     upc = models.CharField(blank=True, unique=True, max_length=30, verbose_name=_(u'Universal Product Code'))
     navimage = models.ImageField(null=True, upload_to='products/nav/', verbose_name=_(u'Navigation image'))
     #~ external keys

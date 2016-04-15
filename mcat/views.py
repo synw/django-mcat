@@ -75,6 +75,7 @@ class ProductsInCategoryView(ListView):
                             val = value[1:]
                             products = products.filter(Q(int_carac1_name=name, int_carac1__gt=val))                     
             self.filters = filters
+        self.num_products = len(products)
         return products
 
     def get_context_data(self, **kwargs):
@@ -91,6 +92,7 @@ class ProductsInCategoryView(ListView):
         context['caracteristics'] = self.caracteristics
         context['num_categories'] = len(categories)
         context['filters_position'] = FILTERS_POSITION
+        context['num_products'] = self.num_products
         if self.filters:
             context['active_filters'] = self.filters.keys()
             context['active_values'] = self.filters.values()
@@ -112,7 +114,7 @@ class ProductView(TemplateView):
         context = super(ProductView, self).get_context_data(**kwargs)
         #~ get the data
         category=get_object_or_404(Category, slug=self.kwargs['category_slug'], status=0)
-        product=get_object_or_404(Product, slug=self.kwargs['slug'], status=0)
+        product=get_object_or_404(Product.objects.select_related(), slug=self.kwargs['slug'], status=0)
         last_level=category.level+1
         categories = category.get_descendants().filter(level__lte=last_level).order_by('name')
         if DISABLE_BREADCRUMBS:

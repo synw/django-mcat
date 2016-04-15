@@ -1,4 +1,4 @@
-{% extends "mbase/layouts/smooth-lg.html" %}
+{% extends "mbase/layouts/xs-12.html" %}
 {% load staticfiles i18n bootstrap %}
 
 {% block title %}{{ category.name }}{% endblock %}
@@ -8,7 +8,9 @@
 
 {% block content %}
 	<h1 class="text-center"><a name="title"></a>{{ category.name }}</h1>
+	<div class="pull-right label label-info hidden-xxs" style="position:relative;top:8px;right:10px;font-size:100%">{{ num_products }} {% trans 'products' %}</div>
 	{% include 'mcat/breadcrumbs.html' %}
+	<div class="label label-info visible-xxs" style="font-size:100%">{{ num_products }} {% trans 'products' %}</div>
 	<a name="main_content"></a>
 	<div class="row">
 		<div class="col-xs-12 col-sm-9 col-sm-push-3">
@@ -26,6 +28,12 @@
 		</div>
 		<div class="col-xs-12 col-sm-3 col-sm-pull-9">
 			{% include 'mcat/render_filters.html' %}
+			{% if active_filters %}
+				<a class="btn btn-block btn-default gus" href="{{ request.path }}">
+					<i class="fa fa-close" style="color:grey"></i>
+					{% trans 'Disable filters' %}				
+				</a>
+			{% endif %}
 		</div>
 	</div>
 {% endblock %}

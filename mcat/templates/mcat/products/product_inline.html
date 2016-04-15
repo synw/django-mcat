@@ -10,12 +10,9 @@
 			<img src="{{ img.url }}" alt="" style="margin:{{ img|margin:"200x200" }}" />
 		{% endthumbnail %}
 		</a>
-		<div class="text-center">
-			{{ product.short_description|safe }}
-		</div>
 		{% if product.upc %}
 			<div class="text-center">
-				{% trans "Ref" %}: {{ product.upc }}
+				<i class="fa fa-barcode"></i>&nbsp;{{ product.upc }}
 			</div>
 		{% endif %}
 		{% comment %}
