@@ -11,6 +11,7 @@ from mbase.models import default_statuses, OrderedModel, MetaBaseModel, MetaBase
 from mqueue.models import MonitoredModel
 from mcat.forms import FilterForm
 from mcat.conf import USE_PRICES, PRICES_AS_INTEGER, CARACTERISTIC_TYPES
+from mcat.utils import is_val_in_field
 
 
 STATUSES = getattr(settings, 'STATUSES', default_statuses)
@@ -52,14 +53,18 @@ class Product(MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel, MetaBaseUni
     price = models.FloatField(null=True, blank=True, verbose_name=_(u'Price'))
     discounted_price = models.FloatField(null=True, blank=True, verbose_name=_(u'Discounted price'))
     discounted_percentage = models.PositiveSmallIntegerField(null=True, blank=True, verbose_name=_(u'Discount percentage'))
-    carac1 = models.CharField(max_length=255, verbose_name=_(u'Caracteristic 1'))
-    carac2 = models.CharField(max_length=255, verbose_name=_(u'Caracteristic 2'))
-    carac3 = models.CharField(max_length=255, verbose_name=_(u'Caracteristic 3'))
-    carac4 = models.CharField(max_length=255, verbose_name=_(u'Caracteristic 4'))
-    carac5 = models.CharField(max_length=255, verbose_name=_(u'Caracteristic 5'))
-    carac6 = models.CharField(max_length=255, verbose_name=_(u'Caracteristic 6'))
-    carac7 = models.CharField(max_length=255, verbose_name=_(u'Caracteristic 7'))
-    carac8 = models.CharField(max_length=255, verbose_name=_(u'Caracteristic 8'))
+    carac1 = models.CharField(max_length=255, blank=True, verbose_name=_(u'Caracteristic 1'))
+    carac2 = models.CharField(max_length=255, blank=True, verbose_name=_(u'Caracteristic 2'))
+    carac3 = models.CharField(max_length=255, blank=True, verbose_name=_(u'Caracteristic 3'))
+    carac4 = models.CharField(max_length=255, blank=True, verbose_name=_(u'Caracteristic 4'))
+    carac5 = models.CharField(max_length=255, blank=True, verbose_name=_(u'Caracteristic 5'))
+    int_carac1 = models.IntegerField(null=True, blank=True, verbose_name=_(u'Integer caracteristic 1'))
+    int_carac2 = models.IntegerField(null=True, blank=True, verbose_name=_(u'Integer caracteristic 2'))
+    int_carac3 = models.IntegerField(null=True, blank=True, verbose_name=_(u'Integer caracteristic 3'))
+    int_carac1_name = models.CharField(max_length=255, blank=True, verbose_name=_(u'Integer caracteristic 1 name'))
+    int_carac2_name = models.CharField(max_length=255, blank=True, verbose_name=_(u'Integer caracteristic 2 name'))
+    int_carac3_name = models.CharField(max_length=255, blank=True, verbose_name=_(u'Integer caracteristic 3 name'))
+    
     
     class Meta:
         verbose_name=_(u'Product')
@@ -89,14 +94,6 @@ class ProductImage(MetaBaseModel, MetaBaseStatusModel, OrderedModel):
 
     def __unicode__(self):
         return unicode(self.image.url)
-    
-
-def is_val_in_field(val, field_val):
-    val = val.split(':')[0]
-    name = field_val.split(':')[0]
-    if val == name:
-        return True
-    return False
 
 
 class ProductCaracteristic(MetaBaseModel, MetaBaseNameModel):
@@ -113,32 +110,38 @@ class ProductCaracteristic(MetaBaseModel, MetaBaseNameModel):
     
     def save(self, *args, **kwargs):
         product = self.product
+        carac_types = CategoryCaracteristic.objects.all()
+        ftype = carac_types.filter(slug=self.name)[0].type
         val = self.name+':'+unicode.strip(self.value)
         field = False
-        if product.carac1 == '' or is_val_in_field(val, product.carac1):
-            product.carac1 = val
-            field = True
-            print 'Field 1'
-        if not field and product.carac2 == '' or is_val_in_field(val, product.carac2):
-            product.carac2 = val
-            field = True
-        if not field and product.carac3 == '' or is_val_in_field(val, product.carac3):
-            product.carac3 = val
-            field = True
-        if not field and product.carac4 == '' or is_val_in_field(val, product.carac4):
-            product.carac4 = val
-            field = True
-        if not field and product.carac5 == '' or is_val_in_field(val, product.carac5):
-            product.carac5 = val
-            field = True
-        if not field and product.carac6 == '' or is_val_in_field(val, product.carac6):
-            product.carac6 = val
-            field = True
-        if not field and product.carac7 == '' or is_val_in_field(val, product.carac7):
-            product.carac7 = val
-            field = True
-        if not field and product.carac8 == '' or is_val_in_field(val, product.carac8):
-            product.carac8 = val
+        if ftype in ['choices', 'boolean']:
+            if product.carac1 == '' or is_val_in_field(val, product.carac1):
+                product.carac1 = val
+                field = True
+            if not field and product.carac2 == '' or is_val_in_field(val, product.carac2):
+                product.carac2 = val
+                field = True
+            if not field and product.carac3 == '' or is_val_in_field(val, product.carac3):
+                product.carac3 = val
+                field = True
+            if not field and product.carac4 == '' or is_val_in_field(val, product.carac4):
+                product.carac4 = val
+                field = True
+            if not field and product.carac5 == '' or is_val_in_field(val, product.carac5):
+                product.carac5 = val
+        field = False
+        if ftype == 'int':
+            if not product.int_carac1 or product.int_carac1_name == self.name:
+                product.int_carac1 = int(self.value)
+                product.int_carac1_name = self.name
+                field = True
+            if not field and not product.int_carac2 or product.int_carac2_name == self.name:
+                product.int_carac2 = int(self.value)
+                product.int_carac2_name = self.name
+                field = True
+            if not field and not product.int_carac3 or product.int_carac3_name == self.name:
+                product.int_carac3 = int(self.value)
+                product.int_carac3_name = self.name
         product.save()
         super(ProductCaracteristic, self).save()
     
@@ -151,6 +154,7 @@ class CategoryCaracteristic(MetaBaseModel, MetaBaseNameModel, MetaBaseUniqueSlug
     class Meta:
         verbose_name=_(u'Caracteristic for category')
         verbose_name_plural =_( u'Caracteristics for category')
+        ordering = ['order']
 
     def __unicode__(self):
         return unicode(self.name)

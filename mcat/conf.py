@@ -19,4 +19,5 @@ CARACTERISTIC_TYPES = (
                         ('int', _(u'Numeric')),
                        )
 
+USE_FILTERS = getattr(settings, 'MCAT_USE_FILTERS', True)
 FILTERS_POSITION = getattr(settings, 'MCAT_FILTERS_POSITION', 'side')

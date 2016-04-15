@@ -27,7 +27,11 @@
 						{% endif %}
 					{% elif filter.type == 'int' %}
 						{% for text, range in filter.get_choices.items %}
-							<a href="{% append_to_get name=filter.slug value=range %}" class="btn btn-default">{{ text }}</a>
+							{% if filter.slug in active_filters and range in active_values %}
+								<a href="{% remove_from_get name=filter.slug value=range %}" class="btn btn-success">{{ text }}</a>
+							{% else %}
+								<a href="{% append_to_get name=filter.slug value=range %}" class="btn btn-default">{{ text }}</a>
+							{% endif %}
 						{% endfor %}
 					{% endif %}
 				</div>

@@ -6,7 +6,7 @@ from django.views.generic import ListView
 from django.shortcuts import get_object_or_404
 from django.utils.html import strip_tags
 from mcat.models import Category, Product, ProductCaracteristic
-from mcat.conf import DISABLE_BREADCRUMBS, FILTERS_POSITION
+from mcat.conf import DISABLE_BREADCRUMBS, FILTERS_POSITION, USE_FILTERS
 
 
 class CategoryHomeView(TemplateView):
@@ -50,14 +50,29 @@ class ProductsInCategoryView(ListView):
         products=Product.objects.filter(category=self.category, status=0).prefetch_related('caracteristics')
         #~ get the requested filters
         self.filters = None
-        if self.request.GET:
+        if self.request.GET and USE_FILTERS:
             filters = {}
             for param, value in self.request.GET.items():
-                filters[param] = value.replace('+','')
-            #~ filter on products
+                filters[param] = value
+            #~ filter on products            
             for name, value in filters.items():
-                val = name+':'+value
-                products = products.filter(Q(carac1=val)|Q(carac2=val)|Q(carac3=val)|Q(carac4=val)|Q(carac5=val)|Q(carac6=val)|Q(carac7=val)|Q(carac8=val))
+                ftype = self.caracteristics.filter(slug=name)[0].type
+                if ftype in ['choices', 'boolean']:
+                    val = name+':'+value
+                    products = products.filter(Q(carac1=val)|Q(carac2=val)|Q(carac3=val)|Q(carac4=val)|Q(carac5=val))
+                elif ftype == 'int':
+                    if '_' in value:
+                        frange = value.split('_')
+                        start_range = frange[0]
+                        end_range = frange[1]
+                        products = products.filter(Q(int_carac1_name=name, int_carac1__gte=start_range, int_carac1__lte=end_range)|Q(int_carac2_name=name, int_carac2__gte=start_range, int_carac2__lte=end_range)|Q(int_carac3_name=name, int_carac3__gte=start_range, int_carac3__lte=end_range))
+                    else:
+                        if value.startswith('-'):
+                            val = value[1:]
+                            products = products.filter(Q(int_carac1_name=name, int_carac1__lt=val))
+                        elif value.startswith('+'):
+                            val = value[1:]
+                            products = products.filter(Q(int_carac1_name=name, int_carac1__gt=val))                     
             self.filters = filters
         return products
 
