@@ -21,6 +21,8 @@ class AddGetParameter(Node):
         params = req.GET.copy()
         for key, value in self.values.items():
             params[resolve_variable(key, context)] = value.resolve(context)
+        if 'page' in params.keys():
+            del params['page']
         return '?%s' %  params.urlencode({' ' : ''})
     
 
@@ -31,8 +33,10 @@ class RemoveGetParameter(Node):
     def render(self, context):
         req = resolve_variable('request', context)
         params = req.GET.copy()
-        for key, value in self.values.items():
+        for key in self.values.keys():
             del params[resolve_variable(key, context)]
+        if 'page' in params.keys():
+            del params['page']
         return '?%s' %  params.urlencode({' ' : ''})
     
 
@@ -57,6 +61,14 @@ def remove_from_get(parser, token):
     value = s[1]
     values[name] = parser.compile_filter(unicode.strip(value))
     return RemoveGetParameter(values)
+
+@register.simple_tag
+def pagenum_replace(request, value):
+    dict_ = request.GET.copy()
+    dict_['page'] = value
+    print str(dict_)
+    return dict_.urlencode()
+
 
 
 

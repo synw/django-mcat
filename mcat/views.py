@@ -40,7 +40,7 @@ class CategoryView(TemplateView):
 
 class ProductsInCategoryView(ListView):
     template_name = 'mcat/products/index.html'
-    paginate_by = 10 
+    paginate_by = 10
     context_object_name = 'products'
     
     def get_queryset(self):
@@ -53,7 +53,8 @@ class ProductsInCategoryView(ListView):
         if self.request.GET and USE_FILTERS:
             filters = {}
             for param, value in self.request.GET.items():
-                filters[param] = value
+                if not param == 'page':
+                    filters[param] = value
             #~ filter on products            
             for name, value in filters.items():
                 ftype = self.caracteristics.filter(slug=name)[0].type
