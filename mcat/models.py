@@ -109,40 +109,41 @@ class ProductCaracteristic(MetaBaseModel, MetaBaseNameModel):
         return unicode(self.name)
     
     def save(self, *args, **kwargs):
-        product = self.product
-        carac_types = CategoryCaracteristic.objects.all()
-        ftype = carac_types.filter(slug=self.name)[0].type
-        val = self.name+':'+unicode.strip(self.value)
-        field = False
-        if ftype in ['choices', 'boolean']:
-            if product.carac1 == '' or is_val_in_field(val, product.carac1):
-                product.carac1 = val
-                field = True
-            if not field and product.carac2 == '' or is_val_in_field(val, product.carac2):
-                product.carac2 = val
-                field = True
-            if not field and product.carac3 == '' or is_val_in_field(val, product.carac3):
-                product.carac3 = val
-                field = True
-            if not field and product.carac4 == '' or is_val_in_field(val, product.carac4):
-                product.carac4 = val
-                field = True
-            if not field and product.carac5 == '' or is_val_in_field(val, product.carac5):
-                product.carac5 = val
-        field = False
-        if ftype == 'int':
-            if not product.int_carac1 or product.int_carac1_name == self.name:
-                product.int_carac1 = int(self.value)
-                product.int_carac1_name = self.name
-                field = True
-            if not field and not product.int_carac2 or product.int_carac2_name == self.name:
-                product.int_carac2 = int(self.value)
-                product.int_carac2_name = self.name
-                field = True
-            if not field and not product.int_carac3 or product.int_carac3_name == self.name:
-                product.int_carac3 = int(self.value)
-                product.int_carac3_name = self.name
-        product.save()
+        if self.pk:
+            product = self.product
+            carac_types = CategoryCaracteristic.objects.all()
+            ftype = carac_types.filter(slug=self.name)[0].type
+            val = self.name+':'+unicode.strip(self.value)
+            field = False
+            if ftype in ['choices', 'boolean']:
+                if product.carac1 == '' or is_val_in_field(val, product.carac1):
+                    product.carac1 = val
+                    field = True
+                if not field and product.carac2 == '' or is_val_in_field(val, product.carac2):
+                    product.carac2 = val
+                    field = True
+                if not field and product.carac3 == '' or is_val_in_field(val, product.carac3):
+                    product.carac3 = val
+                    field = True
+                if not field and product.carac4 == '' or is_val_in_field(val, product.carac4):
+                    product.carac4 = val
+                    field = True
+                if not field and product.carac5 == '' or is_val_in_field(val, product.carac5):
+                    product.carac5 = val
+            field = False
+            if ftype == 'int':
+                if not product.int_carac1 or product.int_carac1_name == self.name:
+                    product.int_carac1 = int(self.value)
+                    product.int_carac1_name = self.name
+                    field = True
+                if not field and not product.int_carac2 or product.int_carac2_name == self.name:
+                    product.int_carac2 = int(self.value)
+                    product.int_carac2_name = self.name
+                    field = True
+                if not field and not product.int_carac3 or product.int_carac3_name == self.name:
+                    product.int_carac3 = int(self.value)
+                    product.int_carac3_name = self.name
+            product.save()
         super(ProductCaracteristic, self).save()
     
     

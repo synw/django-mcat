@@ -96,8 +96,8 @@ class ProductsInCategoryView(ListView):
         return context
     
     def get_template_names(self):
-        if not self.caracteristics:
-            return 'mcat/products/index_filters_top.html'
+        #if not self.caracteristics:
+        #    return 'mcat/products/index_filters_top.html'
         if FILTERS_POSITION == 'side':
             return 'mcat/products/index.html'
         else:
