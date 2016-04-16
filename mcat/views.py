@@ -40,7 +40,6 @@ class CategoryView(TemplateView):
 
 
 class ProductsInCategoryView(ListView):
-    template_name = 'mcat/products/index.html'
     paginate_by = 10
     context_object_name = 'products'
     
@@ -50,6 +49,10 @@ class ProductsInCategoryView(ListView):
         self.caracteristics = self.category.generic_caracteristics.all()
         #~ get the requested filters
         self.filters = None
+        if USE_FILTERS is False:
+            self.filters_position = None
+        else:
+            self.filters_position = self.category.filters_position
         if self.request.GET and USE_FILTERS:
             filters = {}
             for param, value in self.request.GET.items():
@@ -86,7 +89,7 @@ class ProductsInCategoryView(ListView):
         category= self.category
         last_level=category.level+1
         categories = category.get_descendants().filter(level__lte=last_level)
-        if DISABLE_BREADCRUMBS:
+        if DISABLE_BREADCRUMBS is True:
             context['disable_breadcrumbs'] = True
         else:
             context['ancestors'] = category.get_ancestors()
@@ -94,17 +97,16 @@ class ProductsInCategoryView(ListView):
         context['categories'] = categories
         context['caracteristics'] = self.caracteristics
         context['num_categories'] = len(categories)
-        context['filters_position'] = FILTERS_POSITION
         context['num_products'] = self.num_products
-        if self.filters:
+        context['use_filters'] = USE_FILTERS
+        if self.filters is not None:
             context['active_filters'] = self.filters.keys()
             context['active_values'] = self.filters.values()
+        context['filters_position'] = self.filters_position
         return context
     
     def get_template_names(self):
-        #if not self.caracteristics:
-        #    return 'mcat/products/index_filters_top.html'
-        if FILTERS_POSITION == 'side':
+        if self.filters_position == 'side':
             return 'mcat/products/index.html'
         else:
             return 'mcat/products/index_filters_top.html'

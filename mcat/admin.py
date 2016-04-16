@@ -141,7 +141,7 @@ class CategoryAdmin(MPTTModelAdmin):
                 'fields': (('name','slug',),)
             }),
             (None, {
-                'fields': (('parent','status',), 'image')
+                'fields': (('parent','status',), ('image','filters_position'))
             }),
             )
     

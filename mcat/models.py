@@ -10,7 +10,7 @@ from mptt.models import TreeForeignKey, MPTTModel
 from mbase.models import default_statuses, OrderedModel, MetaBaseModel, MetaBaseUniqueSlugModel, MetaBaseNameModel, MetaBaseStatusModel
 from mqueue.models import MonitoredModel
 from mcat.forms import FilterForm
-from mcat.conf import USE_PRICES, PRICES_AS_INTEGER, CARACTERISTIC_TYPES
+from mcat.conf import USE_PRICES, PRICES_AS_INTEGER, CARACTERISTIC_TYPES, FILTERS_POSITION
 from mcat.utils import is_val_in_field, encode_ftype
 
 
@@ -31,6 +31,7 @@ class Brand(MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel, MetaBaseUniqu
 class Category(MPTTModel, MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel, MetaBaseUniqueSlugModel, MonitoredModel):
     parent = TreeForeignKey('self', null=True, blank=True, related_name=u'children', verbose_name=_(u'Parent category'))
     image = models.ImageField(null=True, upload_to='categories', verbose_name=_(u"Navigation image"))
+    filters_position = models.CharField(max_length=60, choices=FILTERS_POSITION, default=FILTERS_POSITION[0][0])
     
     class Meta:
         verbose_name=_(u'Category')

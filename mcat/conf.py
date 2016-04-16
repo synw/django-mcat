@@ -20,4 +20,9 @@ CARACTERISTIC_TYPES = (
                        )
 
 USE_FILTERS = getattr(settings, 'MCAT_USE_FILTERS', True)
-FILTERS_POSITION = getattr(settings, 'MCAT_FILTERS_POSITION', 'side')
+
+FILTERS_POSITION = (
+                    ('side',_(u'Side')),
+                    ('top',_(u'Top')),
+                    )
+

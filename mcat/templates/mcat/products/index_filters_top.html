@@ -10,7 +10,9 @@
 	<h1 class="text-center"><a name="title"></a>{{ category.name }}</h1>
 	{% include 'mcat/breadcrumbs.html' %}
 	<a name="main_content"></a>	
-	{% include 'mcat/render_filters.html' %}
+	{% if use_filters %}
+		{% include 'mcat/render_filters.html' %}
+	{% endif %}
 	{% if products %}
 	    <div class="text-center">
 		    {% for product in products %}
