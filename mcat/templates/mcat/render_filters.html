@@ -15,15 +15,15 @@
 							{% endif %}
 						{% endfor %}
 					{% elif filter.type == 'boolean' %}
-						{% if filter.slug in active_filters and '1' in active_values %}
-							<a href="{% remove_from_get name=filter.slug value=1 %}" class="btn btn-success">{% trans 'Yes' %}</a>
+						{% if filter.slug in active_filters and '1;b' in active_values %}
+							<a href="{% remove_from_get name=filter.slug value='1;b' %}" class="btn btn-success">{% trans 'Yes' %}</a>
 						{% else %}
-							<a href="{% append_to_get name=filter.slug value=1 %}" class="btn btn-default">{% trans 'Yes' %}</a>
+							<a href="{% append_to_get name=filter.slug value='1;b' %}" class="btn btn-default">{% trans 'Yes' %}</a>
 						{% endif %}
-						{% if filter.slug in active_filters and '0' in active_values %}
-							<a href="{% remove_from_get name=filter.slug value=0 %}" class="btn btn-success">{% trans 'No' %}</a>
+						{% if filter.slug in active_filters and '0;b' in active_values %}
+							<a href="{% remove_from_get name=filter.slug value='0;b' %}" class="btn btn-success">{% trans 'No' %}</a>
 						{% else %}	
-							<a href="{% append_to_get name=filter.slug value=0 %}" class="btn btn-default">{% trans 'No' %}</a>
+							<a href="{% append_to_get name=filter.slug value='0;b' %}" class="btn btn-default">{% trans 'No' %}</a>
 						{% endif %}
 					{% elif filter.type == 'int' %}
 						{% for text, range in filter.get_choices.items %}

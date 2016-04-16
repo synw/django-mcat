@@ -5,8 +5,9 @@ from django.views.generic import TemplateView
 from django.views.generic import ListView
 from django.shortcuts import get_object_or_404
 from django.utils.html import strip_tags
-from mcat.models import Category, Product, ProductCaracteristic
+from mcat.models import Category, Product, ProductCaracteristic, CategoryCaracteristic
 from mcat.conf import DISABLE_BREADCRUMBS, FILTERS_POSITION, USE_FILTERS
+from mcat.utils import decode_ftype
 
 
 class CategoryHomeView(TemplateView):
@@ -45,9 +46,8 @@ class ProductsInCategoryView(ListView):
     
     def get_queryset(self):
         self.category=get_object_or_404(Category.objects.prefetch_related('generic_caracteristics'), slug=self.kwargs['slug'], status=0)
-        self.caracteristics = self.category.generic_caracteristics.all()
-        
         products=Product.objects.filter(category=self.category, status=0).prefetch_related('caracteristics')
+        self.caracteristics = self.category.generic_caracteristics.all()
         #~ get the requested filters
         self.filters = None
         if self.request.GET and USE_FILTERS:
@@ -57,13 +57,16 @@ class ProductsInCategoryView(ListView):
                     filters[param] = value
             #~ filter on products            
             for name, value in filters.items():
-                ftype = self.caracteristics.filter(slug=name)[0].type
+                #ftype = self.caracteristics.filter(slug=name)[0].type
+                raw_ftype = value.split(';')[1]
+                ftype = decode_ftype(raw_ftype)
                 if ftype in ['choices', 'boolean']:
-                    val = name+':'+value
+                    val = name+':'+value.replace(raw_ftype, ftype)
+                    print val
                     products = products.filter(Q(carac1=val)|Q(carac2=val)|Q(carac3=val)|Q(carac4=val)|Q(carac5=val))
                 elif ftype == 'int':
                     if '_' in value:
-                        frange = value.split('_')
+                        frange = value.split(';')[0].split('_')
                         start_range = frange[0]
                         end_range = frange[1]
                         products = products.filter(Q(int_carac1_name=name, int_carac1__gte=start_range, int_carac1__lte=end_range)|Q(int_carac2_name=name, int_carac2__gte=start_range, int_carac2__lte=end_range)|Q(int_carac3_name=name, int_carac3__gte=start_range, int_carac3__lte=end_range))

@@ -11,7 +11,7 @@ from mbase.models import default_statuses, OrderedModel, MetaBaseModel, MetaBase
 from mqueue.models import MonitoredModel
 from mcat.forms import FilterForm
 from mcat.conf import USE_PRICES, PRICES_AS_INTEGER, CARACTERISTIC_TYPES
-from mcat.utils import is_val_in_field
+from mcat.utils import is_val_in_field, encode_ftype
 
 
 STATUSES = getattr(settings, 'STATUSES', default_statuses)
@@ -113,7 +113,8 @@ class ProductCaracteristic(MetaBaseModel, MetaBaseNameModel):
             product = self.product
             carac_types = CategoryCaracteristic.objects.all()
             ftype = carac_types.filter(slug=self.name)[0].type
-            val = self.name+':'+unicode.strip(self.value)
+            #val = self.name+':'+unicode.strip(self.value)
+            val = self.name+':'+unicode.strip(self.value)+';'+ftype
             field = False
             if ftype in ['choices', 'boolean']:
                 if product.carac1 == '' or is_val_in_field(val, product.carac1):
@@ -162,13 +163,14 @@ class CategoryCaracteristic(MetaBaseModel, MetaBaseNameModel, MetaBaseUniqueSlug
 
     def get_choices(self):
         choices = OrderedDict()
+        ftype = encode_ftype(self.type)
         for choice in self.choices.split('\n'):
             splited = choice.split('>')
             val = unicode.strip(splited[0])
             slug = unicode.strip(splited[1])
-            choices[slug] = val
+            choices[slug] = val+';'+ftype
         return choices
-    
+
 
             
         
