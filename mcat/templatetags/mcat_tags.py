@@ -4,15 +4,17 @@
 from django import template
 from django.template import Library, Node, resolve_variable
 from mcat.conf import CURRENCY, PRICES_AS_INTEGER
+from mcat.utils import intspace
 
 register = template.Library()
 
-@register.filter
+@register.filter(is_safe=True)
 def format_price(product):
     price = product.get_price()
     if PRICES_AS_INTEGER:
-        price = int(round(price))
-    return str(price)+'&nbsp;'+CURRENCY
+        price = intspace(int(round(price)))
+    price = str(price)
+    return price+'&nbsp;'+CURRENCY
 
 
 class AddGetParameter(Node):

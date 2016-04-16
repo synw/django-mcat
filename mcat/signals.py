@@ -8,7 +8,7 @@ def create_caracteristics(sender, instance, created, **kwargs):
         #~ autocreate product caracteristics on product creation
         carac_types = CategoryCaracteristic.objects.filter(category=instance.category)
         for carac in carac_types:
-            c = ProductCaracteristic(product=instance, name=carac.slug)
+            c = ProductCaracteristic(product=instance, name=carac.slug, type=carac.type, type_name=carac.name)
             c.save()
     return
     

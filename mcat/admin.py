@@ -74,7 +74,7 @@ class ProductCaracteristicInline(admin.TabularInline):
 
 class CategoryCaracteristicInline(admin.TabularInline):
     model = CategoryCaracteristic
-    fields = ['name', 'slug','type','choices','order']
+    fields = ['name', 'slug','type','choices','unit','order']
     prepopulated_fields = {"slug": ("name",)}
     extra = 0
 

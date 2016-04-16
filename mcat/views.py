@@ -119,9 +119,13 @@ class ProductView(TemplateView):
         context = super(ProductView, self).get_context_data(**kwargs)
         #~ get the data
         category=get_object_or_404(Category, slug=self.kwargs['category_slug'], status=0)
-        product=get_object_or_404(Product.objects.select_related(), slug=self.kwargs['slug'], status=0)
+        product=get_object_or_404(Product.objects.prefetch_related('images','caracteristics'), slug=self.kwargs['slug'], status=0)
         last_level=category.level+1
         categories = category.get_descendants().filter(level__lte=last_level).order_by('name')
+        #~ get product caracteristics
+        caracs = {}
+        for carac in product.caracteristics.all():
+            caracs[carac.type_name] = [carac.type, carac.value_name]
         if DISABLE_BREADCRUMBS:
             context['disable_breadcrumbs'] = True
         else:
@@ -132,6 +136,7 @@ class ProductView(TemplateView):
         context['categories'] = categories
         context['product'] = product
         context['num_categories'] = len(categories)
+        context['caracteristics'] = caracs
         return context
 
 

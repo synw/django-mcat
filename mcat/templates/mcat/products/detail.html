@@ -32,6 +32,23 @@
 				{% endif %}
 			</div>
 			{{ product.short_description|safe }}
+			{% if caracteristics %}
+				<ul class="list-group gus-md">
+					{% for name, val in caracteristics.items %}
+						<li class="list-group-item">{{ name }} <span class="pull-right">
+							{% if val.0 == 'boolean' %}
+								{% if val.1 == '1' %}
+									<i class="fa fa-check text-success gbf"></i>
+								{% elif val.1 == '0' %}
+									<i class="fa fa-close gbf"></i>
+								{% endif %}
+							{% else %}
+								{{ val.1|safe }}
+							{% endif %}
+						</span></li>
+					{% endfor %}
+				</ul>
+			{% endif %}	
 			<div class="hidden-xs hidden-sm text-center gus-l gds">
 				{% if product.price %}
 					<span class="label label-primary gbf-md">{{ product|format_price|safe }}</span>

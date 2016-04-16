@@ -99,7 +99,10 @@ class ProductImage(MetaBaseModel, MetaBaseStatusModel, OrderedModel):
 
 class ProductCaracteristic(MetaBaseModel, MetaBaseNameModel):
     product = models.ForeignKey(Product, related_name="caracteristics", verbose_name=_(u'Product'))
+    type = models.CharField(max_length=255, verbose_name=_(u'Type'))
+    type_name = models.CharField(max_length=255, verbose_name=_(u'Type name'))
     value = models.CharField(max_length=255, verbose_name=_(u'Value'))
+    value_name = models.CharField(max_length=255, verbose_name=_(u'Value name'))
 
     class Meta:
         verbose_name=_(u'Product caracteristic')
@@ -112,8 +115,9 @@ class ProductCaracteristic(MetaBaseModel, MetaBaseNameModel):
     def save(self, *args, **kwargs):
         if self.pk:
             product = self.product
-            carac_types = CategoryCaracteristic.objects.all()
-            ftype = carac_types.filter(slug=self.name)[0].type
+            carac_type = CategoryCaracteristic.objects.filter(slug=self.name)[0]
+            ftype = carac_type.type
+            self.value_name =  carac_type.get_value_name(self.value, ftype)
             #val = self.name+':'+unicode.strip(self.value)
             val = self.name+':'+unicode.strip(self.value)+';'+ftype
             field = False
@@ -153,6 +157,7 @@ class CategoryCaracteristic(MetaBaseModel, MetaBaseNameModel, MetaBaseUniqueSlug
     category = models.ForeignKey(Category, related_name="generic_caracteristics", verbose_name=_(u'Category'))
     type = models.CharField(max_length=255, choices=CARACTERISTIC_TYPES, default=CARACTERISTIC_TYPES[0][0])
     choices = models.TextField(blank=True, verbose_name=_(u'Choices'))
+    unit = models.CharField(max_length=255, blank=True)
     
     class Meta:
         verbose_name=_(u'Caracteristic for category')
@@ -171,7 +176,24 @@ class CategoryCaracteristic(MetaBaseModel, MetaBaseNameModel, MetaBaseUniqueSlug
             slug = unicode.strip(splited[1])
             choices[slug] = val+';'+ftype
         return choices
-
+    
+    def get_value_name(self, value, ftype):
+        if ftype == 'choices':
+            for choice in self.choices.split('\n'):
+                splited = choice.split('>')
+                slug = unicode.strip(splited[0])
+                val = unicode.strip(splited[1])
+                #print slug+' / '+str(value)+' > '+str(val)
+                if slug == unicode.strip(value):
+                    return val
+        if ftype == 'boolean':
+            return str(value)
+        if ftype == 'int':
+            if self.unit:
+                return value+'&nbsp;'+self.unit
+            else:
+                return value
+        return ''
 
             
         
