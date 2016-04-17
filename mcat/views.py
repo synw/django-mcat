@@ -65,7 +65,6 @@ class ProductsInCategoryView(ListView):
                 ftype = decode_ftype(raw_ftype)
                 if ftype in ['choices', 'boolean']:
                     val = name+':'+value.replace(raw_ftype, ftype)
-                    print val
                     products = products.filter(Q(carac1=val)|Q(carac2=val)|Q(carac3=val)|Q(carac4=val)|Q(carac5=val))
                 elif ftype == 'int':
                     if '_' in value:
@@ -75,10 +74,10 @@ class ProductsInCategoryView(ListView):
                         products = products.filter(Q(int_carac1_name=name, int_carac1__gte=start_range, int_carac1__lte=end_range)|Q(int_carac2_name=name, int_carac2__gte=start_range, int_carac2__lte=end_range)|Q(int_carac3_name=name, int_carac3__gte=start_range, int_carac3__lte=end_range))
                     else:
                         if value.startswith('-'):
-                            val = value[1:]
+                            val = value[1:].split(';')[0]
                             products = products.filter(Q(int_carac1_name=name, int_carac1__lt=val))
                         elif value.startswith('+'):
-                            val = value[1:]
+                            val = value[1:].split(';')[0]
                             products = products.filter(Q(int_carac1_name=name, int_carac1__gt=val))                     
             self.filters = filters
         self.num_products = len(products)
