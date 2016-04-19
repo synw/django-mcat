@@ -104,7 +104,7 @@ class ProductAdmin(admin.ModelAdmin):
             'fields': ('short_description', 'description')
         }),
         (None, {
-            'fields': ('status',)
+            'fields': ('status', 'available')
         }),
     )
     
@@ -142,6 +142,9 @@ class CategoryAdmin(MPTTModelAdmin):
             }),
             (None, {
                 'fields': (('parent','status',), ('image','filters_position'))
+            }),
+            (None, {
+                'fields': (('description',),)
             }),
             )
     

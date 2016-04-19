@@ -32,6 +32,7 @@ class Category(MPTTModel, MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel,
     parent = TreeForeignKey('self', null=True, blank=True, related_name=u'children', verbose_name=_(u'Parent category'))
     image = models.ImageField(null=True, upload_to='categories', verbose_name=_(u"Navigation image"))
     filters_position = models.CharField(max_length=60, choices=FILTERS_POSITION, default=FILTERS_POSITION[0][0])
+    description = RichTextField(blank=True, verbose_name=_(u'Description'))
     
     class Meta:
         verbose_name=_(u'Category')
@@ -54,6 +55,7 @@ class Product(MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel, MetaBaseUni
     price = models.FloatField(null=True, blank=True, verbose_name=_(u'Price'))
     discounted_price = models.FloatField(null=True, blank=True, verbose_name=_(u'Discounted price'))
     discounted_percentage = models.PositiveSmallIntegerField(null=True, blank=True, verbose_name=_(u'Discount percentage'))
+    available = models.BooleanField(default=True, verbose_name=_(u'Available'))
     carac1 = models.CharField(max_length=255, blank=True, verbose_name=_(u'Caracteristic 1'))
     carac2 = models.CharField(max_length=255, blank=True, verbose_name=_(u'Caracteristic 2'))
     carac3 = models.CharField(max_length=255, blank=True, verbose_name=_(u'Caracteristic 3'))
@@ -112,6 +114,9 @@ class ProductCaracteristic(MetaBaseModel, MetaBaseNameModel):
     def __unicode__(self):
         return unicode(self.name)
     
+    def format_value(self, ftype):
+        return self.name+':'+unicode.strip(self.value)+';'+ftype
+    
     def save(self, *args, **kwargs):
         if self.pk:
             product = self.product
@@ -119,7 +124,7 @@ class ProductCaracteristic(MetaBaseModel, MetaBaseNameModel):
             ftype = carac_type.type
             self.value_name =  carac_type.get_value_name(self.value, ftype)
             #val = self.name+':'+unicode.strip(self.value)
-            val = self.name+':'+unicode.strip(self.value)+';'+ftype
+            val = self.format_value(ftype)
             field = False
             if ftype in ['choices', 'boolean']:
                 if product.carac1 == '' or is_val_in_field(val, product.carac1):
