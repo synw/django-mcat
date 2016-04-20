@@ -6,6 +6,7 @@ from django.test.utils import override_settings
 from autofixture import AutoFixture
 from mqueue.models import MEvent
 from mcat.models import Brand, Category, Product, ProductImage, ProductCaracteristic, CategoryCaracteristic
+from collections import OrderedDict
 
 
 class McatBrandTest(TestCase):
@@ -261,10 +262,64 @@ class McatProductCaracteristicTest(TestCase):
         self.assertEqual(obj.type, carac.type)
         self.assertEqual(obj.value, u'1')
         return
+    
+    def test_format_value(self):
+        ftype = 'boolean'
+        product = self.create_product(slug='p6', ftype='boolean', carac1='carac1:1;boolean')
+        obj = self.create_obj(product=product, ftype='boolean', value=u'1')
+        obj.save()
+        self.assertEqual(product.carac1, obj.format_value(ftype))
+        return
 
 
-
-
+choices = 'choice1 > Choice 1\nchoice2 > Choice 2'
+class McatCategoryCaracteristicTest(TestCase):
+    
+    def create_obj(self, slug='cat1', category=None, name='carac_name', ftype='int', unit='cm'):
+        fixture = AutoFixture(Category, field_values={'slug':'cat1'})
+        fixture.create(1)
+        if category is None:
+            category  = Category.objects.get(slug=slug)
+        fixture = AutoFixture(CategoryCaracteristic, field_values={
+                                                                   'name':name,
+                                                                   'category':category,
+                                                                   'type':ftype,
+                                                                   'unit':unit,
+                                                                   'choices':choices
+                                                                   }
+                              )
+        fixture.create(1)
+        self.obj = CategoryCaracteristic.objects.get(pk=1)
+        self.obj.type = ftype
+        self.obj.save()
+        self.category = category
+        return self.obj
+    
+    def test_object_creation(self):
+        obj = self.create_obj()
+        self.assertTrue(isinstance(obj, CategoryCaracteristic))
+        self.assertEqual(obj.name, 'carac_name')
+        self.assertEqual(obj.category, self.category)
+        self.assertEqual(obj.type, 'int')
+        self.assertEqual(obj.unit, 'cm')
+        self.assertEqual(obj.__unicode__(), obj.name)
+        return
+    
+    def test_get_choices(self):
+        obj = self.create_obj(ftype='choices')
+        choices_dict = OrderedDict()
+        choices_dict['Choice 1'] = 'choice1;c'
+        choices_dict['Choice 2'] = 'choice2;c'
+        self.assertEqual(obj.get_choices(), choices_dict)
+        return
+    """
+    def test_get_value_name(self):
+        obj = self.create_obj(ftype='boolean')
+        self.assertEqual(obj.get_value_name(obj.value, 'boolean'), str(obj.value))
+        obj = self.create_obj(ftype='int', unit='meters')
+        self.assertEqual(obj.get_value_name(obj.value, 'int'), obj.value+'&nbsp;meters')
+        return
+    """
 
 
 
