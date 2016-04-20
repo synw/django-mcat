@@ -11,7 +11,7 @@ from mbase.models import default_statuses, OrderedModel, MetaBaseModel, MetaBase
 from mqueue.models import MonitoredModel
 from mcat.forms import FilterForm
 from mcat.conf import USE_PRICES, PRICES_AS_INTEGER, CARACTERISTIC_TYPES, FILTERS_POSITION
-from mcat.utils import is_val_in_field, encode_ftype
+from mcat.utils import is_name_in_field, encode_ftype
 
 
 STATUSES = getattr(settings, 'STATUSES', default_statuses)
@@ -122,24 +122,24 @@ class ProductCaracteristic(MetaBaseModel, MetaBaseNameModel):
             product = self.product
             carac_type = CategoryCaracteristic.objects.filter(slug=self.name)[0]
             ftype = carac_type.type
-            self.value_name =  carac_type.get_value_name(self.value, ftype)
-            #val = self.name+':'+unicode.strip(self.value)
+            #self.value_name =  carac_type.get_value_name(self.value, ftype)
             val = self.format_value(ftype)
             field = False
             if ftype in ['choices', 'boolean']:
-                if product.carac1 == '' or is_val_in_field(val, product.carac1):
+                #print self.name+' / '+str(product.carac1)+' > '+str(is_name_in_field(self.name, product.carac1))
+                if product.carac1 == '' or is_name_in_field(self.name, product.carac1):
                     product.carac1 = val
                     field = True
-                if not field and product.carac2 == '' or is_val_in_field(val, product.carac2):
+                if not field and product.carac2 == '' or is_name_in_field(self.name, product.carac2):
                     product.carac2 = val
                     field = True
-                if not field and product.carac3 == '' or is_val_in_field(val, product.carac3):
+                if not field and product.carac3 == '' or is_name_in_field(self.name, product.carac3):
                     product.carac3 = val
                     field = True
-                if not field and product.carac4 == '' or is_val_in_field(val, product.carac4):
+                if not field and product.carac4 == '' or is_name_in_field(self.name, product.carac4):
                     product.carac4 = val
                     field = True
-                if not field and product.carac5 == '' or is_val_in_field(val, product.carac5):
+                if not field and product.carac5 == '' or is_name_in_field(self.name, product.carac5):
                     product.carac5 = val
             field = False
             if ftype == 'int':

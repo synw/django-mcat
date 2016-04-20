@@ -17,16 +17,15 @@ def intspace(value):
     else:
         return intspace(new)
 
-
-def is_val_in_field(val, field_val):
-    val = val.split(':')[0]
-    name = field_val.split(':')[0]
-    if val == name:
+def is_name_in_field(val, field_val):
+    v = field_val.split(';')[0]
+    v = v.split(':')[0]
+    if val == v:
         return True
     return False
 
 def decode_ftype(raw_ftype):
-    ftype = 'd'
+    ftype = ''
     if raw_ftype == 'c':
         ftype = 'choices'
     if raw_ftype == 'i':
@@ -36,7 +35,7 @@ def decode_ftype(raw_ftype):
     return ftype
 
 def encode_ftype(raw_ftype):
-    ftype = 'd'
+    ftype = ''
     if raw_ftype == 'choices':
         ftype = 'c'
     if raw_ftype == 'int':

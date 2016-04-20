@@ -6,7 +6,6 @@ from django.test.utils import override_settings
 from autofixture import AutoFixture
 from mqueue.models import MEvent
 from mcat.models import Brand, Category, Product, ProductImage, ProductCaracteristic, CategoryCaracteristic
-from mcat.conf import CARACTERISTIC_TYPES
 
 
 class McatBrandTest(TestCase):
@@ -175,7 +174,6 @@ class McatProductCaracteristicTest(TestCase):
         self.assertEqual(product.int_carac1_name, obj.name)
         self.assertEqual(obj.value, str(product.int_carac1))
         self.assertEqual(obj.type, carac.type)
-        self.assertEqual(obj.value_name, carac.get_value_name(obj.value, obj.type))
         return
     
     
@@ -189,7 +187,6 @@ class McatProductCaracteristicTest(TestCase):
         self.assertEqual(product.int_carac2_name, obj.name)
         self.assertEqual(obj.value, str(product.int_carac2))
         self.assertEqual(obj.type, carac.type)
-        self.assertEqual(obj.value_name, carac.get_value_name(obj.value, obj.type))
         return
     
     def test_save_int_caracteristic3(self):
@@ -202,7 +199,6 @@ class McatProductCaracteristicTest(TestCase):
         self.assertEqual(product.int_carac3_name, obj.name)
         self.assertEqual(obj.value, str(product.int_carac3))
         self.assertEqual(obj.type, carac.type)
-        self.assertEqual(obj.value_name, carac.get_value_name(obj.value, obj.type))
         return
     
     def test_update_int_caracteristic(self):
@@ -215,7 +211,6 @@ class McatProductCaracteristicTest(TestCase):
         self.assertEqual(product.int_carac1_name, obj.name)
         self.assertEqual(obj.value, str(product.int_carac1))
         self.assertEqual(obj.type, carac.type)
-        self.assertEqual(obj.value_name, carac.get_value_name(obj.value, obj.type))
         return
     
 
@@ -256,7 +251,7 @@ class McatProductCaracteristicTest(TestCase):
         return
     
     def test_update_boolean_caracteristic1(self):
-        product = self.create_product(slug='p5', ftype='boolean', carac1='carac1:ok' )
+        product = self.create_product(slug='p5', ftype='boolean', carac1='carac1:0;boolean' )
         obj = self.create_obj(product=product, ftype='boolean', value=u'1')
         carac = CategoryCaracteristic.objects.get(category=product.category, name='Carac name')
         obj.save()

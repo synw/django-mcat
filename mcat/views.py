@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 
-from django.db.models import Q, Prefetch
+from django.db.models import Q
 from django.views.generic import TemplateView
 from django.views.generic import ListView
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, Http404, render_to_response
 from django.utils.html import strip_tags
-from mcat.models import Category, Product, ProductCaracteristic, CategoryCaracteristic
-from mcat.conf import DISABLE_BREADCRUMBS, FILTERS_POSITION, USE_FILTERS
+from django.conf import settings
+from carton.cart import Cart
+from mcat.models import Category, Product
+from mcat.conf import DISABLE_BREADCRUMBS, USE_FILTERS
 from mcat.utils import decode_ftype
 
 
@@ -60,7 +62,6 @@ class ProductsInCategoryView(ListView):
                     filters[param] = value
             #~ filter on products            
             for name, value in filters.items():
-                #ftype = self.caracteristics.filter(slug=name)[0].type
                 raw_ftype = value.split(';')[1]
                 ftype = decode_ftype(raw_ftype)
                 if ftype in ['choices', 'boolean']:
@@ -158,6 +159,24 @@ class SearchView(ListView):
 
         return context
 
-
     
+def add_to_cart(request, slug):
+    if request.is_ajax():
+        cart = Cart(request.session)
+        product = get_object_or_404(Product, slug=slug)
+        cart.add(product, price=product.price)
+        return render_to_response('mcat/cart/add.html',
+                                   {'product' : product},
+                                   content_type="application/xhtml+xml"
+                                   )
+    else:
+        if settings.DEBUG:
+            print "Not ajax request"
+        raise Http404
+
+
+
+
+
+
 

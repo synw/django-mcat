@@ -25,4 +25,3 @@ FILTERS_POSITION = (
                     ('side',_(u'Side')),
                     ('top',_(u'Top')),
                     )
-
