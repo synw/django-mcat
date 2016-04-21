@@ -126,6 +126,7 @@ class ProductView(TemplateView):
         caracs = {}
         for carac in product.caracteristics.all():
             caracs[carac.type_name] = [carac.type, carac.value_name]
+        print str(caracs)
         if DISABLE_BREADCRUMBS:
             context['disable_breadcrumbs'] = True
         else:

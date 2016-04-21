@@ -7,13 +7,13 @@
 {% endblock extra_head %}
 
 {% block content %}
-	<h1 class="text-center"><a name="title"></a>{{ category.name }}</h1>
 	<div class="pull-right label label-info hidden-xxs" style="position:relative;top:8px;right:10px;font-size:100%">{{ num_products }} {% trans 'products' %}</div>
 	{% include 'mcat/breadcrumbs.html' %}
 	<div class="label label-info visible-xxs" style="font-size:100%">{{ num_products }} {% trans 'products' %}</div>
 	<a name="main_content"></a>
 	<div class="row">
 		<div class="col-xs-12 col-sm-9 col-sm-push-3">
+			<h1 class="text-center"><a name="title"></a>{{ category.name }}</h1>
 			{% if products %}
 			    <div class="text-center">
 				    {% for product in products %}

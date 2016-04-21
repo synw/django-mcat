@@ -37,10 +37,10 @@
 				<ul class="list-group gus-md">
 					{% for name, val in caracteristics.items %}
 						<li class="list-group-item">{{ name }} <span class="pull-right">
-							{% if val.0 == 'boolean' %}
+							{% if val.0 == 'boolean' %}{{ val }}
 								{% if val.1 == '1' %}
 									<i class="fa fa-check text-success gbf"></i>
-								{% elif val.1 == '0' %}
+								{% else %}
 									<i class="fa fa-close gbf" style="color:grey"></i>
 								{% endif %}
 							{% else %}

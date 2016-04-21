@@ -122,6 +122,7 @@ class ProductCaracteristic(MetaBaseModel, MetaBaseNameModel):
             product = self.product
             carac_type = CategoryCaracteristic.objects.filter(slug=self.name)[0]
             ftype = carac_type.type
+            self.value_name = carac_type.get_value_name(self.value, ftype)
             val = self.format_value(ftype)
             field = False
             if ftype in ['choices', 'boolean']:
@@ -180,7 +181,7 @@ class CategoryCaracteristic(MetaBaseModel, MetaBaseNameModel, MetaBaseUniqueSlug
             name = unicode.strip(splited[1])
             choices[name] = slug+';'+ftype
         return choices
-    """
+    
     def get_value_name(self, value, ftype):
         if ftype == 'choices':
             for choice in self.choices.split('\n'):
@@ -197,7 +198,7 @@ class CategoryCaracteristic(MetaBaseModel, MetaBaseNameModel, MetaBaseUniqueSlug
             else:
                 return value
         return ''
-    """
+    
             
         
         
