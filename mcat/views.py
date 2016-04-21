@@ -8,7 +8,7 @@ from django.utils.html import strip_tags
 from django.conf import settings
 from carton.cart import Cart
 from mcat.models import Category, Product
-from mcat.conf import DISABLE_BREADCRUMBS, USE_FILTERS
+from mcat.conf import DISABLE_BREADCRUMBS, USE_FILTERS, USE_PRICES
 from mcat.utils import decode_ftype
 
 
@@ -103,6 +103,8 @@ class ProductsInCategoryView(ListView):
             context['active_filters'] = self.filters.keys()
             context['active_values'] = self.filters.values()
         context['filters_position'] = self.filters_position
+        if USE_PRICES is False:
+            context['no_prices'] = True  
         return context
     
     def get_template_names(self):
@@ -126,7 +128,6 @@ class ProductView(TemplateView):
         caracs = {}
         for carac in product.caracteristics.all():
             caracs[carac.type_name] = [carac.type, carac.value_name]
-        print str(caracs)
         if DISABLE_BREADCRUMBS:
             context['disable_breadcrumbs'] = True
         else:
@@ -137,6 +138,8 @@ class ProductView(TemplateView):
         context['product'] = product
         context['num_categories'] = len(categories)
         context['caracteristics'] = caracs
+        if USE_PRICES is False:
+            context['no_prices'] = True 
         return context
 
 

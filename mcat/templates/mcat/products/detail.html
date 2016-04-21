@@ -27,9 +27,11 @@
 				</div>
 			{% endif %}
 			<div class="hidden-md hidden-lg text-center gus gds-md">
-				{% if product.price %}
-					<div class="label label-primary gbf-md">{{ product|format_price|safe }}</div><br /><br /><br />
-					<div class="label label-success gbf-md"><i class="fa fa-shopping-cart"></i>&nbsp;{% trans 'Add to cart' %}</div>
+				{% if not no_prices %}
+					{% if product.price %}
+						<div class="label label-primary gbf-md">{{ product|format_price|safe }}</div><br /><br /><br />
+						<div class="label label-success gbf-md"><i class="fa fa-shopping-cart"></i>&nbsp;{% trans 'Add to cart' %}</div>
+					{% endif %}
 				{% endif %}
 			</div>
 			{{ product.short_description|safe }}
@@ -37,7 +39,7 @@
 				<ul class="list-group gus-md">
 					{% for name, val in caracteristics.items %}
 						<li class="list-group-item">{{ name }} <span class="pull-right">
-							{% if val.0 == 'boolean' %}{{ val }}
+							{% if val.0 == 'boolean' %}
 								{% if val.1 == '1' %}
 									<i class="fa fa-check text-success gbf"></i>
 								{% else %}
@@ -51,15 +53,17 @@
 				</ul>
 			{% endif %}	
 			<div class="hidden-xs hidden-sm text-center gus-l gds">
-				{% if product.price %}
-					<span class="label label-primary gbf-md grs gls">{{ product|format_price|safe }}</span>
-					{% comment %}
-					<span class="label label-success gbf-md">
-						<a href="javascript:fire_request('#cart','{% url 'product-add-to-cart' slug=product.slug %}');">
-							<i class="fa fa-shopping-cart"></i>&nbsp;{% trans 'Add to cart' %}
-						</a>
-					</span>
-					{% endcomment %}
+				{% if not no_prices %}
+					{% if product.price %}
+						<span class="label label-primary gbf-md grs gls">{{ product|format_price|safe }}</span>
+						{% comment %}
+						<span class="label label-success gbf-md">
+							<a href="javascript:fire_request('#cart','{% url 'product-add-to-cart' slug=product.slug %}');">
+								<i class="fa fa-shopping-cart"></i>&nbsp;{% trans 'Add to cart' %}
+							</a>
+						</span>
+						{% endcomment %}
+					{% endif %}
 				{% endif %}
 			</div>
 			{% if product.description %}

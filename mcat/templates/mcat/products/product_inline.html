@@ -15,10 +15,12 @@
 				<i class="fa fa-barcode"></i>&nbsp;{{ product.upc }}
 			</div>
 		{% endif %}
-		{% if product.price %}
-			<div class="text-center gus-md">
-				<div class="label label-primary gbf">{{ product|format_price|safe }}</div>
-			</div>
+		{% if not no_prices %}
+			{% if product.price %}
+				<div class="text-center gus-md">
+					<div class="label label-primary gbf">{{ product|format_price|safe }}</div>
+				</div>
+			{% endif %}
 		{% endif %}
 		{% comment %}
 		c1 = {{ product.carac1 }}<br />
