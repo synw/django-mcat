@@ -41,13 +41,13 @@ class McatUtilsTest(TestCase):
     
     def encode_ftype(self):
         raw_ftype = 'choices'
-        self.assertTrue(decode_ftype(raw_ftype), 'c')
+        self.assertTrue(encode_ftype(raw_ftype), 'c')
         raw_ftype = 'int'
-        self.assertTrue(decode_ftype(raw_ftype), 'i')
+        self.assertTrue(encode_ftype(raw_ftype), 'i')
         raw_ftype = 'boolean'
-        self.assertTrue(decode_ftype(raw_ftype), 'b')
+        self.assertTrue(encode_ftype(raw_ftype), 'b')
         raw_ftype = 'zzz'
-        self.assertFalse(decode_ftype(raw_ftype), 'b')
+        self.assertFalse(encode_ftype(raw_ftype), 'b')
         return
 
 

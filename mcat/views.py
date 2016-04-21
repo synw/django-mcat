@@ -131,7 +131,6 @@ class ProductView(TemplateView):
         else:
             context['ancestors'] = category.get_ancestors()
         #~ fill context
-        context['slideshow'] = object
         context['category'] = category
         context['categories'] = categories
         context['product'] = product
@@ -159,7 +158,7 @@ class SearchView(ListView):
 
         return context
 
-    
+"""   
 def add_to_cart(request, slug):
     if request.is_ajax():
         cart = Cart(request.session)
@@ -174,7 +173,7 @@ def add_to_cart(request, slug):
             print "Not ajax request"
         raise Http404
 
-
+"""
 
 
 

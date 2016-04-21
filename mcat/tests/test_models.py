@@ -251,6 +251,30 @@ class McatProductCaracteristicTest(TestCase):
         self.assertEqual(obj.value, u'1')
         return
     
+    def test_save_boolean_caracteristic4(self):
+        product = self.create_product(slug='p5', ftype='boolean', carac1='c', carac2='c', carac3='c')
+        obj = self.create_obj(product=product, ftype='boolean', value=u'1')
+        carac = CategoryCaracteristic.objects.get(category=product.category, name='Carac name')
+        obj.save()
+        product = Product.objects.get(slug='p5')
+        val = obj.format_value(carac.type)
+        self.assertEqual(product.carac4, val)
+        self.assertEqual(obj.type, carac.type)
+        self.assertEqual(obj.value, u'1')
+        return
+    
+    def test_save_boolean_caracteristic5(self):
+        product = self.create_product(slug='p6', ftype='boolean', carac1='c', carac2='c', carac3='c', carac4='c')
+        obj = self.create_obj(product=product, ftype='boolean', value=u'1')
+        carac = CategoryCaracteristic.objects.get(category=product.category, name='Carac name')
+        obj.save()
+        product = Product.objects.get(slug='p6')
+        val = obj.format_value(carac.type)
+        self.assertEqual(product.carac5, val)
+        self.assertEqual(obj.type, carac.type)
+        self.assertEqual(obj.value, u'1')
+        return
+    
     def test_update_boolean_caracteristic1(self):
         product = self.create_product(slug='p5', ftype='boolean', carac1='carac1:0;boolean' )
         obj = self.create_obj(product=product, ftype='boolean', value=u'1')

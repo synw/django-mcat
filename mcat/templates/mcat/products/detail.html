@@ -53,11 +53,13 @@
 			<div class="hidden-xs hidden-sm text-center gus-l gds">
 				{% if product.price %}
 					<span class="label label-primary gbf-md grs gls">{{ product|format_price|safe }}</span>
+					{% comment %}
 					<span class="label label-success gbf-md">
 						<a href="javascript:fire_request('#cart','{% url 'product-add-to-cart' slug=product.slug %}');">
 							<i class="fa fa-shopping-cart"></i>&nbsp;{% trans 'Add to cart' %}
 						</a>
 					</span>
+					{% endcomment %}
 				{% endif %}
 			</div>
 			{% if product.description %}

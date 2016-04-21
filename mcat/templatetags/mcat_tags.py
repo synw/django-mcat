@@ -71,7 +71,6 @@ def remove_from_get(parser, token):
 def pagenum_replace(request, value):
     dict_ = request.GET.copy()
     dict_['page'] = value
-    print str(dict_)
     return dict_.urlencode()
 
 
