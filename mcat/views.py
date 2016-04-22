@@ -6,7 +6,6 @@ from django.views.generic import ListView
 from django.shortcuts import get_object_or_404, Http404, render_to_response
 from django.utils.html import strip_tags
 from django.conf import settings
-from carton.cart import Cart
 from mcat.models import Category, Product
 from mcat.conf import DISABLE_BREADCRUMBS, USE_FILTERS, USE_PRICES
 from mcat.utils import decode_ftype

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django import forms
+from django.utils.translation import ugettext_lazy as _
 from django.contrib import admin
 from mptt.admin import MPTTModelAdmin
 from codemirror2.widgets import CodeMirrorEditor
@@ -37,7 +38,7 @@ class ProductForm(forms.ModelForm):
         
     class Meta:
         model = Product
-        fields = ['name', 'slug', 'description', 'short_description', 'brand', 'category', 'status', 'editor']
+        fields = ['name', 'slug', 'description', 'short_description', 'brand', 'category', 'status', 'editor', 'slideshow_type', 'slideshow_width', 'slideshow_height']
         description_widget = forms.Textarea(attrs={'style': 'width:100%;'})
         if CODE_MODE is True:
             description_widget = CodeMirrorEditor(options={
@@ -140,6 +141,10 @@ class ProductAdmin(admin.ModelAdmin):
         }),
         (None, {
             'fields': (('status', 'short_description'),'available')
+        }),
+        (_(u'Slideshow options'), {
+            'classes': ('collapse',),
+            'fields': (('slideshow_type',), ('slideshow_width', 'slideshow_height') )
         }),
     )
 

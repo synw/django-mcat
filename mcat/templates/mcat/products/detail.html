@@ -16,7 +16,11 @@
 	<div class="row">
 		<div class="col-xs-12 col-sm-6 gnp gds">
 			{% with product.images.all as slides %}
-				<a name="main_content"></a>{% include "mcat/jssor/images_slider.html" %}
+				{% with product.slideshow_width as slideshow_width %}
+					{% with product.slideshow_height as slideshow_height  %}
+						<a name="main_content"></a>{% include product.slideshow_type %}
+					{% endwith %}
+				{% endwith %}
 			{% endwith %}
 		</div>
 		<div class="col-xs-12 col-sm-6">

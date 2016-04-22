@@ -8,6 +8,7 @@ from django.contrib.auth import get_user_model
 from mptt.models import TreeForeignKey, MPTTModel
 from mbase.models import default_statuses, OrderedModel, MetaBaseModel, MetaBaseUniqueSlugModel, MetaBaseNameModel, MetaBaseStatusModel
 from mqueue.models import MonitoredModel
+from jssor.conf import SLIDESHOW_TYPES
 from mcat.forms import FilterForm
 from mcat.conf import USE_PRICES, PRICES_AS_INTEGER, CARACTERISTIC_TYPES, FILTERS_POSITION
 from mcat.utils import is_name_in_field, encode_ftype
@@ -32,6 +33,7 @@ class Category(MPTTModel, MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel,
     image = models.ImageField(null=True, upload_to='categories', verbose_name=_(u"Navigation image"))
     filters_position = models.CharField(max_length=60, choices=FILTERS_POSITION, default=FILTERS_POSITION[0][0])
     description = models.TextField(blank=True, verbose_name=_(u'Description'))
+    
     
     class Meta:
         verbose_name=_(u'Category')
@@ -66,8 +68,12 @@ class Product(MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel, MetaBaseUni
     int_carac1_name = models.CharField(max_length=255, blank=True, verbose_name=_(u'Integer caracteristic 1 name'))
     int_carac2_name = models.CharField(max_length=255, blank=True, verbose_name=_(u'Integer caracteristic 2 name'))
     int_carac3_name = models.CharField(max_length=255, blank=True, verbose_name=_(u'Integer caracteristic 3 name'))
+    #~ slideshow options
+    slideshow_width = models.PositiveSmallIntegerField(null=True, blank=True, default=800, verbose_name=_(u'Width'))
+    slideshow_height = models.PositiveSmallIntegerField(null=True, blank=True, default=600, verbose_name=_(u'Height'))
+    slideshow_type = models.CharField(max_length=150, choices=SLIDESHOW_TYPES, default=SLIDESHOW_TYPES[3][0], verbose_name=_(u'Slideshow type'))
     
-    
+
     class Meta:
         verbose_name=_(u'Product')
         verbose_name_plural =_( u'Products')
