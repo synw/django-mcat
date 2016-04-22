@@ -6,7 +6,7 @@ from mptt.admin import MPTTModelAdmin
 from codemirror2.widgets import CodeMirrorEditor
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from mcat.models import Product, ProductImage, ProductCaracteristic, CategoryCaracteristic, Category, Brand
-from mcat.conf import CODE_MODE
+from mcat.conf import CODE_MODE, USE_ADMIN_BOOTSTRAPED
 
 
 #~ ========================================= Forms ==================================
@@ -29,7 +29,11 @@ class ProductForm(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
         super(ProductForm, self).__init__(*args, **kwargs)
-        self.fields['description'].label = 'no label'
+        if USE_ADMIN_BOOTSTRAPED:
+            if CODE_MODE:
+                self.fields['description'].label = 'no label'
+            else:
+                self.fields['description'].label = ''
         
     class Meta:
         model = Product

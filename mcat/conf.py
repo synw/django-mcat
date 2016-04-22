@@ -27,3 +27,4 @@ FILTERS_POSITION = (
                     )
 
 CODE_MODE = getattr(settings, 'MCAT_CODE_MODE', False)
+USE_ADMIN_BOOTSTRAPED = getattr(settings, 'MCAT_USE_ADMIN_BOOTSTRAPED', False)
