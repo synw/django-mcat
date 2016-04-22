@@ -25,3 +25,5 @@ FILTERS_POSITION = (
                     ('side',_(u'Side')),
                     ('top',_(u'Top')),
                     )
+
+CODE_MODE = getattr(settings, 'MCAT_CODE_MODE', True)

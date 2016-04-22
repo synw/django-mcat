@@ -3,7 +3,9 @@
 from django import forms
 from django.contrib import admin
 from mptt.admin import MPTTModelAdmin
+from codemirror2.widgets import CodeMirrorEditor
 from mcat.models import Product, ProductImage, ProductCaracteristic, CategoryCaracteristic, Category, Brand
+from mcat.conf import CODE_MODE 
 
 
 #~ ========================================= Forms ==================================
@@ -26,7 +28,9 @@ class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = ['name', 'slug', 'description', 'short_description', 'brand', 'category', 'status', 'editor']
-        widgets = {'status': forms.RadioSelect}
+        widgets = {
+                   'status': forms.RadioSelect,
+                   }
         
         
 class ProductImageForm(forms.ModelForm):
@@ -107,7 +111,26 @@ class ProductAdmin(admin.ModelAdmin):
             'fields': ('status', 'available')
         }),
     )
-    
+    """
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        if CODE_MODE is True:
+            if db_field.attname == "description":
+                kwargs['widget'] = CodeMirrorEditor(options={
+                                                             'mode':'htmlmixed',
+                                                             'indentWithTabs':'true', 
+                                                             'indentUnit' : '4',
+                                                             'lineNumbers':'true',
+                                                             'autofocus':'true',
+                                                             #'highlightSelectionMatches': '{showToken: /\w/, annotateScrollbar: true}',
+                                                             'styleActiveLine': 'true',
+                                                             'autoCloseTags': 'true',
+                                                             'keyMap':'vim',
+                                                             'theme':'blackboard',
+                                                             }, 
+                                                             modes=['css', 'xml', 'javascript', 'htmlmixed'],
+                                                             )
+        return super(ProductAdmin, self).formfield_for_dbfield(db_field, **kwargs)
+    """
     def save_model(self, request, obj, form, change):
         if getattr(obj, 'editor', None) is None:
             obj.editor = request.user
@@ -178,7 +201,7 @@ class BrandAdmin(admin.ModelAdmin):
             obj.editor = request.user
         obj.save()
         
-
+"""
 @admin.register(ProductImage)
 class ProductImageAdmin(admin.ModelAdmin):
     form = ProductImageForm
@@ -199,5 +222,5 @@ class ProductImageAdmin(admin.ModelAdmin):
         if getattr(obj, 'editor', None) is None:
             obj.editor = request.user
         obj.save()
-        
+"""        
     

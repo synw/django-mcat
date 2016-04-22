@@ -24,7 +24,8 @@
 				<div class="jumbotron text-center gbf">{% trans "No products found" %}</div>
 			{% endif %}
 			<div class="gus-l gf text-center">{% include "mcat/products/paginate.html" %}</div>
-			{% include 'mbase/return_btn.html' %}
+			<div class="hidden-xs">{% include 'mbase/return_btn.html' %}</div>
+			<div class="visible-xs gds-md">{% include 'mbase/return_btn.html' %}</div>
 		</div>
 		<div class="col-xs-12 col-sm-3 col-sm-pull-9">
 			{% include 'mcat/render_filters.html' %}
