@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 
 import tempfile
+from collections import OrderedDict
+from django.conf import settings
 from django.test import TestCase
 from django.test.utils import override_settings
 from autofixture import AutoFixture
 from mqueue.models import MEvent
 from mcat.models import Brand, Category, Product, ProductImage, ProductCaracteristic, CategoryCaracteristic
-from collections import OrderedDict
+from mcat.conf import USE_PRICES
 
 
 class McatBrandTest(TestCase):
@@ -48,8 +50,7 @@ class McatCategoryTest(TestCase):
         self.assertTrue(obj.parent, parent_obj)
         return
 
-
-@override_settings(USE_PRICES = True, PRICES_AS_INTEGER = True)    
+   
 class McatProductTest(TestCase):
     
     def create_obj(self):
@@ -57,7 +58,8 @@ class McatProductTest(TestCase):
         fixture.create(1)
         self.obj = Product.objects.get(slug='obj-slug')
         return self.obj
-        
+    
+    @override_settings(MCAT_USE_PRICES = True, MCAT_PRICES_AS_INTEGER = True)     
     def test_obj_creation(self):
         obj = self.create_obj()
         self.assertTrue(isinstance(obj, Product))
@@ -82,7 +84,11 @@ class McatProductTest(TestCase):
         self.assertEqual(obj.int_carac2_name, self.obj.int_carac2_name)
         self.assertEqual(obj.int_carac3_name, self.obj.int_carac3_name)
         self.assertEqual(obj.__unicode__(), obj.name)
-        self.assertEqual(obj.get_price(), 100)
+        #print 'UP TEST : '+str(settings.MCAT_USE_PRICES)
+        if USE_PRICES is True:
+            self.assertEqual(obj.get_price(), 100)
+        else:
+            self.assertIsNone(obj.get_price())
         return
 
 
