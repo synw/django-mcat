@@ -5,7 +5,6 @@ from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth import get_user_model
-from ckeditor.fields import RichTextField
 from mptt.models import TreeForeignKey, MPTTModel
 from mbase.models import default_statuses, OrderedModel, MetaBaseModel, MetaBaseUniqueSlugModel, MetaBaseNameModel, MetaBaseStatusModel
 from mqueue.models import MonitoredModel
@@ -32,7 +31,7 @@ class Category(MPTTModel, MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel,
     parent = TreeForeignKey('self', null=True, blank=True, related_name=u'children', verbose_name=_(u'Parent category'))
     image = models.ImageField(null=True, upload_to='categories', verbose_name=_(u"Navigation image"))
     filters_position = models.CharField(max_length=60, choices=FILTERS_POSITION, default=FILTERS_POSITION[0][0])
-    description = RichTextField(blank=True, verbose_name=_(u'Description'))
+    description = models.TextField(blank=True, verbose_name=_(u'Description'))
     
     class Meta:
         verbose_name=_(u'Category')
@@ -44,8 +43,8 @@ class Category(MPTTModel, MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel,
 
 class Product(MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel, MetaBaseUniqueSlugModel, MonitoredModel):
     #~ base content
-    short_description = RichTextField(blank=True, verbose_name=_(u'Short description'))
-    description = RichTextField(blank=True, verbose_name=_(u'Long description'))
+    short_description = models.TextField(blank=True, verbose_name=_(u'Short description'))
+    description = models.TextField(blank=True, verbose_name=_(u'Long description'))
     upc = models.CharField(blank=True, unique=True, max_length=30, verbose_name=_(u'Universal Product Code'))
     navimage = models.ImageField(null=True, upload_to='products/nav/', verbose_name=_(u'Navigation image'))
     #~ external keys

@@ -4,8 +4,9 @@ from django import forms
 from django.contrib import admin
 from mptt.admin import MPTTModelAdmin
 from codemirror2.widgets import CodeMirrorEditor
+from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from mcat.models import Product, ProductImage, ProductCaracteristic, CategoryCaracteristic, Category, Brand
-from mcat.conf import CODE_MODE 
+from mcat.conf import CODE_MODE
 
 
 #~ ========================================= Forms ==================================
@@ -25,11 +26,37 @@ class CategoryForm(forms.ModelForm):
         
         
 class ProductForm(forms.ModelForm):
+    
+    def __init__(self, *args, **kwargs):
+        super(ProductForm, self).__init__(*args, **kwargs)
+        self.fields['description'].label = 'no label'
+        
     class Meta:
         model = Product
         fields = ['name', 'slug', 'description', 'short_description', 'brand', 'category', 'status', 'editor']
+        description_widget = forms.Textarea(attrs={'style': 'width:100%;'})
+        if CODE_MODE is True:
+            description_widget = CodeMirrorEditor(options={
+                                                             'mode':'htmlmixed',
+                                                             'indentWithTabs':'true', 
+                                                             'indentUnit' : '4',
+                                                             'lineNumbers':'true',
+                                                             'autofocus':'true',
+                                                             #'highlightSelectionMatches': '{showToken: /\w/, annotateScrollbar: true}',
+                                                             'styleActiveLine': 'true',
+                                                             'autoCloseTags': 'true',
+                                                             'keyMap':'vim',
+                                                             'theme':'blackboard',
+                                                             }, 
+                                                             modes=['css', 'xml', 'javascript', 'htmlmixed'],
+                                                    )
+        else:
+            description_widget = CKEditorUploadingWidget()
+        short_description_widget = forms.Textarea(attrs={'style': 'min-width:100% !important;', 'rows':6, 'cols':80})
         widgets = {
                    'status': forms.RadioSelect,
+                   'description': description_widget,
+                   'short_description' : short_description_widget,
                    }
         
         
@@ -97,40 +124,21 @@ class ProductAdmin(admin.ModelAdmin):
     readonly_fields = ['editor']
     save_on_top = True
     fieldsets = (
+        ("Description du produit", {
+            'classes': ('collapse',),
+            'fields': ('description',)
+        }),
         (None, {
             'fields': (('name', 'slug'), ('category', 'brand'), ('navimage', 'upc'))
         }),
         (None, {
             'fields': (('price', 'discounted_percentage'), 'discounted_price')
         }),
-        ("Description du produit", {
-            'classes': ('collapse',),
-            'fields': ('short_description', 'description')
-        }),
         (None, {
-            'fields': ('status', 'available')
+            'fields': (('status', 'short_description'),'available')
         }),
     )
-    """
-    def formfield_for_dbfield(self, db_field, **kwargs):
-        if CODE_MODE is True:
-            if db_field.attname == "description":
-                kwargs['widget'] = CodeMirrorEditor(options={
-                                                             'mode':'htmlmixed',
-                                                             'indentWithTabs':'true', 
-                                                             'indentUnit' : '4',
-                                                             'lineNumbers':'true',
-                                                             'autofocus':'true',
-                                                             #'highlightSelectionMatches': '{showToken: /\w/, annotateScrollbar: true}',
-                                                             'styleActiveLine': 'true',
-                                                             'autoCloseTags': 'true',
-                                                             'keyMap':'vim',
-                                                             'theme':'blackboard',
-                                                             }, 
-                                                             modes=['css', 'xml', 'javascript', 'htmlmixed'],
-                                                             )
-        return super(ProductAdmin, self).formfield_for_dbfield(db_field, **kwargs)
-    """
+
     def save_model(self, request, obj, form, change):
         if getattr(obj, 'editor', None) is None:
             obj.editor = request.user
