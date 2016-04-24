@@ -44,3 +44,17 @@ def encode_ftype(raw_ftype):
         ftype = 'b'
     return ftype
 
+def get_min_max_prices(products):
+    min_ = 0
+    max_ = 0
+    i = 0
+    for product in products:
+        if i==0 or product.price < min_:
+            min_ = product.price
+        if i==0 or product.price > max_:
+            max_ = product.price  
+        i+=1 
+    return (min_, max_)
+
+
+

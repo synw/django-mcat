@@ -8,7 +8,7 @@ from django.utils.html import strip_tags
 from django.conf import settings
 from mcat.models import Category, Product
 from mcat.conf import DISABLE_BREADCRUMBS, USE_FILTERS, USE_PRICES, USE_ORDER, USE_BRAND, USE_PRICE_FILTER, PRICES_AS_INTEGER, CURRENCY
-from mcat.utils import decode_ftype
+from mcat.utils import decode_ftype, get_min_max_prices
 
 
 class CategoryHomeView(TemplateView):
@@ -86,8 +86,7 @@ class ProductsInCategoryView(ListView):
             self.filters = filters
         self.num_products = len(products)
         if USE_PRICES and USE_FILTERS and USE_PRICE_FILTER:
-            self.min_price = products.aggregate(Min('price'))['price__min']
-            self.max_price = products.aggregate(Max('price'))['price__max']
+            self.min_price, self.max_price = get_min_max_prices(products)
             if PRICES_AS_INTEGER:
                 try:
                     self.min_price = int(round(self.min_price))
