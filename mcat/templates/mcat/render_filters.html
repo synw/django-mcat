@@ -68,16 +68,18 @@
 		      }).show();
 		  }
 	</script>
-	<p class="gus gds gbf gb text-center">
-		{% trans 'Price' %}
-	</p>
-	<p>
-		<div id="slider-container"></div>
-	</p>
-	<p>
-	    <label for="amount">{% trans 'Price range' %}:</label>
-	    <input type="text" id="amount" class="gb text-success" style="border:none" />
-	</p>
-	<div id="slider-range"></div>
+	<div id="price-range-slider">
+		<p class="gus gds gbf gb text-center">
+			{% trans 'Price' %}
+		</p>
+		<p>
+			<div id="slider-container"></div>
+		</p>
+		<p id="amount-container">
+		    <label for="amount">{% trans 'Price range' %}:</label>
+		    <input type="text" id="amount" class="gb text-success" style="border:none" />
+		</p>
+		<div id="slider-range"></div>
+	</div>
 {% endif %}
 

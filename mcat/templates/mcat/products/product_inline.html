@@ -2,10 +2,18 @@
 
 <div class="product_inline"{% if use_price_filter %} data-price="{{ product.get_price }}"{% endif %}>
 	<div class="product_title" class="text-center">
-		<a href="{% url 'product-list' slug=category.slug %}">{{ product.name|truncatechars:38 }}</a>
+		{% if search %}
+			<a href="{% url 'product-detail' slug=product.slug category_slug=product.category.slug %}">{{ product.name|truncatechars:38 }}</a>
+		{% else %}
+			<a href="{% url 'product-detail' slug=product.slug category_slug=category.slug %}">{{ product.name|truncatechars:38 }}</a>
+		{% endif %}
 	</div>
 	<div>
-		<a href="{% url 'product-detail' slug=product.slug category_slug=category.slug %}">
+		{% if search %}
+			<a href="{% url 'product-detail' slug=product.slug category_slug=product.category.slug %}">
+		{% else %}
+			<a href="{% url 'product-detail' slug=product.slug category_slug=category.slug %}">
+		{% endif %}
 		{% thumbnail product.navimage "200x200" as img %}
 			<img src="{{ img.url }}" alt="" style="margin:{{ img|margin:"200x200" }}" />
 		{% endthumbnail %}

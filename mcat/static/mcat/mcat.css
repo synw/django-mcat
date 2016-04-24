@@ -16,3 +16,6 @@ img {
 .product_title {
 	min-height:3.5em;
 }
+#price-range-slider {
+	max-width:250px;
+}

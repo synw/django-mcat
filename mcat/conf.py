@@ -35,3 +35,6 @@ USE_ADMIN_BOOTSTRAPED = getattr(settings, 'MCAT_USE_ADMIN_BOOTSTRAPED', False)
 USE_ORDER = 'mcat_order' in settings.INSTALLED_APPS
 
 USE_BRAND = getattr(settings, 'MCAT_USE_BRAND', False)
+
+PAGINATE_BY = getattr(settings, 'MCAT_PAGINATE_BY', 10)
+

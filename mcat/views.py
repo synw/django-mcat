@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404, Http404, render_to_response
 from django.utils.html import strip_tags
 from django.conf import settings
 from mcat.models import Category, Product
-from mcat.conf import DISABLE_BREADCRUMBS, USE_FILTERS, USE_PRICES, USE_ORDER, USE_BRAND, USE_PRICE_FILTER, PRICES_AS_INTEGER, CURRENCY
+from mcat.conf import PAGINATE_BY, DISABLE_BREADCRUMBS, USE_FILTERS, USE_PRICES, USE_ORDER, USE_BRAND, USE_PRICE_FILTER, PRICES_AS_INTEGER, CURRENCY
 from mcat.utils import decode_ftype, get_min_max_prices
 
 
@@ -45,7 +45,7 @@ class CategoryView(TemplateView):
 
 
 class ProductsInCategoryView(ListView):
-    paginate_by = 10
+    paginate_by = PAGINATE_BY
     context_object_name = 'products'
     
     def get_queryset(self):
@@ -171,22 +171,25 @@ class ProductView(TemplateView):
 
 class SearchView(ListView):
     template_name = 'mcat/search.html'
-    paginate_by = 10 
+    paginate_by = PAGINATE_BY
     context_object_name = 'products'
     
     def get_queryset(self):
         products = Product.objects.filter(status=0).prefetch_related('images', 'category')
         if "q" in self.request.GET.keys():
             q = strip_tags(self.request.GET['q'])
-            products = products.filter(Q(name__icontains=q)|Q(upc__icontains=q))
-        #self.category=get_object_or_404(Category, slug=self.kwargs['slug'], status=0)
-        #products=Product.objects.filter(category=self.category, status=0).prefetch_related('images')
+            q_words = q.split(' ')
+            for word in q_words: 
+                products = products.filter(Q(name__icontains=word)|Q(upc__icontains=word))
+        self.q = q
         return products
     
     def get_context_data(self, **kwargs):
         context = super(SearchView, self).get_context_data(**kwargs)
         if USE_ORDER:
             context['use_order'] = True
+        context['search'] = True
+        context['user_query'] = self.q
         return context
 
 
