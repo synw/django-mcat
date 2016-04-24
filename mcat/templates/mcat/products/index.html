@@ -15,7 +15,7 @@
 		<div class="col-xs-12 col-sm-9 col-sm-push-3">
 			<h1 class="text-center"><a name="title"></a>{{ category.name }}</h1>
 			{% if products %}
-			    <div class="text-center">
+			    <div id="products" class="text-center">
 				    {% for product in products %}
 				        {% include 'mcat/products/product_inline.html' %}
 				    {% endfor %}
@@ -28,12 +28,14 @@
 			<div class="visible-xs gds-md">{% include 'mbase/return_btn.html' %}</div>
 		</div>
 		<div class="col-xs-12 col-sm-3 col-sm-pull-9">
-			{% include 'mcat/render_filters.html' %}
-			{% if active_filters %}
-				<a class="btn btn-block btn-default gus" href="{{ request.path }}">
-					<i class="fa fa-close" style="color:grey"></i>
-					{% trans 'Disable filters' %}				
-				</a>
+			{% if use_filters = True %}
+				{% include 'mcat/render_filters.html' %}
+				{% if active_filters %}
+					<a class="btn btn-block btn-default gus" href="{{ request.path }}">
+						<i class="fa fa-close" style="color:grey"></i>
+						{% trans 'Disable filters' %}				
+					</a>
+				{% endif %}
 			{% endif %}
 		</div>
 	</div>

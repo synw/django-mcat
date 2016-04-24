@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 
-from django.db.models import Q
+from django.db.models import Q, Max, Min
 from django.views.generic import TemplateView
 from django.views.generic import ListView
 from django.shortcuts import get_object_or_404, Http404, render_to_response
 from django.utils.html import strip_tags
 from django.conf import settings
 from mcat.models import Category, Product
-from mcat.conf import DISABLE_BREADCRUMBS, USE_FILTERS, USE_PRICES
+from mcat.conf import DISABLE_BREADCRUMBS, USE_FILTERS, USE_PRICES, USE_ORDER, USE_BRAND, USE_PRICE_FILTER, PRICES_AS_INTEGER, CURRENCY
 from mcat.utils import decode_ftype
 
 
@@ -19,6 +19,8 @@ class CategoryHomeView(TemplateView):
         categories = Category.objects.filter(level__lte=0, status=0)
         context['categories'] = categories
         context['num_categories'] = len(categories)
+        if USE_ORDER:
+            context['use_order'] = True
         return context
     
     
@@ -37,6 +39,8 @@ class CategoryView(TemplateView):
         context['current_category'] = current_category
         context['categories'] = categories
         context['num_categories'] = len(categories)
+        if USE_ORDER:
+            context['use_order'] = True
         return context
 
 
@@ -81,6 +85,15 @@ class ProductsInCategoryView(ListView):
                             products = products.filter(Q(int_carac1_name=name, int_carac1__gt=val))                     
             self.filters = filters
         self.num_products = len(products)
+        if USE_PRICES and USE_FILTERS and USE_PRICE_FILTER:
+            self.min_price = products.aggregate(Min('price'))['price__min']
+            self.max_price = products.aggregate(Max('price'))['price__max']
+            if PRICES_AS_INTEGER:
+                try:
+                    self.min_price = int(round(self.min_price))
+                    self.max_price = int(round(self.max_price))
+                except:
+                    pass
         return products
 
     def get_context_data(self, **kwargs):
@@ -97,13 +110,21 @@ class ProductsInCategoryView(ListView):
         context['caracteristics'] = self.caracteristics
         context['num_categories'] = len(categories)
         context['num_products'] = self.num_products
-        context['use_filters'] = USE_FILTERS
         if self.filters is not None:
             context['active_filters'] = self.filters.keys()
             context['active_values'] = self.filters.values()
         context['filters_position'] = self.filters_position
+        context['use_filters'] = USE_FILTERS
         if USE_PRICES is False:
-            context['no_prices'] = True  
+            context['no_prices'] = True
+        else:
+            if USE_PRICE_FILTER is True and USE_FILTERS is True:
+                context['use_price_filter'] = True
+                context['min_price'] = self.min_price
+                context['max_price'] = self.max_price
+                context['currency'] = CURRENCY
+        if USE_ORDER:
+            context['use_order'] = True
         return context
     
     def get_template_names(self):
@@ -120,7 +141,10 @@ class ProductView(TemplateView):
         context = super(ProductView, self).get_context_data(**kwargs)
         #~ get the data
         category=get_object_or_404(Category, slug=self.kwargs['category_slug'], status=0)
-        product=get_object_or_404(Product.objects.prefetch_related('images','caracteristics'), slug=self.kwargs['slug'], status=0)
+        if USE_BRAND:
+            product=get_object_or_404(Product.objects.prefetch_related('images','caracteristics','brand'), slug=self.kwargs['slug'], status=0)
+        else:
+            product=get_object_or_404(Product.objects.prefetch_related('images','caracteristics'), slug=self.kwargs['slug'], status=0)
         last_level=category.level+1
         categories = category.get_descendants().filter(level__lte=last_level).order_by('name')
         #~ get product caracteristics
@@ -138,7 +162,11 @@ class ProductView(TemplateView):
         context['num_categories'] = len(categories)
         context['caracteristics'] = caracs
         if USE_PRICES is False:
-            context['no_prices'] = True 
+            context['no_prices'] = True
+        if USE_ORDER:
+            context['use_order'] = True
+        if USE_BRAND:
+            context['use_brand'] = True
         return context
 
 
@@ -158,25 +186,11 @@ class SearchView(ListView):
     
     def get_context_data(self, **kwargs):
         context = super(SearchView, self).get_context_data(**kwargs)
-
+        if USE_ORDER:
+            context['use_order'] = True
         return context
 
-"""   
-def add_to_cart(request, slug):
-    if request.is_ajax():
-        cart = Cart(request.session)
-        product = get_object_or_404(Product, slug=slug)
-        cart.add(product, price=product.price)
-        return render_to_response('mcat/cart/add.html',
-                                   {'product' : product},
-                                   content_type="application/xhtml+xml"
-                                   )
-    else:
-        if settings.DEBUG:
-            print "Not ajax request"
-        raise Http404
 
-"""
 
 
 

@@ -1,4 +1,4 @@
-{% load i18n mcat_tags %}
+{% load staticfiles i18n mcat_tags %}
 
 {% if caracteristics %}
 	<div class="gf">
@@ -39,3 +39,45 @@
 		{% endfor %}
 	</div>
 {% endif %}
+
+{% if use_price_filter %}
+	<script type="text/javascript" src="{% static 'mcat/jquery-ui/jquery-ui.min.js' %}"></script> 
+	<link rel="stylesheet" href="{% static 'mcat/jquery-ui/jquery-ui.min.css' %}" />
+	<script type="text/javascript">
+		$(function () {
+	      $('#slider-container').slider({
+	          range: true,
+	          min: {{ min_price }},
+	          max: {{ max_price }},
+	          values: [{{ min_price }}, {{ max_price }}],
+	          create: function() {
+	              $("#amount").val("{{ min_price }} {% trans 'to' %} {{ max_price }}  {{ currency }}");
+	          },
+	          slide: function (event, ui) {
+	              $("#amount").val(ui.values[0] + " {% trans 'to' %} " + ui.values[1] + " {{ currency }}");
+	              var mi = ui.values[0];
+	              var mx = ui.values[1];
+	              filterSystem(mi, mx);
+			  }
+			})
+		  });
+		  function filterSystem(minPrice, maxPrice) {
+		      $("#products .product_inline").hide().filter(function () {
+		          var price = parseInt($(this).data("price"), 10);
+		          return price >= minPrice && price <= maxPrice;
+		      }).show();
+		  }
+	</script>
+	<p class="gus gds gbf gb text-center">
+		{% trans 'Price' %}
+	</p>
+	<p>
+		<div id="slider-container"></div>
+	</p>
+	<p>
+	    <label for="amount">{% trans 'Price range' %}:</label>
+	    <input type="text" id="amount" class="gb text-success" style="border:none" />
+	</p>
+	<div id="slider-range"></div>
+{% endif %}
+

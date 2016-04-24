@@ -9,12 +9,14 @@ from mcat.utils import intspace
 register = template.Library()
 
 @register.filter(is_safe=True)
-def format_price(product):
+def format_price(product, currency=CURRENCY):
     price = product.get_price()
     if PRICES_AS_INTEGER:
         price = intspace(int(round(price)))
     price = str(price)
-    return price+'&nbsp;'+CURRENCY
+    if currency:
+        return price+'&nbsp;'+currency
+    return price
 
 
 class AddGetParameter(Node):

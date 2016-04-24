@@ -14,5 +14,5 @@ img {
 	max-width:220px;
 }
 .product_title {
-	max-height:1.8em;
+	min-height:3.5em;
 }

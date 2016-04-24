@@ -1,20 +1,20 @@
 {% load i18n thumbnail staticfiles mcat_tags %}
 
-<div class="product_inline">
-	<p id="product_title" class="text-center">
+<div class="product_inline"{% if use_price_filter %} data-price="{{ product.get_price }}"{% endif %}>
+	<div class="product_title" class="text-center">
 		<a href="{% url 'product-list' slug=category.slug %}">{{ product.name|truncatechars:38 }}</a>
-	</p>
+	</div>
 	<div>
 		<a href="{% url 'product-detail' slug=product.slug category_slug=category.slug %}">
 		{% thumbnail product.navimage "200x200" as img %}
 			<img src="{{ img.url }}" alt="" style="margin:{{ img|margin:"200x200" }}" />
 		{% endthumbnail %}
 		</a>
-		{% if product.upc %}
-			<div class="text-center">
+		<div class="text-center" style="min-height:1.4em">
+			{% if product.upc %}
 				<i class="fa fa-barcode"></i>&nbsp;{{ product.upc }}
-			</div>
-		{% endif %}
+			{% endif %}
+		</div>
 		{% if not no_prices %}
 			{% if product.price %}
 				<div class="text-center gus-md">
@@ -22,13 +22,5 @@
 				</div>
 			{% endif %}
 		{% endif %}
-		{% comment %}
-		c1 = {{ product.carac1 }}<br />
-		c2 = {{ product.carac2 }}<br />
-		c3 = {{ product.carac3 }}<br />
-		int 1 =  {{ product.int_carac1_name }} : {{ product.int_carac1 }}<br />
-		int 2 = {{ product.int_carac2_name }} : {{ product.int_carac2 }}<br />
-		int 3 = {{ product.int_carac3_name }} : {{ product.int_carac3 }}<br />
-		{% endcomment %}
 	</div>
 </div>
