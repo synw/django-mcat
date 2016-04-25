@@ -16,6 +16,13 @@ img {
 .product_title {
 	min-height:3.5em;
 }
-#price-range-slider {
-	max-width:250px;
+/* ####################### mcat-order #################### */
+#cart {
+	min-width:46em;
+	max-width:100%;
+	min-height:120px;
+	border-right:1px solid darkgrey;
+	border-left:1px solid darkgrey;
+	border-bottom:1px solid darkgrey;
+	padding:1em;
 }

@@ -54,10 +54,6 @@ class ProductsInCategoryView(ListView):
         self.caracteristics = self.category.generic_caracteristics.all()
         #~ get the requested filters
         self.filters = None
-        if USE_FILTERS is False:
-            self.filters_position = None
-        else:
-            self.filters_position = self.category.filters_position
         if self.request.GET and USE_FILTERS:
             filters = {}
             for param, value in self.request.GET.items():
@@ -112,7 +108,6 @@ class ProductsInCategoryView(ListView):
         if self.filters is not None:
             context['active_filters'] = self.filters.keys()
             context['active_values'] = self.filters.values()
-        context['filters_position'] = self.filters_position
         context['use_filters'] = USE_FILTERS
         if USE_PRICES is False:
             context['no_prices'] = True
@@ -127,10 +122,11 @@ class ProductsInCategoryView(ListView):
         return context
     
     def get_template_names(self):
-        if self.filters_position == 'side':
+        template_name = self.category.template_name
+        if template_name == 'default':
             return 'mcat/products/index.html'
         else:
-            return 'mcat/products/index_filters_top.html'
+            return 'mcat/products/alt/'+template_name+'.html'
 
 
 class ProductView(TemplateView):

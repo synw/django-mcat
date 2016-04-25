@@ -10,7 +10,7 @@ from mbase.models import default_statuses, OrderedModel, MetaBaseModel, MetaBase
 from mqueue.models import MonitoredModel
 from jssor.conf import SLIDESHOW_TYPES
 from mcat.forms import FilterForm
-from mcat.conf import USE_PRICES, PRICES_AS_INTEGER, CARACTERISTIC_TYPES, FILTERS_POSITION
+from mcat.conf import USE_PRICES, PRICES_AS_INTEGER, CARACTERISTIC_TYPES, TEMPLATE_NAMES
 from mcat.utils import is_name_in_field, encode_ftype
 
 
@@ -31,7 +31,7 @@ class Brand(MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel, MetaBaseUniqu
 class Category(MPTTModel, MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel, MetaBaseUniqueSlugModel, MonitoredModel):
     parent = TreeForeignKey('self', null=True, blank=True, related_name=u'children', verbose_name=_(u'Parent category'))
     image = models.ImageField(null=True, upload_to='categories', verbose_name=_(u"Navigation image"))
-    filters_position = models.CharField(max_length=60, choices=FILTERS_POSITION, default=FILTERS_POSITION[0][0])
+    template_name = models.CharField(max_length=60, choices=TEMPLATE_NAMES, default=TEMPLATE_NAMES[0][0], verbose_name=_(u'Template'))
     description = models.TextField(blank=True, verbose_name=_(u'Description'))
     
     

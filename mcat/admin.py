@@ -22,7 +22,7 @@ class BrandForm(forms.ModelForm):
 class CategoryForm(forms.ModelForm):
     class Meta:
         model = Category
-        fields = ['name', 'slug', 'parent', 'image', 'status', 'editor']
+        fields = ['name', 'slug', 'parent', 'image', 'template_name', 'status', 'editor']
         widgets = {'status': forms.RadioSelect}
         
         
@@ -174,14 +174,14 @@ class CategoryAdmin(MPTTModelAdmin):
     list_filter = ['status', 'created','edited']
     search_fields = ['name', 'editor__username']
     mptt_level_indent = 30
-    actions_on_top = True
+    save_on_top = True
     list_select_related = ['editor'] 
     fieldsets = (
             (None, {
                 'fields': (('name','slug',),)
             }),
             (None, {
-                'fields': (('parent','status',), ('image','filters_position'))
+                'fields': (('parent','status',), ('image','template_name'))
             }),
             (None, {
                 'fields': (('description',),)

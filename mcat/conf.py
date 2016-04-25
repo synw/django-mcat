@@ -19,9 +19,10 @@ CARACTERISTIC_TYPES = (
                         ('int', _(u'Numeric')),
                        )
 
-FILTERS_POSITION = (
-                    ('side',_(u'Side')),
-                    ('top',_(u'Top')),
+TEMPLATE_NAMES = (
+                    ('default',_(u'Filters on side')),
+                    ('filters_on_top',_(u'Filters on top')),
+                    ('fullwidht_filters_on_top',_(u'Fullwidth filters on top')),
                     )
 
 USE_FILTERS = getattr(settings, 'MCAT_USE_FILTERS', True)

@@ -29,7 +29,9 @@
 		</div>
 		<div class="col-xs-12 col-sm-3 col-sm-pull-9">
 			{% if use_filters = True %}
-				{% include 'mcat/render_filters.html' %}
+				{% with True as btn_block %}
+					{% include 'mcat/render_filters.html' %}
+				{% endwith %}
 				{% if active_filters %}
 					<a class="btn btn-block btn-default gus" href="{{ request.path }}">
 						<i class="fa fa-close" style="color:grey"></i>

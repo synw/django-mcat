@@ -9,14 +9,19 @@ from mcat.utils import intspace
 register = template.Library()
 
 @register.filter(is_safe=True)
-def format_price(product, currency=CURRENCY):
+def format_price(product):
     price = product.get_price()
     if PRICES_AS_INTEGER:
         price = intspace(int(round(price)))
     price = str(price)
-    if currency:
-        return price+'&nbsp;'+currency
-    return price
+    return price+'&nbsp;'+CURRENCY
+
+@register.simple_tag
+def format_from_price(price):
+    if PRICES_AS_INTEGER:
+        price = intspace(int(round(price)))
+    price = str(price)
+    return price+'&nbsp;'+CURRENCY
 
 
 class AddGetParameter(Node):
@@ -45,7 +50,7 @@ class RemoveGetParameter(Node):
         if 'page' in params.keys():
             del params['page']
         return '?%s' %  params.urlencode({' ' : ''})
-    
+
 
 @register.tag
 def append_to_get(parser, token):

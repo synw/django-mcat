@@ -3,34 +3,34 @@
 {% if caracteristics %}
 	<div class="gf">
 		{% for filter in caracteristics %}
-			<div class="btn-group{% if filters_position == 'side' %} btn-group-justified{% endif %}">
+			<div class="btn-group{% if btn_block == True %} btn-group-justified{% endif %}">
 				<div class="btn-group gds grs gls">
-					<a href="" class="btn btn-primary disabled">{{ filter.name }}</a> 
+					<a href="" class="btn btn-primary{% if btn_block == True %} btn-block{% endif %} disabled">{{ filter.name }}</a> 
 					{% if filter.type == 'choices' %}
 						{% for choice, slug in filter.get_choices.items %}
 							{% if filter.slug in active_filters and slug in active_values %}
-								<a href="{% remove_from_get name=filter.slug value=slug %}" class="btn btn-success">{{ choice }}</a>
+								<a href="{% remove_from_get name=filter.slug value=slug %}" class="btn btn-success{% if btn_block == True %} btn-block{% endif %}">{{ choice }}</a>
 							{% else %}
-								<a href="{% append_to_get name=filter.slug value=slug %}" class="btn btn-default">{{ choice }}</a>
+								<a href="{% append_to_get name=filter.slug value=slug %}" class="btn btn-default{% if btn_block == True %} btn-block{% endif %}">{{ choice }}</a>
 							{% endif %}
 						{% endfor %}
 					{% elif filter.type == 'boolean' %}
 						{% if filter.slug in active_filters and '1;b' in active_values %}
-							<a href="{% remove_from_get name=filter.slug value='1;b' %}" class="btn btn-success">{% trans 'Yes' %}</a>
+							<a href="{% remove_from_get name=filter.slug value='1;b' %}" class="btn btn-success{% if btn_block == True %} btn-block{% endif %}">{% trans 'Yes' %}</a>
 						{% else %}
-							<a href="{% append_to_get name=filter.slug value='1;b' %}" class="btn btn-default">{% trans 'Yes' %}</a>
+							<a href="{% append_to_get name=filter.slug value='1;b' %}" class="btn btn-default{% if btn_block == True %} btn-block{% endif %}">{% trans 'Yes' %}</a>
 						{% endif %}
 						{% if filter.slug in active_filters and '0;b' in active_values %}
-							<a href="{% remove_from_get name=filter.slug value='0;b' %}" class="btn btn-success">{% trans 'No' %}</a>
+							<a href="{% remove_from_get name=filter.slug value='0;b' %}" class="btn btn-success{% if btn_block == True %} btn-block{% endif %}">{% trans 'No' %}</a>
 						{% else %}	
-							<a href="{% append_to_get name=filter.slug value='0;b' %}" class="btn btn-default">{% trans 'No' %}</a>
+							<a href="{% append_to_get name=filter.slug value='0;b' %}" class="btn btn-default{% if btn_block == True %} btn-block{% endif %}">{% trans 'No' %}</a>
 						{% endif %}
 					{% elif filter.type == 'int' %}
 						{% for text, range in filter.get_choices.items %}
 							{% if filter.slug in active_filters and range in active_values %}
-								<a href="{% remove_from_get name=filter.slug value=range %}" class="btn btn-success">{{ text }}</a>
+								<a href="{% remove_from_get name=filter.slug value=range %}" class="btn btn-success{% if btn_block == True %} btn-block{% endif %}">{{ text }}</a>
 							{% else %}
-								<a href="{% append_to_get name=filter.slug value=range %}" class="btn btn-default">{{ text }}</a>
+								<a href="{% append_to_get name=filter.slug value=range %}" class="btn btn-default{% if btn_block == True %} btn-block{% endif %}">{{ text }}</a>
 							{% endif %}
 						{% endfor %}
 					{% endif %}
@@ -68,7 +68,7 @@
 		      }).show();
 		  }
 	</script>
-	<div id="price-range-slider">
+	<div id="price-range-slider"{% if btn_block != True %} style="max-width:250px"{% endif %}>
 		<p class="gus gds gbf gb text-center">
 			{% trans 'Price' %}
 		</p>

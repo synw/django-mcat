@@ -1,0 +1,30 @@
+{% extends "mbase/layouts/xs-12.html" %}
+{% load staticfiles i18n bootstrap %}
+
+{% block title %}{{ category.name }}{% endblock %}
+{% block extra_head %}
+	<link rel="stylesheet" media="screen, projection" href="{% static 'mcat/mcat.css' %}" />
+{% endblock extra_head %}
+
+{% block content %}
+	<h1 class="text-center"><a name="title"></a>{{ category.name }}</h1>
+	{% include 'mcat/breadcrumbs.html' %}
+	<a name="main_content"></a>	
+	{% if use_filters %}
+		{% with True as btn_block %}
+			{% include 'mcat/render_filters.html' %}
+		{% endwith %}
+	{% endif %}
+	{% if products %}
+	    <div id="products" class="text-center">
+		    {% for product in products %}
+		        {% include 'mcat/products/product_inline.html' %}
+		    {% endfor %}
+		</div>
+	    <div class="gus-l gf text-center">{% include "mcat/products/paginate.html" %}</div>
+	{% else %}
+		<div class="jumbotron text-center gbf">{% trans "There is no products in this category" %}</div>
+	{% endif %}
+	{% include 'mbase/return_btn.html' %}
+{% endblock %}
+
