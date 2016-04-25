@@ -10,7 +10,7 @@ from mbase.models import default_statuses, OrderedModel, MetaBaseModel, MetaBase
 from mqueue.models import MonitoredModel
 from jssor.conf import SLIDESHOW_TYPES
 from mcat.forms import FilterForm
-from mcat.conf import USE_PRICES, PRICES_AS_INTEGER, CARACTERISTIC_TYPES, TEMPLATE_NAMES
+from mcat.conf import USE_PRICES, PRICES_AS_INTEGER, CARACTERISTIC_TYPES, CATEGORY_TEMPLATE_NAMES, PRODUCT_TEMPLATE_NAMES
 from mcat.utils import is_name_in_field, encode_ftype
 
 
@@ -31,7 +31,7 @@ class Brand(MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel, MetaBaseUniqu
 class Category(MPTTModel, MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel, MetaBaseUniqueSlugModel, MonitoredModel):
     parent = TreeForeignKey('self', null=True, blank=True, related_name=u'children', verbose_name=_(u'Parent category'))
     image = models.ImageField(null=True, upload_to='categories', verbose_name=_(u"Navigation image"))
-    template_name = models.CharField(max_length=60, choices=TEMPLATE_NAMES, default=TEMPLATE_NAMES[0][0], verbose_name=_(u'Template'))
+    template_name = models.CharField(max_length=60, choices=CATEGORY_TEMPLATE_NAMES, default=CATEGORY_TEMPLATE_NAMES[0][0], verbose_name=_(u'Template'))
     description = models.TextField(blank=True, verbose_name=_(u'Description'))
     
     
@@ -72,7 +72,8 @@ class Product(MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel, MetaBaseUni
     slideshow_width = models.PositiveSmallIntegerField(null=True, blank=True, default=800, verbose_name=_(u'Width'))
     slideshow_height = models.PositiveSmallIntegerField(null=True, blank=True, default=600, verbose_name=_(u'Height'))
     slideshow_type = models.CharField(max_length=150, choices=SLIDESHOW_TYPES, default=SLIDESHOW_TYPES[3][0], verbose_name=_(u'Slideshow type'))
-    
+    #~ template choice option
+    template_name = models.CharField(max_length=60, choices=PRODUCT_TEMPLATE_NAMES, default=PRODUCT_TEMPLATE_NAMES[0][0], verbose_name=_(u'Template'))
 
     class Meta:
         verbose_name=_(u'Product')

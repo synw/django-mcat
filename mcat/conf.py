@@ -19,11 +19,20 @@ CARACTERISTIC_TYPES = (
                         ('int', _(u'Numeric')),
                        )
 
-TEMPLATE_NAMES = (
+CATEGORY_TEMPLATE_NAMES = (
                     ('default',_(u'Filters on side')),
                     ('filters_on_top',_(u'Filters on top')),
                     ('fullwidht_filters_on_top',_(u'Fullwidth filters on top')),
                     )
+
+PRODUCT_TEMPLATE_NAMES = (
+                    ('default',_(u'Default')),
+                    ('detail_fullwidth_slideshow',_(u'Fullwidth slideshow')),
+                    )
+
+
+CATEGORY_TEMPLATE_NAMES = getattr(settings, 'MCAT_CATEGORY_TEMPLATE_NAMES', CATEGORY_TEMPLATE_NAMES)
+PRODUCT_TEMPLATE_NAMES = getattr(settings, 'MCAT_PRODUCT_TEMPLATE_NAMES', PRODUCT_TEMPLATE_NAMES)
 
 USE_FILTERS = getattr(settings, 'MCAT_USE_FILTERS', True)
 

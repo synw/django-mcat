@@ -130,7 +130,6 @@ class ProductsInCategoryView(ListView):
 
 
 class ProductView(TemplateView):
-    template_name = 'mcat/products/detail.html'
    
     def get_context_data(self, **kwargs):
         context = super(ProductView, self).get_context_data(**kwargs)
@@ -142,6 +141,7 @@ class ProductView(TemplateView):
             product=get_object_or_404(Product.objects.prefetch_related('images','caracteristics'), slug=self.kwargs['slug'], status=0)
         last_level=category.level+1
         categories = category.get_descendants().filter(level__lte=last_level).order_by('name')
+        self.template_name = product.template_name
         #~ get product caracteristics
         caracs = {}
         for carac in product.caracteristics.all():
@@ -163,6 +163,13 @@ class ProductView(TemplateView):
         if USE_BRAND:
             context['use_brand'] = True
         return context
+    
+    def get_template_names(self):
+        template_name = self.template_name
+        if template_name == 'default':
+            return 'mcat/products/detail.html'
+        else:
+            return 'mcat/products/alt/'+template_name+'.html'
 
 
 class SearchView(ListView):

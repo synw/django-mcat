@@ -140,7 +140,7 @@ class ProductAdmin(admin.ModelAdmin):
             'fields': (('price', 'discounted_percentage'), 'discounted_price')
         }),
         (None, {
-            'fields': (('status', 'short_description'),'available')
+            'fields': (('status', 'short_description'), ('available', 'template_name'))
         }),
         (_(u'Slideshow options'), {
             'classes': ('collapse',),

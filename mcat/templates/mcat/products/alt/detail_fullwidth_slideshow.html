@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% load i18n thumbnail mptt_tags staticfiles mcat_tags %}
+
+{% block extra_head %}
+	<link rel="stylesheet" media="screen, projection" href="{% static 'mcat/mcat.css' %}" />
+{% endblock extra_head %}
+
+{% block title %}{{ category.name }}{% endblock %}
+
+{% block content %}
+	<div id="product" class="row">
+		<div class="col-xs-12">	
+			{% include 'mcat/breadcrumbs.html' %}
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12">
+			{% with product.images.all as slides %}
+				{% with product.slideshow_width as slideshow_width %}
+					{% with product.slideshow_height as slideshow_height  %}
+						<a name="main_content"></a>{% include product.slideshow_type %}
+					{% endwith %}
+				{% endwith %}
+			{% endwith %}
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12 col-sm-6 gnp gds">
+			<h1 class="text-center"><a name="title"></a>{{ product.name }}</h1>
+			{% if use_brand == True or product.upc %}
+					<div class="text-center gf">
+						{% if use_brand = True %}
+							{% if product.brand %}
+								<div class="gi gbf gmv grs gls">
+									{% thumbnail product.brand.image "80x80" format="PNG" as img %}
+										<img src="{{ img.url }}" alt="" style="margin:{{ img|margin:"80x80" }}" />
+									{% endthumbnail %}
+								</div>
+							{% endif %}
+						{% endif %}
+						{% if product.upc %}
+							<div class="text-center gbf gi gmv grs gls">
+								<i class="fa fa-barcode"></i>&nbsp;{{ product.upc }}
+							</div>
+						{% endif %}
+					</div>	
+				{% endif %}
+				<div class="hidden-md hidden-lg text-center gus gds-md">
+					{% if not no_prices %}
+						{% if product.price %}
+							<div class="label label-primary gbf-md">{{ product|format_price|safe }}</div><br /><br /><br />
+							<div class="label label-success gbf-md"><i class="fa fa-cart-plus"></i>&nbsp;{% trans 'Add to cart' %}</div>
+						{% endif %}
+					{% endif %}
+				</div>
+				<div>{{ product.short_description|safe }}</div>	
+				{% if product.available != True %}
+					<div class="text-center alert alert-warning">
+						<i class="fa fa-exclamation"></i>&nbsp;{% trans 'Product temporary unavailable' %}
+					</div>
+				{% endif %}
+				<div class="hidden-xs hidden-sm text-center gus-l gds">
+					{% if not no_prices %}
+						{% if product.price %}
+							<div class="label label-primary gbf-md grs gls gi">{{ product|format_price|safe }}</div>
+							{% if use_order %}
+							<div class="gbf-md gi">
+								<a class="btn btn-success{% if product.available != True %} btn-disabled{% endif %}" href="{% if product.available = True %}javascript:$('.dropdown-toggle').dropdown('toggle');fire_request('cart','{% url 'product-add-to-cart' slug=product.slug %}');{% else %}#{% endif %}"{% if product.available != True %} disabled{% endif %}>
+									<i class="fa fa-shopping-cart"></i>&nbsp;{% trans 'Add to cart' %}
+								</a>
+							</div>
+							{% endif %}
+						{% endif %}
+					{% endif %}
+				</div>
+		</div>
+		<div class="col-xs-12 col-sm-6">
+			{% if caracteristics %}
+				<ul class="list-group gus-md">
+					{% for name, val in caracteristics.items %}
+						<li class="list-group-item">{{ name }} <span class="pull-right">
+							{% if val.0 == 'boolean' %}
+								{% if val.1 == '1' %}
+									<i class="fa fa-check text-success gbf"></i>
+								{% else %}
+									<i class="fa fa-close gbf" style="color:grey"></i>
+								{% endif %}
+							{% else %}
+								{{ val.1|safe }}
+							{% endif %}
+						</span></li>
+					{% endfor %}
+				</ul>
+			{% endif %}
+		</div>
+	</div>
+	{% if product.description %}
+		<div class="row">
+			<div class="col-xs-12">
+				{{ product.description|safe }}
+			</div>
+		</div>
+	{% endif %}
+	{% include 'mbase/return_btn.html' %}
+{% endblock content %}
