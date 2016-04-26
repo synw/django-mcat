@@ -23,6 +23,7 @@ class Brand(MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel, MetaBaseUniqu
     class Meta:
         verbose_name=_(u'Brand')
         verbose_name_plural = _(u'Brands')
+        ordering = ['name']
 
     def __unicode__(self):
         return unicode(self.name)
@@ -84,10 +85,10 @@ class Product(MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel, MetaBaseUni
         return unicode(self.name)
 
     def get_price(self):
-        price = None
-        if USE_PRICES:
+        price = ''
+        if USE_PRICES is True and self.price:
             price = self.price
-            if PRICES_AS_INTEGER:
+            if PRICES_AS_INTEGER is True:
                 price = int(round(price))
         return price
     

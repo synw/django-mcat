@@ -51,7 +51,7 @@
 	          max: {{ max_price }},
 	          values: [{{ min_price }}, {{ max_price }}],
 	          create: function() {
-	              $("#amount").val("{{ min_price }} {% trans 'to' %} {{ max_price }}  {{ currency }}");
+	              $("#amount").val("{% format_from_price min_price currency=False %} {% trans 'to' %} {% format_from_price max_price %}");
 	          },
 	          slide: function (event, ui) {
 	              $("#amount").val(ui.values[0] + " {% trans 'to' %} " + ui.values[1] + " {{ currency }}");

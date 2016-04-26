@@ -11,17 +11,26 @@ register = template.Library()
 @register.filter(is_safe=True)
 def format_price(product):
     price = product.get_price()
-    if PRICES_AS_INTEGER:
+    if PRICES_AS_INTEGER is True:
         price = intspace(int(round(price)))
     price = str(price)
     return price+'&nbsp;'+CURRENCY
 
 @register.simple_tag
-def format_from_price(price):
-    if PRICES_AS_INTEGER:
-        price = intspace(int(round(price)))
+def format_from_price(price, currency=True):
+    if price is None:
+        price = ''
+        currency = False
+    if PRICES_AS_INTEGER is True and price is not None:
+        try:
+            price = intspace(int(round(price)))
+        except:
+            pass
     price = str(price)
-    return price+'&nbsp;'+CURRENCY
+    if currency is True:
+        return price+' '+CURRENCY
+    else:
+        return price
 
 
 class AddGetParameter(Node):
