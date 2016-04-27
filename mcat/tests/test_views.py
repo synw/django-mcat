@@ -135,7 +135,7 @@ class CategoryViewsTest(TestCase):
         response = self.client.get(reverse('product-list', kwargs={'slug':category.slug}), {'boolean_carac':'1;b', 'choice_carac':'choice1;c'})
         self.assertEqual(response.context['active_filters'], ['boolean_carac', 'choice_carac'])
         self.assertEqual(response.context['active_values'], ['1;b', 'choice1;c'])
-        self.assertEqual(response.context['filters_position'], 'side')
+        self.assertEqual(category.template_name, 'default')
         self.assertTemplateUsed(response, 'mcat/products/index.html')
         self.assertFalse('disable_breadcrumbs' in response.context)
         #productcarac3 = self.create_product_caracteristic(product, ftype='int', name='int_carac', value=u'-10')

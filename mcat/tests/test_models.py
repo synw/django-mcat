@@ -183,52 +183,56 @@ class McatProductCaracteristicTest(TestCase):
         return
     
     def test_save_int_caracteristic1(self):
-        product = self.create_product(slug='p1', ftype='int')
-        product_carac = self.create_obj(product=product, ftype='int', value=u'15')
-        carac = CategoryCaracteristic.objects.get(category=product.category)
-        product_carac.save()
-        product = Product.objects.get(slug='p1')
-        self.assertEqual(product.int_carac1, int(product_carac.value))
-        self.assertEqual(product.int_carac1_name, product_carac.name)
-        self.assertEqual(product_carac.value, str(product.int_carac1))
-        self.assertEqual(product_carac.type, carac.type)
+        category = self.create_category()
+        cat_carac = self.create_category_caracteristic(slug="cslug1", category=category, ftype='int', choices='', name='carac_name')
+        product = self.create_product(category_carac=False, category=category, slug='p44', ftype='int')
+        obj = self.create_obj(product=product, ftype='int', name='cslug1', value=u'1')
+        obj.save()
+        self.assertEqual(product.int_carac1, int(obj.value))
+        self.assertEqual(product.int_carac1_name, obj.name)
+        self.assertEqual(obj.value, str(product.int_carac1))
+        self.assertEqual(obj.type, cat_carac.type)
         return
     
     
     def test_save_int_caracteristic2(self):
-        product = self.create_product(slug='p2', ftype='int', int_carac1=10, int_carac1_name='carac')
-        obj = self.create_obj(product=product, ftype='int', value=u'15')
-        carac = CategoryCaracteristic.objects.get(category=product.category)
+        category = self.create_category()
+        cat_carac = self.create_category_caracteristic(slug="cslug1", category=category, ftype='int', choices='', name='carac_name')
+        product = self.create_product(category_carac=False, category=category, slug='p44', ftype='int')
+        obj = self.create_obj(product=product, ftype='int', name='cslug1', value=u'1')
+        product.int_carac1 = 1
         obj.save()
-        product = Product.objects.get(slug='p2')
         self.assertEqual(product.int_carac2, int(obj.value))
         self.assertEqual(product.int_carac2_name, obj.name)
         self.assertEqual(obj.value, str(product.int_carac2))
-        self.assertEqual(obj.type, carac.type)
+        self.assertEqual(obj.type, cat_carac.type)
         return
     
     def test_save_int_caracteristic3(self):
-        product = self.create_product(slug='p3', ftype='int', int_carac1=10, int_carac1_name='carac', int_carac2=10, int_carac2_name='carac2')
-        obj = self.create_obj(product=product, ftype='int', value=u'15')
-        carac = CategoryCaracteristic.objects.get(category=product.category)
+        category = self.create_category()
+        cat_carac = self.create_category_caracteristic(slug="cslug1", category=category, ftype='int', choices='', name='carac_name')
+        product = self.create_product(category_carac=False, category=category, slug='p44', ftype='int')
+        obj = self.create_obj(product=product, ftype='int', name='cslug1', value=u'1')
+        product.int_carac1 = 1
+        product.int_carac2 = 1
         obj.save()
-        product = Product.objects.get(slug='p3')
         self.assertEqual(product.int_carac3, int(obj.value))
         self.assertEqual(product.int_carac3_name, obj.name)
         self.assertEqual(obj.value, str(product.int_carac3))
-        self.assertEqual(obj.type, carac.type)
+        self.assertEqual(obj.type, cat_carac.type)
         return
     
     def test_update_int_caracteristic(self):
-        product = self.create_product(slug='p', ftype='int', int_carac1=10, int_carac1_name='carac1')
-        obj = self.create_obj(product=product, ftype='int', value=u'15')
-        carac = CategoryCaracteristic.objects.get(category=product.category)
+        category = self.create_category()
+        cat_carac = self.create_category_caracteristic(slug="cslug1", category=category, ftype='int', choices='', name='carac_name')
+        product = self.create_product(category_carac=False, category=category, slug='p44', ftype='int')
+        obj = self.create_obj(product=product, ftype='int', name='cslug1', value=u'1')
+        obj.value = u'2'
         obj.save()
-        product = Product.objects.get(slug='p')
         self.assertEqual(product.int_carac1, int(obj.value))
         self.assertEqual(product.int_carac1_name, obj.name)
         self.assertEqual(obj.value, str(product.int_carac1))
-        self.assertEqual(obj.type, carac.type)
+        self.assertEqual(obj.type, cat_carac.type)
         return
     
 
