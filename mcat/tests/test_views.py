@@ -138,7 +138,7 @@ class CategoryViewsTest(TestCase):
         self.assertEqual(response.context['filters_position'], 'side')
         self.assertTemplateUsed(response, 'mcat/products/index.html')
         self.assertFalse('disable_breadcrumbs' in response.context)
-        productcarac3 = self.create_product_caracteristic(product, ftype='int', name='int_carac', value=u'-10')
+        #productcarac3 = self.create_product_caracteristic(product, ftype='int', name='int_carac', value=u'-10')
         product = Product.objects.get(slug=product.slug)
         product.int_carac1 = 8
         product.int_carac1_name = 'int_filter'

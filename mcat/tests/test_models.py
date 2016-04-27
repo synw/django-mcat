@@ -32,9 +32,9 @@ class McatBrandTest(TestCase):
 
 class McatCategoryTest(TestCase):
     
-    def create_obj(self, slug="obj_slug", name="Obj name", status=0, filters_position='side', parent=None):
+    def create_obj(self, slug="obj_slug", name="Obj name", status=0, template_name='default', parent=None):
         self.image = tempfile.NamedTemporaryFile(suffix=".jpg").name
-        obj = Category.objects.create(slug=slug, name=name, image=self.image, status=status, parent=parent, filters_position=filters_position)
+        obj = Category.objects.create(slug=slug, name=name, image=self.image, status=status, parent=parent, template_name=template_name)
         return obj
         
     def test_obj_creation(self):
@@ -44,7 +44,7 @@ class McatCategoryTest(TestCase):
         self.assertEqual(obj.slug, 'obj_slug')
         self.assertEqual(obj.name, "Obj name")
         self.assertEqual(obj.status, 0)
-        self.assertEqual(obj.filters_position, 'side')
+        self.assertEqual(obj.template_name, 'default')
         self.assertEqual(obj.image, self.image)
         self.assertEqual(obj.__unicode__(), obj.name)
         self.assertTrue(obj.parent, parent_obj)
@@ -113,35 +113,46 @@ class McatProductImageTest(TestCase):
 choices = '-10 > Less than 10\n10_20 > 10 to 20\n+20 > More than 20 '
 class McatProductCaracteristicTest(TestCase):
     
-    def create_obj(self, product, ftype, value):
-        fixture = AutoFixture(ProductCaracteristic, field_values={'name':'carac1', 'product':product})
-        fixture.create(1)
-        self.obj = ProductCaracteristic.objects.get(pk=1)
-        self.obj.value = value
-        self.obj.type = ftype
-        self.obj.save()
-        return self.obj
+    def create_category(self, slug="obj_slug", name="Obj name", status=0, template_name='default', parent=None):
+        self.image = tempfile.NamedTemporaryFile(suffix=".jpg").name
+        obj = Category.objects.create(slug=slug, name=name, image=self.image, status=status, parent=parent, template_name=template_name)
+        return obj
     
-    def create_category_caracteristic(self, ftype, choices=choices, name='Carac name'):
-        fixture = AutoFixture(Category, field_values={'slug':'cat-slug'})
-        fixture.create(1)
-        self.category = Category.objects.get(slug='cat-slug')
+    def create_obj(self, product, ftype, value, name='product_carac_name', type_name='', value_name=''):
+        fixture = AutoFixture(ProductCaracteristic, field_values={
+                                                                  'name':name, 
+                                                                  'product':product, 
+                                                                  'value':value, 
+                                                                  'type':ftype,
+                                                                  'type_name':type_name,
+                                                                  'value_name':value_name,
+                                                                  }
+                              )
+        obj = fixture.create(1)[0]
+        return obj
+    
+    def create_category_caracteristic(self, slug="slug", category=None, ftype='boolean', choices=choices, name='carac_name'):
+        if category is None:
+            self.create_category()
         fixture = AutoFixture(CategoryCaracteristic, field_values={
+                                                                   'slug':slug,
+                                                                   'category':category,
+                                                                   'choices':choices,
                                                                    'name':name,
-                                                                   'category':self.category, 
                                                                    'type':ftype,
-                                                                   'slug':'carac1',
-                                                                   'unit':'cm',
-                                                                   'choices':choices
                                                                    }
                               )
-        fixture.create(1)
+        return fixture.create(1)[0]
     
-    def create_product(self, ftype, slug='obj-slug', carac1='', carac2='', carac3='', carac4='', carac5='', int_carac1=None, int_carac2=None, int_carac3=None, int_carac1_name='', int_carac2_name='', int_carac3_name=''):
-        self.create_category_caracteristic(ftype=ftype)
+    def create_product(self, ftype, category=None, category_carac=True, name='product', slug='obj-slug', carac1='', carac2='', carac3='', carac4='', carac5='', int_carac1=None, int_carac2=None, int_carac3=None, int_carac1_name='', int_carac2_name='', int_carac3_name=''):
+        if category is None:
+            category = self.create_category()
+        if category_carac is True:
+            category_carac = self.create_category_caracteristic(ftype=ftype, category=category)
         fixture = AutoFixture(Product, field_values={'slug':slug,
+                                                     'name':name,
                                                      'status':0, 
-                                                     'category':self.category,
+                                                     'category':category,
                                                      'carac1':carac1,
                                                      'carac2':carac2,
                                                      'carac3':carac3,
@@ -155,39 +166,39 @@ class McatProductCaracteristicTest(TestCase):
                                                      'int_carac3_name':int_carac3_name,
                                                      }
                               )
-        fixture.create(1)
-        self.product = Product.objects.get(slug=slug)
-        return self.product
+        product = fixture.create(1)[0]
+        return product
 
     def test_obj_creation(self):
-        obj = self.create_obj(product=self.create_product('p'), ftype='int', value=u'15')
+        product = self.create_product('p')
+        obj = self.create_obj(product=product, ftype='int', value=u'15', name='cname')
         self.assertTrue(isinstance(obj, ProductCaracteristic))
-        self.assertEqual(obj.name, self.obj.name)
-        self.assertEqual(obj.product, self.obj.product)
-        self.assertEqual(obj.type, self.obj.type)
-        self.assertEqual(obj.type_name, self.obj.type_name)
-        self.assertEqual(obj.value, self.obj.value)
-        self.assertEqual(obj.value_name, self.obj.value_name)
-        self.assertEqual(obj.__unicode__(), obj.name)
+        self.assertEqual(obj.name, 'cname')
+        self.assertEqual(obj.product, product)
+        self.assertEqual(obj.type, 'int')
+        self.assertEqual(obj.value, '15')
+        #self.assertEqual(obj.type_name, self.obj.type_name)
+        #self.assertEqual(obj.value_name, self.obj.value_name)
+        self.assertEqual(obj.__unicode__(), 'cname')
         return
     
     def test_save_int_caracteristic1(self):
         product = self.create_product(slug='p1', ftype='int')
-        obj = self.create_obj(product=product, ftype='int', value=u'15')
-        carac = CategoryCaracteristic.objects.get(category=product.category, name='Carac name')
-        obj.save()
+        product_carac = self.create_obj(product=product, ftype='int', value=u'15')
+        carac = CategoryCaracteristic.objects.get(category=product.category)
+        product_carac.save()
         product = Product.objects.get(slug='p1')
-        self.assertEqual(product.int_carac1, int(obj.value))
-        self.assertEqual(product.int_carac1_name, obj.name)
-        self.assertEqual(obj.value, str(product.int_carac1))
-        self.assertEqual(obj.type, carac.type)
+        self.assertEqual(product.int_carac1, int(product_carac.value))
+        self.assertEqual(product.int_carac1_name, product_carac.name)
+        self.assertEqual(product_carac.value, str(product.int_carac1))
+        self.assertEqual(product_carac.type, carac.type)
         return
     
     
     def test_save_int_caracteristic2(self):
         product = self.create_product(slug='p2', ftype='int', int_carac1=10, int_carac1_name='carac')
         obj = self.create_obj(product=product, ftype='int', value=u'15')
-        carac = CategoryCaracteristic.objects.get(category=product.category, name='Carac name')
+        carac = CategoryCaracteristic.objects.get(category=product.category)
         obj.save()
         product = Product.objects.get(slug='p2')
         self.assertEqual(product.int_carac2, int(obj.value))
@@ -199,7 +210,7 @@ class McatProductCaracteristicTest(TestCase):
     def test_save_int_caracteristic3(self):
         product = self.create_product(slug='p3', ftype='int', int_carac1=10, int_carac1_name='carac', int_carac2=10, int_carac2_name='carac2')
         obj = self.create_obj(product=product, ftype='int', value=u'15')
-        carac = CategoryCaracteristic.objects.get(category=product.category, name='Carac name')
+        carac = CategoryCaracteristic.objects.get(category=product.category)
         obj.save()
         product = Product.objects.get(slug='p3')
         self.assertEqual(product.int_carac3, int(obj.value))
@@ -211,7 +222,7 @@ class McatProductCaracteristicTest(TestCase):
     def test_update_int_caracteristic(self):
         product = self.create_product(slug='p', ftype='int', int_carac1=10, int_carac1_name='carac1')
         obj = self.create_obj(product=product, ftype='int', value=u'15')
-        carac = CategoryCaracteristic.objects.get(category=product.category, name='Carac name')
+        carac = CategoryCaracteristic.objects.get(category=product.category)
         obj.save()
         product = Product.objects.get(slug='p')
         self.assertEqual(product.int_carac1, int(obj.value))
@@ -222,82 +233,96 @@ class McatProductCaracteristicTest(TestCase):
     
 
     def test_save_boolean_caracteristic1(self):
-        product = self.create_product(slug='p4', ftype='boolean')
-        obj = self.create_obj(product=product, ftype='boolean', value=u'1')
-        carac = CategoryCaracteristic.objects.get(category=product.category, name='Carac name')
+        category = self.create_category()
+        cat_carac = self.create_category_caracteristic(slug="cslug1", category=category, ftype='boolean', choices='', name='carac_name')
+        product = self.create_product(category_carac=False, category=category, slug='p44', ftype='boolean')
+        obj = self.create_obj(product=product, ftype='boolean', name='cslug1', value=u'1')
+        #~ save it to fill product carac values on Product model
         obj.save()
-        product = Product.objects.get(slug='p4')
-        val = obj.format_value(carac.type)
+        val = obj.format_value(obj.type)
         self.assertEqual(product.carac1, val)
-        self.assertEqual(obj.type, carac.type)
+        self.assertEqual(obj.type, cat_carac.type)
         self.assertEqual(obj.value, u'1')
         return
     
     def test_save_boolean_caracteristic2(self):
-        product = self.create_product(slug='p4', ftype='boolean', carac1='c')
-        obj = self.create_obj(product=product, ftype='boolean', value=u'1')
-        carac = CategoryCaracteristic.objects.get(category=product.category, name='Carac name')
+        category = self.create_category()
+        cat_carac = self.create_category_caracteristic(slug="cslug1", category=category, ftype='boolean', choices='', name='carac_name')
+        product = self.create_product(category_carac=False, category=category, slug='p4', ftype='boolean')
+        product.carac1='x'
+        obj = self.create_obj(product=product, ftype='boolean', name='cslug1', value=u'1')
+        #carac = CategoryCaracteristic.objects.get(category=product.category)
         obj.save()
         product = Product.objects.get(slug='p4')
-        val = obj.format_value(carac.type)
+        val = obj.format_value(obj.type)
         self.assertEqual(product.carac2, val)
-        self.assertEqual(obj.type, carac.type)
+        self.assertEqual(obj.type, 'boolean')
         self.assertEqual(obj.value, u'1')
         return
   
     def test_save_boolean_caracteristic3(self):
-        product = self.create_product(slug='p4', ftype='boolean', carac1='c', carac2='c')
-        obj = self.create_obj(product=product, ftype='boolean', value=u'1')
-        carac = CategoryCaracteristic.objects.get(category=product.category, name='Carac name')
+        category = self.create_category()
+        cat_carac = self.create_category_caracteristic(slug="cslug1", category=category, ftype='boolean', choices='', name='carac_name')
+        product = self.create_product(category_carac=False, category=category, slug='p4', ftype='boolean')
+        product.carac1='x'
+        product.carac2='x'
+        obj = self.create_obj(product=product, ftype='boolean', name='cslug1', value=u'1')
         obj.save()
         product = Product.objects.get(slug='p4')
-        val = obj.format_value(carac.type)
+        val = obj.format_value(obj.type)
         self.assertEqual(product.carac3, val)
-        self.assertEqual(obj.type, carac.type)
+        self.assertEqual(obj.type, cat_carac.type)
         self.assertEqual(obj.value, u'1')
         return
     
     def test_save_boolean_caracteristic4(self):
-        product = self.create_product(slug='p5', ftype='boolean', carac1='c', carac2='c', carac3='c')
-        obj = self.create_obj(product=product, ftype='boolean', value=u'1')
-        carac = CategoryCaracteristic.objects.get(category=product.category, name='Carac name')
+        category = self.create_category()
+        cat_carac = self.create_category_caracteristic(slug="cslug1", category=category, ftype='boolean', choices='', name='carac_name')
+        product = self.create_product(category_carac=False, category=category, slug='p4', ftype='boolean')
+        product.carac1='x'
+        product.carac2='x'
+        product.carac3='x'
+        obj = self.create_obj(product=product, ftype='boolean', name='cslug1', value=u'1')
         obj.save()
-        product = Product.objects.get(slug='p5')
-        val = obj.format_value(carac.type)
+        val = obj.format_value(obj.type)
         self.assertEqual(product.carac4, val)
-        self.assertEqual(obj.type, carac.type)
+        self.assertEqual(obj.type, cat_carac.type)
         self.assertEqual(obj.value, u'1')
         return
     
     def test_save_boolean_caracteristic5(self):
-        product = self.create_product(slug='p6', ftype='boolean', carac1='c', carac2='c', carac3='c', carac4='c')
-        obj = self.create_obj(product=product, ftype='boolean', value=u'1')
-        carac = CategoryCaracteristic.objects.get(category=product.category, name='Carac name')
+        category = self.create_category()
+        cat_carac = self.create_category_caracteristic(slug="cslug1", category=category, ftype='boolean', choices='', name='carac_name')
+        product = self.create_product(category_carac=False, category=category, slug='p4', ftype='boolean')
+        product.carac1='x'
+        product.carac2='x'
+        product.carac3='x'
+        product.carac4='x'
+        obj = self.create_obj(product=product, ftype='boolean', name='cslug1', value=u'1')
         obj.save()
-        product = Product.objects.get(slug='p6')
-        val = obj.format_value(carac.type)
+        val = obj.format_value(obj.type)
         self.assertEqual(product.carac5, val)
-        self.assertEqual(obj.type, carac.type)
+        self.assertEqual(obj.type, cat_carac.type)
         self.assertEqual(obj.value, u'1')
         return
     
     def test_update_boolean_caracteristic1(self):
-        product = self.create_product(slug='p5', ftype='boolean', carac1='carac1:0;boolean' )
-        obj = self.create_obj(product=product, ftype='boolean', value=u'1')
-        carac = CategoryCaracteristic.objects.get(category=product.category, name='Carac name')
+        category = self.create_category()
+        cat_carac = self.create_category_caracteristic(slug="cslug1", category=category, ftype='boolean', choices='', name='carac_name')
+        product = self.create_product(category_carac=False, category=category, slug='p4', ftype='boolean')
+        obj = self.create_obj(product=product, ftype='boolean', name='cslug1', value=u'1')
+        obj.carac1 = 1
         obj.save()
-        product = Product.objects.get(slug='p5')
-        val = obj.format_value(carac.type)
+        val = obj.format_value(obj.type)
         self.assertEqual(product.carac1, val)
-        self.assertEqual(obj.type, carac.type)
+        self.assertEqual(obj.type, cat_carac.type)
         self.assertEqual(obj.value, u'1')
         return
     
     def test_format_value(self):
         ftype = 'boolean'
-        product = self.create_product(slug='p6', ftype='boolean', carac1='carac1:1;boolean')
+        product = self.create_product(slug='p6', ftype='boolean', name='product_carac_name', carac1='product_carac_name:1;boolean')
         obj = self.create_obj(product=product, ftype='boolean', value=u'1')
-        obj.save()
         self.assertEqual(product.carac1, obj.format_value(ftype))
         return
 
