@@ -40,7 +40,7 @@ USE_PRICE_FILTER = getattr(settings, 'MCAT_USE_PRICE_FILTER', True)
 
 CODE_MODE = getattr(settings, 'MCAT_CODE_MODE', False)
 
-USE_ADMIN_BOOTSTRAPED = getattr(settings, 'MCAT_USE_ADMIN_BOOTSTRAPED', False)
+USE_ADMIN_BOOTSTRAPED = 'django_admin_bootstrapped' in settings.INSTALLED_APPS
 
 USE_ORDER = 'mcat_order' in settings.INSTALLED_APPS
 

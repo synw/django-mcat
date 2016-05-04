@@ -31,10 +31,7 @@ class ProductForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ProductForm, self).__init__(*args, **kwargs)
         if USE_ADMIN_BOOTSTRAPED:
-            if CODE_MODE:
-                self.fields['description'].label = 'no label'
-            else:
-                self.fields['description'].label = ''
+            self.fields['description'].label = 'no label'
         
     class Meta:
         model = Product
@@ -82,7 +79,7 @@ class ProductCaracteristicInlineForm(forms.ModelForm):
         names = ()
         for carac in caracteristics:
             names += ((carac.slug, carac.name),)
-        self.fields['name'] = forms.ChoiceField(choices=names)
+        #self.fields['name'] = forms.ChoiceField(choices=names) 
         return
 
     class Meta:
@@ -101,6 +98,7 @@ class ProductImageInline(admin.TabularInline):
 class ProductCaracteristicInline(admin.TabularInline):
     model = ProductCaracteristic
     form = ProductCaracteristicInlineForm
+    readonly_fields = ('name',)
     extra = 0
     
     def get_formset(self, request, obj=None, **kwargs):
@@ -147,6 +145,20 @@ class ProductAdmin(admin.ModelAdmin):
             'fields': (('slideshow_type',), ('slideshow_width', 'slideshow_height') )
         }),
     )
+    
+    def form_valid(self, form):
+        """This is what's called when the form is valid."""
+        instance = form.save(commit=False)
+        print "Form valid ----------------"
+        return super(ProductAdmin, self).form_valid(form)
+    
+    def form_invalid(self, form):
+        """This is what's called when the form is valid."""
+        instance = form.save(commit=False)
+        print "Form invalid ----------------"
+        return super(ProductAdmin, self).form_invalid(form)
+        
+    
 
     def save_model(self, request, obj, form, change):
         if getattr(obj, 'editor', None) is None:
