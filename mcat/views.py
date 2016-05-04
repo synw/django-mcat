@@ -106,8 +106,7 @@ class ProductsInCategoryView(ListView):
         context['num_categories'] = len(categories)
         context['num_products'] = self.num_products
         if self.filters is not None:
-            context['active_filters'] = self.filters.keys()
-            context['active_values'] = self.filters.values()
+            context['active_filters'] = self.filters
         context['use_filters'] = USE_FILTERS
         if USE_PRICES is False:
             context['no_prices'] = True

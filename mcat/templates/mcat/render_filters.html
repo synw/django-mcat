@@ -8,26 +8,30 @@
 					<a href="" class="btn btn-primary{% if btn_block == True %} btn-block{% endif %} disabled">{{ filter.name }}</a> 
 					{% if filter.type == 'choices' %}
 						{% for choice, slug in filter.get_choices.items %}
-							{% if filter.slug in active_filters and slug in active_values %}
+							{% is_active_filter active_filters filter.slug slug as is_active %}
+							{% if is_active %}
 								<a href="{% remove_from_get name=filter.slug value=slug %}" class="btn btn-success{% if btn_block == True %} btn-block{% endif %}">{{ choice }}</a>
 							{% else %}
 								<a href="{% append_to_get name=filter.slug value=slug %}" class="btn btn-default{% if btn_block == True %} btn-block{% endif %}">{{ choice }}</a>
 							{% endif %}
 						{% endfor %}
 					{% elif filter.type == 'boolean' %}
-						{% if filter.slug in active_filters and '1;b' in active_values %}
-							<a href="{% remove_from_get name=filter.slug value='1;b' %}" class="btn btn-success{% if btn_block == True %} btn-block{% endif %}">{% trans 'Yes' %}</a>
+						{% is_active_filter active_filters filter.slug '1;b' as is_active %}
+						{% if is_active %}
+								<a href="{% remove_from_get name=filter.slug value='1;b' %}" class="btn btn-success{% if btn_block == True %} btn-block{% endif %}">{% trans 'Yes' %}</a>
 						{% else %}
 							<a href="{% append_to_get name=filter.slug value='1;b' %}" class="btn btn-default{% if btn_block == True %} btn-block{% endif %}">{% trans 'Yes' %}</a>
 						{% endif %}
-						{% if filter.slug in active_filters and '0;b' in active_values %}
+						{% is_active_filter active_filters filter.slug '0;b' as is_active %}
+						{% if is_active %}
 							<a href="{% remove_from_get name=filter.slug value='0;b' %}" class="btn btn-success{% if btn_block == True %} btn-block{% endif %}">{% trans 'No' %}</a>
 						{% else %}	
 							<a href="{% append_to_get name=filter.slug value='0;b' %}" class="btn btn-default{% if btn_block == True %} btn-block{% endif %}">{% trans 'No' %}</a>
 						{% endif %}
 					{% elif filter.type == 'int' %}
 						{% for text, range in filter.get_choices.items %}
-							{% if filter.slug in active_filters and range in active_values %}
+							{% is_active_filter active_filters filter.slug range as is_active %}
+							{% if is_active %}
 								<a href="{% remove_from_get name=filter.slug value=range %}" class="btn btn-success{% if btn_block == True %} btn-block{% endif %}">{{ text }}</a>
 							{% else %}
 								<a href="{% append_to_get name=filter.slug value=range %}" class="btn btn-default{% if btn_block == True %} btn-block{% endif %}">{{ text }}</a>
@@ -40,7 +44,7 @@
 	</div>
 {% endif %}
 
-{% if use_price_filter %}
+{% if use_price_filter and num_products > 1 %}
 	<script type="text/javascript" src="{% static 'mcat/jquery-ui/jquery-ui.min.js' %}"></script> 
 	<link rel="stylesheet" href="{% static 'mcat/jquery-ui/jquery-ui.min.css' %}" />
 	<script type="text/javascript">

@@ -89,6 +89,11 @@ def pagenum_replace(request, value):
     dict_['page'] = value
     return dict_.urlencode()
 
-
-
+@register.assignment_tag
+def is_active_filter(filterset, name, value):
+    if bool(filterset) is True:
+        for key, val in filterset.items():
+            if val == value and key==name:
+                return True
+    return False
 
