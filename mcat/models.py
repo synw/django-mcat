@@ -82,14 +82,6 @@ class Product(MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel, MetaBaseUni
 
     def __unicode__(self):
         return unicode(self.name)
-
-    def get_price(self):
-        price = ''
-        if USE_PRICES is True and self.price:
-            price = self.price
-            if PRICES_AS_INTEGER is True:
-                price = int(round(price))
-        return price
     
     def print_caracteristics(self):
         """

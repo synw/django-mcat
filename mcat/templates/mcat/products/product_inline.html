@@ -26,7 +26,16 @@
 		{% if not no_prices %}
 			{% if product.price %}
 				<div class="text-center gus-md">
-					<div class="label label-primary gbf">{{ product|format_price|safe }}</div>
+					<div class="label label-primary gbf">
+						{{ product.price|format_price|safe }}
+					</div>
+					{% if product.discounted_price %}
+						<div class="price gus gbf gb">
+							<del class="text-primary">
+								<span>{{ product.discounted_price|format_price|safe }}</span>
+							</del>
+						</div>
+					{% endif %}
 				</div>
 			{% endif %}
 		{% endif %}

@@ -44,7 +44,7 @@ USE_ADMIN_BOOTSTRAPED = 'django_admin_bootstrapped' in settings.INSTALLED_APPS
 
 USE_ORDER = 'mcat_order' in settings.INSTALLED_APPS
 
-USE_BRAND = getattr(settings, 'MCAT_USE_BRAND', False)
+USE_BRAND = getattr(settings, 'MCAT_USE_BRAND', True)
 
 PAGINATE_BY = getattr(settings, 'MCAT_PAGINATE_BY', 10)
 

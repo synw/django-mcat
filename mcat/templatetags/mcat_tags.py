@@ -4,16 +4,14 @@
 from django import template
 from django.template import Library, Node, resolve_variable
 from mcat.conf import CURRENCY, PRICES_AS_INTEGER
-from mcat.utils import intspace
+from mcat.utils import intspace, get_price
 
 register = template.Library()
 
 @register.filter(is_safe=True)
-def format_price(product):
-    price = product.get_price()
-    if PRICES_AS_INTEGER is True:
-        price = intspace(int(round(price)))
-    price = str(price)
+def format_price(price):
+    price = get_price(price)
+    price = str(intspace(price))
     return price+'&nbsp;'+CURRENCY
 
 @register.simple_tag

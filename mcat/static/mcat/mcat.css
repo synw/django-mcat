@@ -16,6 +16,11 @@ img {
 .product_title {
 	min-height:3.5em;
 }
+.price del {
+	text-decoration: line-through;
+	/*noinspection CssOverwrittenProperties*/
+	text-decoration: black line-through; /* Ignored in CSS1/CSS2 UAs 
+}
 /* ####################### mcat-order #################### */
 #cart {
 	min-width:46em;

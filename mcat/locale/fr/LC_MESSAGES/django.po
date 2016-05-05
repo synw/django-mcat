@@ -1,0 +1,311 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-05-04 17:04+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: admin.py:143
+msgid "Slideshow options"
+msgstr ""
+
+#: apps.py:6
+msgid "Catalog"
+msgstr ""
+
+#: conf.py:17 models.py:146
+msgid "Choices"
+msgstr ""
+
+#: conf.py:18
+msgid "Yes / No"
+msgstr ""
+
+#: conf.py:19
+msgid "Numeric"
+msgstr ""
+
+#: conf.py:23
+msgid "Filters on side"
+msgstr ""
+
+#: conf.py:24
+msgid "Filters on top"
+msgstr ""
+
+#: conf.py:25
+msgid "Fullwidth filters on top"
+msgstr ""
+
+#: conf.py:29
+msgid "Default"
+msgstr ""
+
+#: conf.py:30
+msgid "Fullwidth slideshow"
+msgstr ""
+
+#: models.py:20 models.py:131
+msgid "Image"
+msgstr ""
+
+#: models.py:23 models.py:53
+msgid "Brand"
+msgstr ""
+
+#: models.py:24
+msgid "Brands"
+msgstr ""
+
+#: models.py:32
+msgid "Parent category"
+msgstr ""
+
+#: models.py:33 models.py:51
+msgid "Navigation image"
+msgstr ""
+
+#: models.py:34 models.py:76
+msgid "Template"
+msgstr ""
+
+#: models.py:35
+msgid "Description"
+msgstr ""
+
+#: models.py:39 models.py:54 models.py:144
+msgid "Category"
+msgstr ""
+
+#: models.py:40 templates/mcat/categories/index.html:8
+#: templates/mcat/categories/index.html:13
+msgid "Categories"
+msgstr ""
+
+#: models.py:48
+msgid "Short description"
+msgstr ""
+
+#: models.py:49
+msgid "Long description"
+msgstr ""
+
+#: models.py:50
+msgid "Universal Product Code"
+msgstr ""
+
+#: models.py:56 templates/mcat/render_filters.html:77
+msgid "Price"
+msgstr ""
+
+#: models.py:57
+msgid "Discounted price"
+msgstr ""
+
+#: models.py:58
+msgid "Discount percentage"
+msgstr ""
+
+#: models.py:59
+msgid "Available"
+msgstr ""
+
+#: models.py:60
+msgid "Caracteristic 1"
+msgstr ""
+
+#: models.py:61
+msgid "Caracteristic 2"
+msgstr ""
+
+#: models.py:62
+msgid "Caracteristic 3"
+msgstr ""
+
+#: models.py:63
+msgid "Caracteristic 4"
+msgstr ""
+
+#: models.py:64
+msgid "Caracteristic 5"
+msgstr ""
+
+#: models.py:65
+msgid "Integer caracteristic 1"
+msgstr ""
+
+#: models.py:66
+msgid "Integer caracteristic 2"
+msgstr ""
+
+#: models.py:67
+msgid "Integer caracteristic 3"
+msgstr ""
+
+#: models.py:68
+msgid "Integer caracteristic 1 name"
+msgstr ""
+
+#: models.py:69
+msgid "Integer caracteristic 2 name"
+msgstr ""
+
+#: models.py:70
+msgid "Integer caracteristic 3 name"
+msgstr ""
+
+#: models.py:72
+msgid "Width"
+msgstr ""
+
+#: models.py:73
+msgid "Height"
+msgstr ""
+
+#: models.py:74
+msgid "Slideshow type"
+msgstr ""
+
+#: models.py:79 models.py:133 models.py:186
+msgid "Product"
+msgstr ""
+
+#: models.py:80
+msgid "Products"
+msgstr ""
+
+#: models.py:136
+msgid "Product image"
+msgstr ""
+
+#: models.py:137
+msgid "Product images"
+msgstr ""
+
+#: models.py:150
+msgid "Caracteristic for category"
+msgstr ""
+
+#: models.py:151
+msgid "Caracteristics for category"
+msgstr ""
+
+#: models.py:188
+msgid "Type"
+msgstr ""
+
+#: models.py:189
+msgid "Type name"
+msgstr ""
+
+#: models.py:190
+msgid "Value"
+msgstr ""
+
+#: models.py:191
+msgid "Value name"
+msgstr ""
+
+#: models.py:194
+msgid "Product caracteristic"
+msgstr ""
+
+#: models.py:195
+msgid "Product caracteristics"
+msgstr ""
+
+#: templates/admin/mcat/product/change_form.html:21
+#: templates/mcat/breadcrumbs.html:5
+msgid "Home"
+msgstr ""
+
+#: templates/admin/mcat/product/change_form.html:24
+msgid "Add"
+msgstr ""
+
+#: templates/admin/mcat/product/change_form.html:49
+msgid "Please correct the error below."
+msgstr ""
+
+#: templates/admin/mcat/product/change_form.html:49
+msgid "Please correct the errors below."
+msgstr ""
+
+#: templates/mcat/cart/add.html:3
+msgid "added to cart"
+msgstr ""
+
+#: templates/mcat/categories/index.html:26
+msgid "There are no categories yet"
+msgstr ""
+
+#: templates/mcat/products/alt/detail_fullwidth_slideshow.html:52
+#: templates/mcat/products/alt/detail_fullwidth_slideshow.html:69
+#: templates/mcat/products/detail.html:50
+#: templates/mcat/products/detail.html:84
+msgid "Add to cart"
+msgstr ""
+
+#: templates/mcat/products/alt/detail_fullwidth_slideshow.html:59
+#: templates/mcat/products/detail.html:74
+msgid "Product temporary unavailable"
+msgstr ""
+
+#: templates/mcat/products/alt/filters_on_top.html:24
+#: templates/mcat/products/alt/fullwidht_filters_on_top.html:26
+#: templates/mcat/products/index_filters_top.html:24
+msgid "There is no products in this category"
+msgstr ""
+
+#: templates/mcat/products/index.html:10 templates/mcat/products/index.html:12
+msgid "products"
+msgstr ""
+
+#: templates/mcat/products/index.html:24
+msgid "No products found"
+msgstr ""
+
+#: templates/mcat/products/index.html:38
+msgid "Disable filters"
+msgstr ""
+
+#: templates/mcat/render_filters.html:21 templates/mcat/render_filters.html:23
+msgid "Yes"
+msgstr ""
+
+#: templates/mcat/render_filters.html:27 templates/mcat/render_filters.html:29
+msgid "No"
+msgstr ""
+
+#: templates/mcat/render_filters.html:58 templates/mcat/render_filters.html:61
+msgid "to"
+msgstr ""
+
+#: templates/mcat/render_filters.html:83
+msgid "Price range"
+msgstr ""
+
+#: templates/mcat/search.html:4 templates/mcat/searchbar.html:6
+msgid "Search"
+msgstr ""
+
+#: templates/mcat/search.html:10
+msgid "Results for"
+msgstr ""
+
+#: templates/mcat/search.html:20
+msgid "No results found"
+msgstr ""

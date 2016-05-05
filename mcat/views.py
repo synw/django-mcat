@@ -111,11 +111,10 @@ class ProductsInCategoryView(ListView):
         if USE_PRICES is False:
             context['no_prices'] = True
         else:
-            if USE_PRICE_FILTER is True and USE_FILTERS is True:
+            if USE_PRICE_FILTER is True:
                 context['use_price_filter'] = True
                 context['min_price'] = self.min_price
                 context['max_price'] = self.max_price
-                context['currency'] = CURRENCY
         if USE_ORDER:
             context['use_order'] = True
         return context

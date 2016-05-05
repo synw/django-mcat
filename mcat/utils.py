@@ -2,7 +2,7 @@
 
 import re
 from django.utils.encoding import force_unicode
-
+from mcat.conf import USE_PRICES, PRICES_AS_INTEGER
 
 def intspace(value):
     """
@@ -56,5 +56,10 @@ def get_min_max_prices(products):
         i+=1 
     return (min_, max_)
 
-
+def get_price(price):
+    if USE_PRICES is True and price:
+        print 'p='+str(price)
+        if PRICES_AS_INTEGER is True:
+            price = int(round(price))
+    return price
 

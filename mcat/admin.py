@@ -53,7 +53,7 @@ class ProductForm(forms.ModelForm):
                                                              modes=['css', 'xml', 'javascript', 'htmlmixed'],
                                                     )
         else:
-            description_widget = CKEditorUploadingWidget()
+            description_widget = CKEditorUploadingWidget(config_name='mcat')
         short_description_widget = forms.Textarea(attrs={'style': 'min-width:100% !important;', 'rows':6, 'cols':80})
         widgets = {
                    'status': forms.RadioSelect,
