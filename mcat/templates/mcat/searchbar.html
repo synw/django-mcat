@@ -3,10 +3,11 @@
 <form role="form" action="/catalogue/search/" method="get">
 	<div class="form-group">
 	    <div class="input-group input-group-lg">	  
-		  	<input class="form-control input-lg" id="id_q" name="q" placeholder="{% trans 'Search' %}..." type="search">
+		  	<input class="form-control input-lg" id="id_q" name="q" placeholder="{% trans 'Search' %}..." type="search" value="{{request.GET.q}}">
 			<span class="input-group-btn">
 				<button class="btn btn-red btn-lg" type="submit"><i class="fa fa-search"></i></button>
 			</span>
 		</div>
     </div>
 </form>
+

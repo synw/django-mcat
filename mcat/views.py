@@ -6,6 +6,7 @@ from django.views.generic import ListView
 from django.shortcuts import get_object_or_404, Http404, render_to_response
 from django.utils.html import strip_tags
 from django.conf import settings
+from watson import search as watson
 from mcat.models import Category, Product
 from mcat.conf import PAGINATE_BY, DISABLE_BREADCRUMBS, USE_FILTERS, USE_PRICES, USE_ORDER, USE_BRAND, USE_PRICE_FILTER, PRICES_AS_INTEGER, CURRENCY
 from mcat.utils import decode_ftype, get_min_max_prices
@@ -176,6 +177,12 @@ class SearchView(ListView):
     context_object_name = 'products'
     
     def get_queryset(self):
+        if "q" in self.request.GET.keys():
+            products = Product.objects.filter(status=0).prefetch_related('images', 'category')
+            q = self.q = strip_tags(self.request.GET['q'])
+            search_results = watson.filter(products, q)
+        return search_results
+        """
         products = Product.objects.filter(status=0).prefetch_related('images', 'category')
         if "q" in self.request.GET.keys():
             q = strip_tags(self.request.GET['q'])
@@ -184,6 +191,7 @@ class SearchView(ListView):
                 products = products.filter(Q(name__icontains=word)|Q(upc__icontains=word))
         self.q = q
         return products
+        """
     
     def get_context_data(self, **kwargs):
         context = super(SearchView, self).get_context_data(**kwargs)
