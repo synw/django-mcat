@@ -9,6 +9,7 @@ from autofixture import AutoFixture
 from mqueue.models import MEvent
 from mcat.models import Brand, Category, Product, ProductImage, ProductCaracteristic, CategoryCaracteristic
 from mcat.conf import USE_PRICES
+from mcat.utils import get_price
 
 
 class McatBrandTest(TestCase):
@@ -86,9 +87,9 @@ class McatProductTest(TestCase):
         self.assertEqual(obj.__unicode__(), obj.name)
         #print 'UP TEST : '+str(settings.MCAT_USE_PRICES)
         if USE_PRICES is True:
-            self.assertEqual(obj.get_price(), 100)
+            self.assertEqual(get_price(obj.price), 100)
         else:
-            self.assertIsNone(obj.get_price())
+            self.assertIsNone(get_price(obj.price))
         return
 
 

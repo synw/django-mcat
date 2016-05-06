@@ -132,9 +132,9 @@ class CategoryViewsTest(TestCase):
         productcarac1 = self.create_product_caracteristic(product, ftype='boolean', name='boolean_carac', value=u'1')
         productcarac2 = self.create_product_caracteristic(product, ftype='choices', name='choices_carac', value=u'choice1')
         product = Product.objects.get(slug=product.slug)
-        response = self.client.get(reverse('product-list', kwargs={'slug':category.slug}), {'boolean_carac':'1;b', 'choice_carac':'choice1;c'})
-        self.assertEqual(response.context['active_filters'], ['boolean_carac', 'choice_carac'])
-        self.assertEqual(response.context['active_values'], ['1;b', 'choice1;c'])
+        active_filters = {'boolean_carac':'1;b', 'choice_carac':'choice1;c'}
+        response = self.client.get(reverse('product-list', kwargs={'slug':category.slug}), active_filters)
+        self.assertEqual(response.context['active_filters'], active_filters)
         self.assertEqual(category.template_name, 'default')
         self.assertTemplateUsed(response, 'mcat/products/index.html')
         self.assertFalse('disable_breadcrumbs' in response.context)
@@ -142,17 +142,17 @@ class CategoryViewsTest(TestCase):
         product = Product.objects.get(slug=product.slug)
         product.int_carac1 = 8
         product.int_carac1_name = 'int_filter'
-        response = self.client.get(reverse('product-list', kwargs={'slug':category.slug}), {'int_filter':'-10;i'})
-        self.assertEqual(response.context['active_values'], ['-10;i'])
-        self.assertEqual(response.context['active_filters'], ['int_filter'])
+        active_filters = {'int_filter':'-10;i'}
+        response = self.client.get(reverse('product-list', kwargs={'slug':category.slug}), active_filters)
+        self.assertEqual(response.context['active_filters'], active_filters)
         product.int_carac1 = 50
-        response = self.client.get(reverse('product-list', kwargs={'slug':category.slug}), {'int_filter':'+20;i'})
-        self.assertEqual(response.context['active_values'], ['+20;i'])
-        self.assertEqual(response.context['active_filters'], ['int_filter'])
+        active_filters = {'int_filter':'+20;i'}
+        response = self.client.get(reverse('product-list', kwargs={'slug':category.slug}), active_filters)
+        self.assertEqual(response.context['active_filters'], active_filters)
         product.int_carac1 = 5
-        response = self.client.get(reverse('product-list', kwargs={'slug':category.slug}), {'int_filter':'10_20;i'})
-        self.assertEqual(response.context['active_values'], ['10_20;i'])
-        self.assertEqual(response.context['active_filters'], ['int_filter'])
+        active_filters = {'int_filter':'10_20;i'}
+        response = self.client.get(reverse('product-list', kwargs={'slug':category.slug}), active_filters)
+        self.assertEqual(response.context['active_filters'], active_filters)
         return
     
     """
@@ -195,13 +195,13 @@ class CategoryViewsTest(TestCase):
     def test_SearchView(self):
         fixture = AutoFixture(Product, field_values={'name':'prod1', 'upc':'AAA'}, generate_fk=True)
         fixture.create(1)
-        fixture = AutoFixture(Product, field_values={'name':'prod2', 'upc':'AAABBB'}, generate_fk=True)
+        fixture = AutoFixture(Product, field_values={'name':'prod2', 'upc':'AAA BBB'}, generate_fk=True)
         fixture.create(1)
-        fixture = AutoFixture(Product, field_values={'name':'prod3', 'upc':'AAABBBCCC'}, generate_fk=True)
+        fixture = AutoFixture(Product, field_values={'name':'prod3', 'upc':'AAA BBB CCC'}, generate_fk=True)
         fixture.create(1)
         product1 = Product.objects.get(upc='AAA')
-        product2 = Product.objects.get(upc='AAABBB')
-        product3 = Product.objects.get(upc='AAABBBCCC')
+        product2 = Product.objects.get(upc='AAA BBB')
+        product3 = Product.objects.get(upc='AAA BBB CCC')
         response = self.client.get(reverse('product-search'),{'q':'BBB'})
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'mcat/search.html')

@@ -58,7 +58,6 @@ def get_min_max_prices(products):
 
 def get_price(price):
     if USE_PRICES is True and price:
-        print 'p='+str(price)
         if PRICES_AS_INTEGER is True:
             price = int(round(price))
     return price
