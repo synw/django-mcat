@@ -1,6 +1,6 @@
 {% load i18n thumbnail staticfiles mcat_tags %}
 
-<div class="product_inline"{% if use_price_filter %} data-price="{{ product.get_price }}"{% endif %}>
+<div class="product_inline"{% if use_price_filter %} data-price="{{ product.price }}"{% endif %}>
 	<div class="product_title" class="text-center">
 		{% if search %}
 			<a href="{% url 'product-detail' slug=product.slug category_slug=product.category.slug %}">{{ product.name|truncatechars:38 }}</a>

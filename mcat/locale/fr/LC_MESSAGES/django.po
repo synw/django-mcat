@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-05-04 17:04+0000\n"
+"POT-Creation-Date: 2016-05-07 14:41+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,292 +20,296 @@ msgstr ""
 
 #: admin.py:143
 msgid "Slideshow options"
-msgstr ""
+msgstr "Options du slideshow"
 
-#: apps.py:6
+#: admin.py:147 models.py:79
+msgid "Extra infos"
+msgstr "Infos supplémentaires"
+
+#: apps.py:9
 msgid "Catalog"
-msgstr ""
+msgstr "Catalogue"
 
-#: conf.py:17 models.py:146
+#: conf.py:17 models.py:141
 msgid "Choices"
-msgstr ""
+msgstr "Choix"
 
 #: conf.py:18
 msgid "Yes / No"
-msgstr ""
+msgstr "Oui / Non"
 
 #: conf.py:19
 msgid "Numeric"
-msgstr ""
+msgstr "Numérique"
 
 #: conf.py:23
 msgid "Filters on side"
-msgstr ""
+msgstr "Filtres sur le côté"
 
 #: conf.py:24
 msgid "Filters on top"
-msgstr ""
+msgstr "Filtres en haut"
 
 #: conf.py:25
 msgid "Fullwidth filters on top"
-msgstr ""
+msgstr "Pleine largeur filtres en haut"
 
 #: conf.py:29
 msgid "Default"
-msgstr ""
+msgstr "Défaut"
 
 #: conf.py:30
 msgid "Fullwidth slideshow"
-msgstr ""
+msgstr "Slideshow pleine largeur"
 
-#: models.py:20 models.py:131
+#: models.py:21 models.py:126
 msgid "Image"
-msgstr ""
+msgstr "Image"
 
-#: models.py:23 models.py:53
+#: models.py:24 models.py:54
 msgid "Brand"
-msgstr ""
+msgstr "Marque"
 
-#: models.py:24
+#: models.py:25
 msgid "Brands"
-msgstr ""
+msgstr "Marques"
 
-#: models.py:32
+#: models.py:33
 msgid "Parent category"
-msgstr ""
+msgstr "Catégorie parente"
 
-#: models.py:33 models.py:51
+#: models.py:34 models.py:52
 msgid "Navigation image"
-msgstr ""
+msgstr "Image de navigation"
 
-#: models.py:34 models.py:76
+#: models.py:35 models.py:77
 msgid "Template"
-msgstr ""
+msgstr "Template"
 
-#: models.py:35
+#: models.py:36
 msgid "Description"
-msgstr ""
+msgstr "Description"
 
-#: models.py:39 models.py:54 models.py:144
+#: models.py:40 models.py:55 models.py:139
 msgid "Category"
-msgstr ""
+msgstr "Catégorie"
 
-#: models.py:40 templates/mcat/categories/index.html:8
+#: models.py:41 templates/mcat/categories/index.html:8
 #: templates/mcat/categories/index.html:13
 msgid "Categories"
-msgstr ""
-
-#: models.py:48
-msgid "Short description"
-msgstr ""
+msgstr "Catégories"
 
 #: models.py:49
-msgid "Long description"
-msgstr ""
+msgid "Short description"
+msgstr "Description courte"
 
 #: models.py:50
+msgid "Long description"
+msgstr "Description longue"
+
+#: models.py:51
 msgid "Universal Product Code"
-msgstr ""
+msgstr "Code barre"
 
-#: models.py:56 templates/mcat/render_filters.html:77
+#: models.py:57 templates/mcat/render_filters.html:77
 msgid "Price"
-msgstr ""
-
-#: models.py:57
-msgid "Discounted price"
-msgstr ""
+msgstr "Prix"
 
 #: models.py:58
-msgid "Discount percentage"
-msgstr ""
+msgid "Discounted price"
+msgstr "Prix promotionnel"
 
 #: models.py:59
-msgid "Available"
-msgstr ""
+msgid "Discount percentage"
+msgstr "Pourcentage de promotion"
 
 #: models.py:60
-msgid "Caracteristic 1"
-msgstr ""
+msgid "Available"
+msgstr "Disponible"
 
 #: models.py:61
-msgid "Caracteristic 2"
-msgstr ""
+msgid "Caracteristic 1"
+msgstr "Caractéristique 1"
 
 #: models.py:62
-msgid "Caracteristic 3"
-msgstr ""
+msgid "Caracteristic 2"
+msgstr "Caractéristique 2"
 
 #: models.py:63
-msgid "Caracteristic 4"
-msgstr ""
+msgid "Caracteristic 3"
+msgstr "Caractéristique 3"
 
 #: models.py:64
-msgid "Caracteristic 5"
-msgstr ""
+msgid "Caracteristic 4"
+msgstr "Caractéristique 4"
 
 #: models.py:65
-msgid "Integer caracteristic 1"
-msgstr ""
+msgid "Caracteristic 5"
+msgstr "Caractéristique 5"
 
 #: models.py:66
-msgid "Integer caracteristic 2"
-msgstr ""
+msgid "Integer caracteristic 1"
+msgstr "Caractéristique numérique 1"
 
 #: models.py:67
-msgid "Integer caracteristic 3"
-msgstr ""
+msgid "Integer caracteristic 2"
+msgstr "Caractéristique numérique 2"
 
 #: models.py:68
-msgid "Integer caracteristic 1 name"
-msgstr ""
+msgid "Integer caracteristic 3"
+msgstr "Caractéristique numérique 3"
 
 #: models.py:69
-msgid "Integer caracteristic 2 name"
-msgstr ""
+msgid "Integer caracteristic 1 name"
+msgstr "Nom de la caractéristique numérique 1"
 
 #: models.py:70
-msgid "Integer caracteristic 3 name"
-msgstr ""
+msgid "Integer caracteristic 2 name"
+msgstr "Nom de la caractéristique numérique 2"
 
-#: models.py:72
-msgid "Width"
-msgstr ""
+#: models.py:71
+msgid "Integer caracteristic 3 name"
+msgstr "Nom de la caractéristique numérique 3"
 
 #: models.py:73
-msgid "Height"
-msgstr ""
+msgid "Width"
+msgstr "Largeur"
 
 #: models.py:74
+msgid "Height"
+msgstr "Hauteur"
+
+#: models.py:75
 msgid "Slideshow type"
-msgstr ""
+msgstr "Type de slideshow"
 
-#: models.py:79 models.py:133 models.py:186
+#: models.py:82 models.py:128 models.py:181
 msgid "Product"
-msgstr ""
+msgstr "Produit"
 
-#: models.py:80
+#: models.py:83
 msgid "Products"
-msgstr ""
+msgstr "Produits"
 
-#: models.py:136
+#: models.py:131
 msgid "Product image"
-msgstr ""
+msgstr "Image de produit"
 
-#: models.py:137
+#: models.py:132
 msgid "Product images"
-msgstr ""
+msgstr "Images de produit"
 
-#: models.py:150
+#: models.py:145
 msgid "Caracteristic for category"
-msgstr ""
+msgstr "Caractéristique pour la catégorie"
 
-#: models.py:151
+#: models.py:146
 msgid "Caracteristics for category"
-msgstr ""
+msgstr "Caractéristiques pour la catégorie"
 
-#: models.py:188
+#: models.py:183
 msgid "Type"
-msgstr ""
+msgstr "Type"
+
+#: models.py:184
+msgid "Type name"
+msgstr "Nom du type"
+
+#: models.py:185
+msgid "Value"
+msgstr "Valeur"
+
+#: models.py:186
+msgid "Value name"
+msgstr "Nom de la valeur"
 
 #: models.py:189
-msgid "Type name"
-msgstr ""
+msgid "Product caracteristic"
+msgstr "Caractéritique de produit"
 
 #: models.py:190
-msgid "Value"
-msgstr ""
-
-#: models.py:191
-msgid "Value name"
-msgstr ""
-
-#: models.py:194
-msgid "Product caracteristic"
-msgstr ""
-
-#: models.py:195
 msgid "Product caracteristics"
-msgstr ""
+msgstr "Caractéristiques de produit"
 
 #: templates/admin/mcat/product/change_form.html:21
 #: templates/mcat/breadcrumbs.html:5
 msgid "Home"
-msgstr ""
+msgstr "Home"
 
 #: templates/admin/mcat/product/change_form.html:24
 msgid "Add"
-msgstr ""
+msgstr "Ajouter"
 
 #: templates/admin/mcat/product/change_form.html:49
 msgid "Please correct the error below."
-msgstr ""
+msgstr "Merci de corriger l'erreur ci-dessous"
 
 #: templates/admin/mcat/product/change_form.html:49
 msgid "Please correct the errors below."
-msgstr ""
+msgstr "Merci de corriger les erreurs ci-dessous"
 
 #: templates/mcat/cart/add.html:3
 msgid "added to cart"
-msgstr ""
+msgstr "ajouté au panier"
 
 #: templates/mcat/categories/index.html:26
 msgid "There are no categories yet"
-msgstr ""
+msgstr "Aucune catégories pour l'instant"
 
 #: templates/mcat/products/alt/detail_fullwidth_slideshow.html:52
 #: templates/mcat/products/alt/detail_fullwidth_slideshow.html:69
-#: templates/mcat/products/detail.html:50
-#: templates/mcat/products/detail.html:84
+#: templates/mcat/products/detail.html:59
+#: templates/mcat/products/detail.html:102
 msgid "Add to cart"
-msgstr ""
+msgstr "Ajoute au panier"
 
 #: templates/mcat/products/alt/detail_fullwidth_slideshow.html:59
-#: templates/mcat/products/detail.html:74
+#: templates/mcat/products/detail.html:83
 msgid "Product temporary unavailable"
-msgstr ""
+msgstr "Produit temporairement indisponible"
 
 #: templates/mcat/products/alt/filters_on_top.html:24
 #: templates/mcat/products/alt/fullwidht_filters_on_top.html:26
 #: templates/mcat/products/index_filters_top.html:24
 msgid "There is no products in this category"
-msgstr ""
+msgstr "Aucun produit dans cette catégorie"
 
 #: templates/mcat/products/index.html:10 templates/mcat/products/index.html:12
 msgid "products"
-msgstr ""
+msgstr "produits"
 
 #: templates/mcat/products/index.html:24
 msgid "No products found"
-msgstr ""
+msgstr "Aucun produit trouvé"
 
 #: templates/mcat/products/index.html:38
 msgid "Disable filters"
-msgstr ""
+msgstr "Désactiver les filtres"
 
 #: templates/mcat/render_filters.html:21 templates/mcat/render_filters.html:23
 msgid "Yes"
-msgstr ""
+msgstr "Oui"
 
 #: templates/mcat/render_filters.html:27 templates/mcat/render_filters.html:29
 msgid "No"
-msgstr ""
+msgstr "Non"
 
 #: templates/mcat/render_filters.html:58 templates/mcat/render_filters.html:61
 msgid "to"
-msgstr ""
+msgstr "à"
 
 #: templates/mcat/render_filters.html:83
 msgid "Price range"
-msgstr ""
+msgstr "Gamme de prix"
 
 #: templates/mcat/search.html:4 templates/mcat/searchbar.html:6
 msgid "Search"
-msgstr ""
+msgstr "Rechercher"
 
 #: templates/mcat/search.html:10
 msgid "Results for"
-msgstr ""
+msgstr "Résultats pour"
 
 #: templates/mcat/search.html:20
 msgid "No results found"
-msgstr ""
+msgstr "Aucun résultat trouvé"

@@ -23,7 +23,7 @@ class CategoryForm(forms.ModelForm):
     class Meta:
         model = Category
         fields = ['name', 'slug', 'parent', 'image', 'template_name', 'status', 'editor']
-        widgets = {'status': forms.RadioSelect}
+        widgets = {'status': forms.RadioSelect, 'description': CKEditorUploadingWidget(config_name='mcat')}
         
         
 class ProductForm(forms.ModelForm):
@@ -143,6 +143,10 @@ class ProductAdmin(admin.ModelAdmin):
         (_(u'Slideshow options'), {
             'classes': ('collapse',),
             'fields': (('slideshow_type',), ('slideshow_width', 'slideshow_height') )
+        }),
+        (_(u'Extra infos'), {
+            'classes': ('collapse',),
+            'fields': (('extra',),)
         }),
     )
     

@@ -111,6 +111,7 @@ class ProductsInCategoryView(ListView):
         context['use_filters'] = USE_FILTERS
         if USE_PRICES is False:
             context['no_prices'] = True
+            context['currency'] = CURRENCY
         else:
             if USE_PRICE_FILTER is True:
                 context['use_price_filter'] = True
@@ -161,6 +162,9 @@ class ProductView(TemplateView):
             context['use_order'] = True
         if USE_BRAND:
             context['use_brand'] = True
+        if product.extra:
+            context['url_assistance'] = product.extra['url_assistance']
+            context['url_notice'] = product.extra['url_notice']
         return context
     
     def get_template_names(self):
@@ -181,6 +185,10 @@ class SearchView(ListView):
             products = Product.objects.filter(status=0).prefetch_related('images', 'category')
             q = self.q = strip_tags(self.request.GET['q'])
             search_results = watson.filter(products, q)
+            
+            for product in search_results:
+                print product.name+' / '+str(product.category)
+            
         return search_results
         """
         products = Product.objects.filter(status=0).prefetch_related('images', 'category')

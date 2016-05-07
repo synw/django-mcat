@@ -6,6 +6,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth import get_user_model
 from mptt.models import TreeForeignKey, MPTTModel
+from jsonfield import JSONField
 from mbase.models import default_statuses, OrderedModel, MetaBaseModel, MetaBaseUniqueSlugModel, MetaBaseNameModel, MetaBaseStatusModel
 from jssor.conf import SLIDESHOW_TYPES
 from mcat.forms import FilterForm
@@ -74,7 +75,9 @@ class Product(MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel, MetaBaseUni
     slideshow_type = models.CharField(max_length=150, choices=SLIDESHOW_TYPES, default=SLIDESHOW_TYPES[3][0], verbose_name=_(u'Slideshow type'))
     #~ template choice option
     template_name = models.CharField(max_length=60, choices=PRODUCT_TEMPLATE_NAMES, default=PRODUCT_TEMPLATE_NAMES[0][0], verbose_name=_(u'Template'))
-
+    #~ extra info
+    extra = JSONField(blank=True, verbose_name=_(u'Extra infos'))
+    
     class Meta:
         verbose_name=_(u'Product')
         verbose_name_plural =_( u'Products')

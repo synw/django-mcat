@@ -6,6 +6,6 @@
 		{% for node in ancestors %}
 			<li><a href="{% url 'category-list' slug=node.slug %}">{{ node.name }}</a></li>
 		{% endfor %}
-		 <li>{{ category.name }}</li>
+		 <li><a href="{% url 'product-list' category.slug %}">{{ category.name }}</a></li>
 	</ul>
 {% endif %}
