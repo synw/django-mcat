@@ -56,7 +56,9 @@
 						<div class="label label-primary gbf-md">{{ product.price|format_price|safe }}</div>
 					{% endif %}
 					{% if use_order %}
-						<div class="label label-success gbf-md"><i class="fa fa-cart-plus"></i>&nbsp;{% trans 'Add to cart' %}</div>
+						<div class="label label-success gbf-md">
+							<i class="fa fa-cart-plus"></i>&nbsp;<a href="{% url 'product-add-to-cart' product.slug %}">{% trans 'Add to cart' %}</a>
+						</div>
 					{% endif %}
 				{% endif %}
 			</div>

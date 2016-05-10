@@ -18,16 +18,11 @@ img {
 }
 .price del {
 	text-decoration: line-through;
-	/*noinspection CssOverwrittenProperties*/
-	text-decoration: black line-through; /* Ignored in CSS1/CSS2 UAs 
+	text-decoration: black line-through; 
 }
-/* ####################### mcat-order #################### */
-#cart {
-	min-width:46em;
-	max-width:100%;
-	min-height:120px;
-	border-right:1px solid darkgrey;
-	border-left:1px solid darkgrey;
-	border-bottom:1px solid darkgrey;
-	padding:1em;
+a#cart_icon, a#cart_icon :visited {
+	color:white;
+	position:absolute;
+	top:2.2em;
+	right:1.8em;
 }
