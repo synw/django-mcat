@@ -163,8 +163,7 @@ class ProductView(TemplateView):
         if USE_BRAND:
             context['use_brand'] = True
         if product.extra:
-            context['url_assistance'] = product.extra['url_assistance']
-            context['url_notice'] = product.extra['url_notice']
+            context['extra'] = product.extra
         return context
     
     def get_template_names(self):
@@ -190,16 +189,6 @@ class SearchView(ListView):
                 print product.name+' / '+str(product.category)
             
         return search_results
-        """
-        products = Product.objects.filter(status=0).prefetch_related('images', 'category')
-        if "q" in self.request.GET.keys():
-            q = strip_tags(self.request.GET['q'])
-            q_words = q.split(' ')
-            for word in q_words: 
-                products = products.filter(Q(name__icontains=word)|Q(upc__icontains=word))
-        self.q = q
-        return products
-        """
     
     def get_context_data(self, **kwargs):
         context = super(SearchView, self).get_context_data(**kwargs)
