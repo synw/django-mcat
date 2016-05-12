@@ -31,7 +31,7 @@ class ProductForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ProductForm, self).__init__(*args, **kwargs)
         if USE_ADMIN_BOOTSTRAPED:
-            self.fields['description'].label = 'no label'
+            self.fields['description'].label = 'Html'
         
     class Meta:
         model = Product
@@ -42,7 +42,7 @@ class ProductForm(forms.ModelForm):
                                                              'mode':'htmlmixed',
                                                              'indentWithTabs':'true', 
                                                              'indentUnit' : '4',
-                                                             'lineNumbers':'true',
+                                                             #'lineNumbers':'false',
                                                              'autofocus':'true',
                                                              #'highlightSelectionMatches': '{showToken: /\w/, annotateScrollbar: true}',
                                                              'styleActiveLine': 'true',
