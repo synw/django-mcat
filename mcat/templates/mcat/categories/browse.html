@@ -14,7 +14,7 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="col-xs-12 col-md-offset-2 col-md-8 col-md-offset-2">
+		<div class="col-xs-12">
 			{% with current_category as category %}
 				{% include 'mcat/breadcrumbs.html' %}
 			{% endwith %}
@@ -32,7 +32,6 @@
 		        	{% include 'mcat/categories/category_inline.html' %}
 		        {% endif %}
 			{% endfor %}
-			{% include 'mbase/return_btn.html' %}
 		</div>
 	</div>
 {% endblock content %}
