@@ -48,3 +48,4 @@ USE_BRAND = getattr(settings, 'MCAT_USE_BRAND', True)
 
 PAGINATE_BY = getattr(settings, 'MCAT_PAGINATE_BY', 10)
 
+
