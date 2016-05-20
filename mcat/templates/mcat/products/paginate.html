@@ -1,13 +1,13 @@
-{% load mcat_tags %}
+{% load i18n mcat_tags %}
 {% if is_paginated %}
 <div class="col-xs-12 gc">
     <ul class="pagination">
         {% if page_obj.has_previous %}
-            <li><a href="{% url 'product-list' slug=category.slug %}?{% pagenum_replace request page_obj.previous_page_number %}">Précédente</a></li>
+            <li><a href="{% url 'product-list' slug=category.slug %}?{% pagenum_replace request page_obj.previous_page_number %}">{% trans 'Previous' %}</a></li>
         {% endif %}
             <li class="disabled"><a href="#">Page {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</a></li>
         {% if page_obj.has_next %}
-            <li><a href="{% url 'product-list' slug=category.slug %}?{% pagenum_replace request page_obj.next_page_number %}">Suivante</a></li>
+            <li><a href="{% url 'product-list' slug=category.slug %}?{% pagenum_replace request page_obj.next_page_number %}">{% trans 'Next' %}/a></li>
         {% endif %}
     </ul>
 </div>
