@@ -7,7 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth import get_user_model
 from mptt.models import TreeForeignKey, MPTTModel
 from jsonfield import JSONField
-from mbase.models import STATUSES, OrderedModel, MetaBaseModel, MetaBaseUniqueSlugModel, MetaBaseNameModel, MetaBaseStatusModel
+from mbase.models import STATUSES, MetaBaseOrderedModel, MetaBaseModel, MetaBaseUniqueSlugModel, MetaBaseNameModel, MetaBaseStatusModel
 from jssor.conf import SLIDESHOW_TYPES
 from mcat.forms import FilterForm
 from mcat.conf import USE_PRICES, PRICES_AS_INTEGER, CARACTERISTIC_TYPES, CATEGORY_TEMPLATE_NAMES, PRODUCT_TEMPLATE_NAMES
@@ -122,7 +122,7 @@ class Product(MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel, MetaBaseUni
         return
     
     
-class ProductImage(MetaBaseModel, MetaBaseStatusModel, OrderedModel):
+class ProductImage(MetaBaseModel, MetaBaseStatusModel, MetaBaseOrderedModel):
     image = models.ImageField(upload_to='products', verbose_name=_(u'Image'))
     #~ external key
     product = models.ForeignKey(Product, related_name="images", verbose_name=_(u'Product'))
@@ -135,7 +135,7 @@ class ProductImage(MetaBaseModel, MetaBaseStatusModel, OrderedModel):
         return unicode(self.image.url)
     
 
-class CategoryCaracteristic(MetaBaseModel, MetaBaseNameModel, MetaBaseUniqueSlugModel, OrderedModel):
+class CategoryCaracteristic(MetaBaseModel, MetaBaseNameModel, MetaBaseUniqueSlugModel, MetaBaseOrderedModel):
     category = models.ForeignKey(Category, related_name="generic_caracteristics", verbose_name=_(u'Category'))
     type = models.CharField(max_length=255, choices=CARACTERISTIC_TYPES, default=CARACTERISTIC_TYPES[0][0])
     choices = models.TextField(blank=True, verbose_name=_(u'Choices'))
