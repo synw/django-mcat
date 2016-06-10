@@ -7,14 +7,14 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth import get_user_model
 from mptt.models import TreeForeignKey, MPTTModel
 from jsonfield import JSONField
-from mbase.models import default_statuses, OrderedModel, MetaBaseModel, MetaBaseUniqueSlugModel, MetaBaseNameModel, MetaBaseStatusModel
+from mbase.models import STATUSES, OrderedModel, MetaBaseModel, MetaBaseUniqueSlugModel, MetaBaseNameModel, MetaBaseStatusModel
 from jssor.conf import SLIDESHOW_TYPES
 from mcat.forms import FilterForm
 from mcat.conf import USE_PRICES, PRICES_AS_INTEGER, CARACTERISTIC_TYPES, CATEGORY_TEMPLATE_NAMES, PRODUCT_TEMPLATE_NAMES
 from mcat.utils import is_name_in_field, encode_ftype
 
 
-STATUSES = getattr(settings, 'STATUSES', default_statuses)
+STATUSES = getattr(settings, 'STATUSES', STATUSES)
     
 
 class Brand(MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel, MetaBaseUniqueSlugModel):
