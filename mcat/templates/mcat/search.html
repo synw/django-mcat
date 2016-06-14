@@ -15,7 +15,11 @@
 		        {% include 'mcat/products/product_inline.html' %}
 		    {% endfor %}
 		</div>
-	    <div class="row gus-l">{% include "mcat/products/paginate.html" %}</div>
+		{% comment %}
+	    <div class="row gus-l">
+	    	{% include "mcat/products/paginate.html" %}
+	    </div>
+	    {% endcomment %}
 	{% else %}
 		<div class="jumbotron text-center gbf">{% trans "No results found" %}</div>
 	{% endif %}
