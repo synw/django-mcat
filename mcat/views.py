@@ -1,11 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from django.db.models import Q, Max, Min
+from django.db.models import Q
 from django.views.generic import TemplateView
 from django.views.generic import ListView
-from django.shortcuts import get_object_or_404, Http404, render_to_response
+from django.shortcuts import get_object_or_404
 from django.utils.html import strip_tags
-from django.conf import settings
 from watson import search as watson
 from mcat.models import Category, Product
 from mcat.conf import PAGINATE_BY, DISABLE_BREADCRUMBS, USE_FILTERS, USE_PRICES, USE_ORDER, USE_BRAND, USE_PRICE_FILTER, PRICES_AS_INTEGER, CURRENCY

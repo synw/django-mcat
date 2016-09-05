@@ -14,9 +14,7 @@
 		{% else %}
 			<a href="{% url 'product-detail' slug=product.slug category_slug=category.slug %}">
 		{% endif %}
-		{% thumbnail product.navimage "200x200" as img %}
-			<img src="{{ img.url }}" alt="" style="margin:{{ img|margin:"200x200" }}" />
-		{% endthumbnail %}
+		<img src="{{ product.navimage|thumbnail_url:'square' }}" alt="" />
 		</a>
 		<div class="text-center" style="min-height:1.4em">
 			{% if product.upc %}

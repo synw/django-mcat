@@ -6,9 +6,7 @@
 	</p>
 	<div>
 		<a href="{% url 'product-detail' slug=product.slug category_slug=product.category.slug %}">
-		{% thumbnail product.navimage "200x200" as img %}
-			<img src="{{ img.url }}" alt="" style="margin:{{ img|margin:"200x200" }}" />
-		{% endthumbnail %}
+		<img src="{{ product.navimage|thumbnail_url:'square' }}" alt="" />
 		</a>
 		{% if product.upc %}
 			<div class="text-center">

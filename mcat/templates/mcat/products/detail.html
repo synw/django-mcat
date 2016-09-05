@@ -30,9 +30,7 @@
 						{% if use_brand = True %}
 							{% if product.brand %}
 								<div class="gi gbf gmv grs gls">
-									{% thumbnail product.brand.image "80x80" format="PNG" as img %}
-										<img src="{{ img.url }}" alt="" style="margin:{{ img|margin:"80x80" }}" />
-									{% endthumbnail %}
+									<img src="{{ product.brand.image|thumbnail_url:'brand' }}" alt="" />
 								</div>
 							{% endif %}
 						{% endif %}

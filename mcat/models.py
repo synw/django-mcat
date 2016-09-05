@@ -4,12 +4,10 @@ from collections import OrderedDict
 from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.auth import get_user_model
 from mptt.models import TreeForeignKey, MPTTModel
 from jsonfield import JSONField
 from mbase.models import STATUSES, MetaBaseOrderedModel, MetaBaseModel, MetaBaseUniqueSlugModel, MetaBaseNameModel, MetaBaseStatusModel
 from jssor.conf import SLIDESHOW_TYPES
-from mcat.forms import FilterForm
 from mcat.conf import USE_PRICES, PRICES_AS_INTEGER, CARACTERISTIC_TYPES, CATEGORY_TEMPLATE_NAMES, PRODUCT_TEMPLATE_NAMES
 from mcat.utils import is_name_in_field, encode_ftype
 
@@ -48,7 +46,7 @@ class Product(MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel, MetaBaseUni
     #~ base content
     short_description = models.TextField(blank=True, verbose_name=_(u'Short description'))
     description = models.TextField(blank=True, verbose_name=_(u'Long description'))
-    upc = models.CharField(blank=True, unique=True, max_length=30, verbose_name=_(u'Universal Product Code'))
+    upc = models.CharField(null=True, unique=True, max_length=30, verbose_name=_(u'Universal Product Code'))
     navimage = models.ImageField(null=True, upload_to='products/nav/', verbose_name=_(u'Navigation image'))
     #~ external keys
     brand = models.ForeignKey(Brand, blank=True, null=True, on_delete=models.PROTECT, verbose_name=_(u'Brand'))
@@ -72,7 +70,7 @@ class Product(MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel, MetaBaseUni
     #~ slideshow options
     slideshow_width = models.PositiveSmallIntegerField(null=True, blank=True, default=800, verbose_name=_(u'Width'))
     slideshow_height = models.PositiveSmallIntegerField(null=True, blank=True, default=600, verbose_name=_(u'Height'))
-    slideshow_type = models.CharField(max_length=150, choices=SLIDESHOW_TYPES, default=SLIDESHOW_TYPES[3][0], verbose_name=_(u'Slideshow type'))
+    slideshow_type = models.CharField(max_length=150, choices=SLIDESHOW_TYPES, default=SLIDESHOW_TYPES[2][0], verbose_name=_(u'Slideshow type'))
     #~ template choice option
     template_name = models.CharField(max_length=60, choices=PRODUCT_TEMPLATE_NAMES, default=PRODUCT_TEMPLATE_NAMES[0][0], verbose_name=_(u'Template'))
     #~ extra info

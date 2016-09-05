@@ -1,4 +1,4 @@
-{% load thumbnail staticfiles %}
+{% load staticfiles thumbnail %}
 
 <div class="category_inline">
 	<p>
@@ -14,9 +14,7 @@
 		{% else %}
 			<a href="{% url 'category-list' slug=category.slug %}">
 		{% endif %}
-		{% thumbnail category.image "200x200" as img %}
-			<img src="{{ img.url }}" alt="" style="margin:{{ img|margin:"200x200" }}" />
-		{% endthumbnail %}
+		<img src="{{ category.image|thumbnail_url:'square' }}" alt="" />
 		</a>
 	</div>
 </div>

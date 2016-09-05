@@ -16,6 +16,28 @@ Why this app? It was made to handle the job with a minimum of complexity, keepin
 to be fast. Working with stuff like big ecommerce frameworks is nice but can sometimes become a pain when you want 
 to extend them or get into the code, due to its level of complexity.
 
+### Install
+
+Get the dependencies:
+
+  ```bash
+pip install django-watson django-jsonfield sorl-thumbnail
+  ```
+
+Add to installed apps:
+
+  ```python
+"sorl.thumbnail",
+"watson",
+"mcat",
+  ```
+
+Set the urls
+
+  ```python
+url('^catalog/', include('mcat.urls')),
+  ```
+
 ### Settings
 
 Default values are:
