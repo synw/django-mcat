@@ -21,13 +21,13 @@ to extend them or get into the code, due to its level of complexity.
 Get the dependencies:
 
   ```bash
-pip install django-watson django-jsonfield sorl-thumbnail
+pip install django-watson django-jsonfield easy-thumbnails
   ```
 
 Add to installed apps:
 
   ```python
-"sorl.thumbnail",
+"easy_thumbnails",
 "watson",
 "mcat",
   ```
