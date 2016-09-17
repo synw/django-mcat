@@ -6,7 +6,7 @@ This app wants to be:
 
 - Fast
 - Fully responsive and optimized for phone devices
-- Maintainable and extensible by the use of straigthforward Django and understandable code
+- Maintainable and extensible by the use of straigthforward idiomatic Django code
 
 It is scalable: can be used whith or without prices management, product filters, automatic breadcrumbs, brands. 
 All this is configurable in the settings. Each option that is disabled makes the app faster,
