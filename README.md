@@ -92,13 +92,5 @@ MCAT_PRODUCT_TEMPLATE_NAMES = (
                     ('default',_(u'Default')),
                     ('detail_fullwidth_slideshow',_(u'Fullwidth slideshow')),
                     )
-
-
-MCAT_CATEGORY_TEMPLATE_NAMES = (
-                    ('default',_(u'Filters on side')),
-                    ('filters_on_top',_(u'Filters on top')),
-                    ('fullwidht_filters_on_top',_(u'Fullwidth filters on top')),
-                    )
-
   ```
 
