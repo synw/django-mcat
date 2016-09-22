@@ -55,7 +55,7 @@ class ProductAdmin(admin.ModelAdmin):
             'fields': (('name', 'slug'), ('category', 'brand'), ('navimage', 'upc'))
         }),
         (None, {
-            'fields': (('price', 'discounted_percentage'), 'discounted_price')
+            'fields': (('price',),)
         }),
         (None, {
             'fields': (('status', 'short_description'), ('available', 'template_name'))
