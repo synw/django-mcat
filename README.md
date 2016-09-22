@@ -39,7 +39,7 @@ url(r'^ckeditor/',include('ckeditor_uploader.urls')),
 url('^catalog/', include('mcat.urls')),
   ```
   
-Ckeditor configuration in settings.py:
+Ckeditor and easy thumbnails configuration in settings.py:
 
   ```python
 CKEDITOR_UPLOAD_PATH = 'uploads/'
@@ -55,6 +55,12 @@ CKEDITOR_CONFIGS = {
         "removePlugins": "stylesheetparser",
         'width': '1150px',
         'height': '400px',
+    },
+}
+
+THUMBNAIL_ALIASES = {
+    '': {
+        'square': {'size': (200, 200), 'crop': False},
     },
 }
   ```
