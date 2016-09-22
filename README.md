@@ -29,6 +29,7 @@ Add to installed apps:
   ```python
 "ckeditor",
 "ckeditor_uploader",
+"mptt",
 "easy_thumbnails",
 "watson",
 "mcat",
