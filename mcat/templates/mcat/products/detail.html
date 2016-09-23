@@ -24,7 +24,7 @@
 			{% endwith %}
 		</div>
 		<div class="col-xs-12 col-sm-6">
-			<h1 class="text-center"><a name="title"></a>{{ product.name }}</h1>
+			<h1><a name="title"></a>{{ product.name }}</h1>
 				{% if use_brand == True or product.upc %}
 					<div class="text-center gf">
 						{% if use_brand = True %}
@@ -83,13 +83,15 @@
 					<i class="fa fa-exclamation"></i>&nbsp;{% trans 'Product temporary unavailable' %}
 				</div>
 			{% endif %}
-			<div class="hidden-xs hidden-sm text-center gus-l gds">
+			<div class="hidden-xs hidden-sm gus-l gds">
 				{% if not no_prices %}
 					{% if product.price %}
 						{% if product.discounted_price %}
-							<div class="label label-primary gbf-md grs gls gi">{{ product.discounted_price|format_price|safe }}</div>
-							<div class="price gbf gb gus">
-								<del class="text-primary">
+							<div class="grs gls">
+								<div class="label label-primary gbf-md gi">
+									{{ product.discounted_price|format_price|safe }}
+								</div>
+								<del class="gbf gls gi">
 									<span>{{ product.price|format_price|safe }}</span>
 								</del>
 							</div>

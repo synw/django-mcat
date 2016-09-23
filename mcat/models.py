@@ -10,12 +10,28 @@ from mbase.models import STATUSES, MetaBaseOrderedModel, MetaBaseModel, MetaBase
 from jssor.conf import SLIDESHOW_TYPES
 from mcat.conf import USE_PRICES, PRICES_AS_INTEGER, CARACTERISTIC_TYPES, CATEGORY_TEMPLATE_NAMES, PRODUCT_TEMPLATE_NAMES
 from mcat.utils import is_name_in_field, encode_ftype
+from mcat.conf import DEAL_TYPES
 
 
-STATUSES = getattr(settings, 'STATUSES', STATUSES)
+class Deal(models.Model):
+    # type
+    deal_type = models.CharField(max_length=120, verbose_name=_(u"Deal type"), choices=DEAL_TYPES, default=DEAL_TYPES[0][0])
+    # offer
+    discounted_price = models.FloatField(blank=True, null=True, verbose_name=_(u'Discounted price'))
+    discounted_percentage = models.FloatField(blank=True, null=True, verbose_name=_(u'Discounted percentage'))
+    deal_description = models.TextField(blank=True, verbose_name=_(u'Description'))
+    # limitations
+    deal_start_date = models.DateTimeField(blank=True, null=True, verbose_name=_(u'Start date'))
+    deal_end_date = models.DateTimeField(blank=True, null=True, verbose_name=_(u'End date'))
+    deal_conditions = models.TextField(blank=True, verbose_name=_(u'Conditions'))
+    #~ extra info
+    deal_data = JSONField(blank=True, verbose_name=_(u'Extra data (json format)'))
     
+    class Meta:
+        abstract = True
 
-class Brand(MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel, MetaBaseUniqueSlugModel):
+
+class Brand(MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel, MetaBaseUniqueSlugModel, Deal):
     image = models.ImageField(blank=True, upload_to='brands', verbose_name=_(u'Image'))
     
     class Meta:
@@ -27,7 +43,7 @@ class Brand(MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel, MetaBaseUniqu
         return unicode(self.name)
     
 
-class Category(MPTTModel, MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel, MetaBaseUniqueSlugModel):
+class Category(MPTTModel, MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel, MetaBaseUniqueSlugModel, Deal):
     parent = TreeForeignKey('self', null=True, blank=True, related_name=u'children', verbose_name=_(u'Parent category'))
     image = models.ImageField(null=True, upload_to='categories', verbose_name=_(u"Navigation image"))
     template_name = models.CharField(max_length=60, choices=CATEGORY_TEMPLATE_NAMES, default=CATEGORY_TEMPLATE_NAMES[0][0], verbose_name=_(u'Template'))
@@ -42,7 +58,7 @@ class Category(MPTTModel, MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel,
         return unicode(self.name)
 
 
-class Product(MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel, MetaBaseUniqueSlugModel):
+class Product(MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel, MetaBaseUniqueSlugModel, Deal):
     #~ base content
     short_description = models.TextField(blank=True, verbose_name=_(u'Short description'))
     description = models.TextField(blank=True, verbose_name=_(u'Long description'))
@@ -53,8 +69,6 @@ class Product(MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel, MetaBaseUni
     category = TreeForeignKey(Category, verbose_name=_(u'Category'))
     #~ prices
     price = models.FloatField(null=True, blank=True, verbose_name=_(u'Price'))
-    discounted_price = models.FloatField(null=True, blank=True, verbose_name=_(u'Discounted price'))
-    discounted_percentage = models.PositiveSmallIntegerField(null=True, blank=True, verbose_name=_(u'Discount percentage'))
     available = models.BooleanField(default=True, verbose_name=_(u'Available'))
     carac1 = models.CharField(max_length=255, blank=True, verbose_name=_(u'Caracteristic 1'))
     carac2 = models.CharField(max_length=255, blank=True, verbose_name=_(u'Caracteristic 2'))

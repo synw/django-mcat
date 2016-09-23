@@ -13,8 +13,7 @@
 			{% include 'mcat/breadcrumbs.html' %}
 		</div>
 	</div>
-	<div class="row">
-		<div class="col-xs-12">
+	<div class="gf">
 			{% with product.images.all as slides %}
 				{% with product.slideshow_width as slideshow_width %}
 					{% with product.slideshow_height as slideshow_height  %}
@@ -22,7 +21,6 @@
 					{% endwith %}
 				{% endwith %}
 			{% endwith %}
-		</div>
 	</div>
 	<div class="row">
 		<div class="col-xs-12 col-sm-6 gnp gds">

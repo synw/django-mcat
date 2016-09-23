@@ -39,7 +39,7 @@ Set the urls
 
   ```python
 url(r'^ckeditor/',include('ckeditor_uploader.urls')),
-url('^catalog/', include('mcat.urls')),
+url(r'^catalog/', include('mcat.urls')),
   ```
   
 Ckeditor and easy thumbnails configuration in settings.py:

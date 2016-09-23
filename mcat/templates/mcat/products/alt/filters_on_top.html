@@ -7,11 +7,13 @@
 {% endblock extra_head %}
 
 {% block content %}
-	<h1 class="text-center"><a name="title"></a>{{ category.name }}</h1>
 	{% include 'mcat/breadcrumbs.html' %}
-	<a name="main_content"></a>	
+	<h1 class="text-center"><a name="title"></a>{{ category.name }}</h1>
+	<a name="main_content"></a>
 	{% if use_filters %}
-		{% include 'mcat/render_filters.html' %}
+		<div class="text-center gls-l">
+			{% include 'mcat/render_filters.html' %}
+		</div>
 	{% endif %}
 	{% if products %}
 	    <div id="products" class="text-center">

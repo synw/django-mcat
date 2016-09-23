@@ -11,6 +11,10 @@ from mcat.conf import PAGINATE_BY, DISABLE_BREADCRUMBS, USE_FILTERS, USE_PRICES,
 from mcat.utils import decode_ftype, get_min_max_prices
 
 
+class IndexView(TemplateView):
+    template_name = "mcat/index.html"
+
+
 class CategoryHomeView(TemplateView):
     template_name = 'mcat/categories/index.html'
 
@@ -81,7 +85,7 @@ class ProductsInCategoryView(ListView):
                             products = products.filter(Q(int_carac1_name=name, int_carac1__gt=val))                     
             self.filters = filters
         self.num_products = len(products)
-        if USE_PRICES and USE_FILTERS and USE_PRICE_FILTER:
+        if USE_PRICES and USE_PRICE_FILTER:
             self.min_price, self.max_price = get_min_max_prices(products)
             if PRICES_AS_INTEGER:
                 try:

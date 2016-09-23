@@ -3,8 +3,9 @@
 from django import forms
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from codemirror2.widgets import CodeMirrorEditor
+from mptt.forms import TreeNodeChoiceField
 from mcat.models import Product, ProductCaracteristic, CategoryCaracteristic, Category, Brand
-from mcat.conf import CODE_MODE, USE_ADMIN_BOOTSTRAPED
+from mcat.conf import CODE_MODE
 
 
 class FilterForm(forms.Form):
@@ -32,15 +33,11 @@ class CategoryForm(forms.ModelForm):
 class ProductForm(forms.ModelForm):
     upc = forms.CharField()
     upc.required = False
-    
-    def __init__(self, *args, **kwargs):
-        super(ProductForm, self).__init__(*args, **kwargs)
-        if USE_ADMIN_BOOTSTRAPED:
-            self.fields['description'].label = 'Html'
+    category = TreeNodeChoiceField(queryset=Category.objects.all())
         
     class Meta:
         model = Product
-        fields = ['name', 'slug', 'description', 'short_description', 'brand', 'category', 'status', 'editor', 'slideshow_type', 'slideshow_width', 'slideshow_height']
+        exclude = ['created', 'edited', 'editor']
         description_widget = forms.Textarea(attrs={'style': 'width:100%;'})
         if CODE_MODE is True:
             description_widget = CodeMirrorEditor(options={
@@ -64,15 +61,10 @@ class ProductForm(forms.ModelForm):
                    'status': forms.RadioSelect,
                    'description': description_widget,
                    'short_description' : short_description_widget,
+                   'deal_conditions' : description_widget,
+                   'deal_description' : description_widget,
+                   
                    }
-        
-"""       
-class ProductImageForm(forms.ModelForm):
-    class Meta:
-        model = ProductImage
-        fields = ['image', 'order', 'product', 'status', 'editor']
-        widgets = {'status': forms.RadioSelect}
-"""
 
 class ProductCaracteristicInlineForm(forms.ModelForm):
         

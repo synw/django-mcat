@@ -64,6 +64,14 @@ class ProductAdmin(admin.ModelAdmin):
             'classes': ('collapse',),
             'fields': (('slideshow_type',), ('slideshow_width', 'slideshow_height') )
         }),
+        (_(u'Deal'), {
+            'classes': ('collapse',),
+            'fields': (
+                        ('discounted_price', 'discounted_percentage'), 
+                        ('deal_description', 'deal_conditions',),
+                        ('deal_start_date', 'deal_end_date'),
+                        )
+        }),
         (_(u'Extra infos'), {
             'classes': ('collapse',),
             'fields': (('extra',),)
@@ -153,26 +161,3 @@ class BrandAdmin(admin.ModelAdmin):
         if getattr(obj, 'editor', None) is None:
             obj.editor = request.user
         obj.save()
-        
-"""
-@admin.register(ProductImage)
-class ProductImageAdmin(admin.ModelAdmin):
-    form = ProductImageForm
-    date_hierarchy = 'edited'
-    readonly_fields = ['editor']
-    list_display = ['product', 'image', 'status', 'editor', 'edited']
-    list_filter = ['status', 'created','edited']
-    search_fields = ['product__name', 'editor__username']
-    list_select_related = ['editor']
-    raw_id_fields = ['product']
-    fieldsets = (
-            (None, {
-                'fields': (('product','status',), 'image','order')
-            }),
-            )
-    
-    def save_model(self, request, obj, form, change):
-        if getattr(obj, 'editor', None) is None:
-            obj.editor = request.user
-        obj.save()
-"""

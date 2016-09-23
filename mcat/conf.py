@@ -11,6 +11,12 @@ USE_PRICES = getattr(settings, 'MCAT_USE_PRICES', True)
 CURRENCY = getattr(settings, 'MCAT_CURRENCY', '$')
 PRICES_AS_INTEGER = getattr(settings, 'MCAT_PRICES_AS_INTEGER', False)
 
+DEAL_TYPES = (
+            ('promotion', _(u'Promotion')),
+            ('conditional_offer', _(u'Conditional offer')),
+            ('gift', _(u'Gift')),
+           )
+
 DISABLE_BREADCRUMBS = getattr(settings, 'MCAT_DISABLE_BREADCRUMBS', False)
 
 CARACTERISTIC_TYPES = (
@@ -20,8 +26,8 @@ CARACTERISTIC_TYPES = (
                        )
 
 CATEGORY_TEMPLATE_NAMES = (
-                    ('default',_(u'Filters on side')),
                     ('filters_on_top',_(u'Filters on top')),
+                    ('default',_(u'Filters on side')),
                     ('fullwidht_filters_on_top',_(u'Fullwidth filters on top')),
                     )
 
@@ -39,8 +45,6 @@ USE_FILTERS = getattr(settings, 'MCAT_USE_FILTERS', True)
 USE_PRICE_FILTER = getattr(settings, 'MCAT_USE_PRICE_FILTER', True)
 
 CODE_MODE = getattr(settings, 'MCAT_CODE_MODE', False)
-
-USE_ADMIN_BOOTSTRAPED = 'django_admin_bootstrapped' in settings.INSTALLED_APPS
 
 USE_ORDER = 'mcat_order' in settings.INSTALLED_APPS
 
