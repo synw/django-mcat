@@ -1,0 +1,45 @@
+{% load i18n staticfiles mcat_tags %}
+
+{% if use_price_filter and num_products > 1 %}
+	<script type="text/javascript" src="{% static 'mcat/jquery-ui/jquery-ui.min.js' %}"></script> 
+	<link rel="stylesheet" href="{% static 'mcat/jquery-ui/jquery-ui.min.css' %}" />
+	<script type="text/javascript">
+		$(function () {
+	      $('#slider-container').slider({
+	          range: true,
+	          min: {{ min_price }},
+	          max: {{ max_price }},
+	          values: [{{ min_price }}, {{ max_price }}],
+	          create: function() {
+	              $("#amount").val("{% format_from_price min_price currency=False %} {% trans 'to' %} {% format_from_price max_price %}");
+	          },
+	          slide: function (event, ui) {
+	              $("#amount").val(ui.values[0] + " {% trans 'to' %} " + ui.values[1] + " {{ currency }}");
+	              var mi = ui.values[0];
+	              var mx = ui.values[1];
+	              filterSystem(mi, mx);
+			  }
+			})
+		  });
+		  function filterSystem(minPrice, maxPrice) {
+		      $("#products .product_inline").hide().filter(function () {
+		          var price = parseInt($(this).data("price"), 10);
+		          return price >= minPrice && price <= maxPrice;
+		      }).show();
+		  }
+	</script>
+	<div id="price-range-slider"{% if btn_block != True %} style="max-width:250px"{% endif %}>
+		<p class="gus gds gbf gb text-center">
+			{% trans 'Price' %}
+		</p>
+		<p>
+			<div id="slider-container"></div>
+		</p>
+		<p id="amount-container">
+		    <label for="amount">{% trans 'Price range' %}:</label>
+		    <input type="text" id="amount" class="gb text-success" style="border:none" />
+		</p>
+		<div id="slider-range"></div>
+	</div>
+{% endif %}
+

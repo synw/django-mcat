@@ -29,11 +29,12 @@ CATEGORY_TEMPLATE_NAMES = (
                     ('filters_on_top',_(u'Filters on top')),
                     ('default',_(u'Filters on side')),
                     ('fullwidht_filters_on_top',_(u'Fullwidth filters on top')),
+                    ('only_price_range_filter',_(u'Only price range filter')),
                     )
 
 PRODUCT_TEMPLATE_NAMES = (
                     ('default',_(u'Default')),
-                    ('detail_fullwidth_slideshow',_(u'Fullwidth slideshow')),
+                    ('fullwidth_slideshow',_(u'Fullwidth slideshow')),
                     )
 
 

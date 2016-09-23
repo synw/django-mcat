@@ -67,7 +67,7 @@ class ProductAdmin(admin.ModelAdmin):
         (_(u'Deal'), {
             'classes': ('collapse',),
             'fields': (
-                        ('discounted_price', 'discounted_percentage'), 
+                        ('discounted_price', 'discounted_percentage', 'deal_type'), 
                         ('deal_description', 'deal_conditions',),
                         ('deal_start_date', 'deal_end_date'),
                         )

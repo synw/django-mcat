@@ -44,7 +44,7 @@
 				<div class="hidden-md hidden-lg text-center gus gds-md">
 					{% if not no_prices %}
 						{% if product.price %}
-							<div class="label label-primary gbf-md">{{ product|format_price|safe }}</div><br /><br /><br />
+							<div class="label label-primary gbf-md">{{ product.price|format_price|safe }}</div><br /><br /><br />
 							<div class="label label-success gbf-md"><i class="fa fa-cart-plus"></i>&nbsp;{% trans 'Add to cart' %}</div>
 						{% endif %}
 					{% endif %}
@@ -58,7 +58,7 @@
 				<div class="hidden-xs hidden-sm text-center gus-l gds">
 					{% if not no_prices %}
 						{% if product.price %}
-							<div class="label label-primary gbf-md grs gls gi">{{ product|format_price|safe }}</div>
+							<div class="label label-primary gbf-md grs gls gi">{{ product.price|format_price|safe }}</div>
 							{% if use_order %}
 							<div class="gbf-md gi">
 								<a class="btn btn-success{% if product.available != True %} btn-disabled{% endif %}" href="{% if product.available = True %}javascript:$('.dropdown-toggle').dropdown('toggle');fire_request('cart','{% url 'product-add-to-cart' slug=product.slug %}');{% else %}#{% endif %}"{% if product.available != True %} disabled{% endif %}>

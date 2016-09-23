@@ -129,7 +129,7 @@ class ProductsInCategoryView(ListView):
         if template_name == 'default':
             return 'mcat/products/index.html'
         else:
-            return 'mcat/products/alt/'+template_name+'.html'
+            return 'mcat/categories/alt/'+template_name+'.html'
 
 
 class ProductView(TemplateView):
