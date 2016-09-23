@@ -8,7 +8,7 @@ from mptt.models import TreeForeignKey, MPTTModel
 from jsonfield import JSONField
 from mbase.models import STATUSES, MetaBaseOrderedModel, MetaBaseModel, MetaBaseUniqueSlugModel, MetaBaseNameModel, MetaBaseStatusModel
 from jssor.conf import SLIDESHOW_TYPES
-from mcat.conf import USE_PRICES, PRICES_AS_INTEGER, CARACTERISTIC_TYPES, CATEGORY_TEMPLATE_NAMES, PRODUCT_TEMPLATE_NAMES
+from mcat.conf import USE_PRICES, CARACTERISTIC_TYPES, CATEGORY_TEMPLATE_NAMES, PRODUCT_TEMPLATE_NAMES
 from mcat.utils import is_name_in_field, encode_ftype
 from mcat.conf import DEAL_TYPES
 
@@ -93,6 +93,8 @@ class Product(MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel, MetaBaseUni
     class Meta:
         verbose_name=_(u'Product')
         verbose_name_plural =_( u'Products')
+        if USE_PRICES is True:
+            ordering = ('price', 'name','created')
         ordering = ('name','created')
 
     def __unicode__(self):

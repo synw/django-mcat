@@ -55,6 +55,8 @@ class ProductsInCategoryView(ListView):
     def get_queryset(self):
         self.category=get_object_or_404(Category.objects.prefetch_related('generic_caracteristics'), slug=self.kwargs['slug'], status=0)
         products=Product.objects.filter(category=self.category, status=0).prefetch_related('caracteristics')
+        if USE_PRICES is True:
+            products=products.order_by('price')
         self.caracteristics = self.category.generic_caracteristics.all()
         #~ get the requested filters
         self.filters = None
