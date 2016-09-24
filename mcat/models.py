@@ -1,16 +1,17 @@
 # -*- coding: utf-8 -*-
 
 from collections import OrderedDict
-from django.conf import settings
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.contrib.sites.shortcuts import get_current_site
 from mptt.models import TreeForeignKey, MPTTModel
 from jsonfield import JSONField
 from mbase.models import STATUSES, MetaBaseOrderedModel, MetaBaseModel, MetaBaseUniqueSlugModel, MetaBaseNameModel, MetaBaseStatusModel
 from jssor.conf import SLIDESHOW_TYPES
 from mcat.conf import USE_PRICES, CARACTERISTIC_TYPES, CATEGORY_TEMPLATE_NAMES, PRODUCT_TEMPLATE_NAMES
-from mcat.utils import is_name_in_field, encode_ftype
-from mcat.conf import DEAL_TYPES
+from mcat.utils import is_name_in_field, encode_ftype, generate_qr_file
+from mcat.conf import DEAL_TYPES, SITE_URL
 
 
 class Deal(models.Model):
@@ -89,6 +90,7 @@ class Product(MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel, MetaBaseUni
     template_name = models.CharField(max_length=60, choices=PRODUCT_TEMPLATE_NAMES, default=PRODUCT_TEMPLATE_NAMES[0][0], verbose_name=_(u'Template'))
     #~ extra info
     extra = JSONField(blank=True, verbose_name=_(u'Extra infos'))
+    qrcode = models.ImageField(null=True, blank=True, upload_to='products/qr/', verbose_name=_(u'Qr code'))
     
     class Meta:
         verbose_name=_(u'Product')
@@ -99,6 +101,18 @@ class Product(MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel, MetaBaseUni
 
     def __unicode__(self):
         return unicode(self.name)
+    
+    def get_absolute_url(self):
+        return reverse("product-detail", kwargs={"category_slug": self.category.slug, "slug":self.slug})
+    
+    def make_qr_code(self):
+        url = SITE_URL+self.get_absolute_url()
+        self.qrcode = generate_qr_file(self.slug, url)
+        return
+    
+    def save(self, *args, **kwargs):
+        self.make_qr_code()
+        return super(Product, self).save(*args, **kwargs)
     
     def print_caracteristics(self):
         """

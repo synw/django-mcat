@@ -24,35 +24,38 @@
 			{% endwith %}
 		</div>
 		<div class="col-xs-12 col-sm-6">
-			<h1><a name="title"></a>{{ product.name }}</h1>
-				{% if use_brand == True or product.upc %}
+			<h1 style="margin-top:0"><a name="title"></a>{{ product.name }}</h1>
+				{% if product.upc %}
 					<div class="text-center gf">
-						{% if use_brand = True %}
-							{% if product.brand %}
-								<div class="gi gbf gmv grs gls">
-									<img src="{{ product.brand.image|thumbnail_url:'brand' }}" alt="" />
-								</div>
-							{% endif %}
-						{% endif %}
-						{% if product.upc %}
-							<div class="text-center gbf gi gmv grs gls">
-								<i class="fa fa-barcode"></i>&nbsp;{{ product.upc }}
-							</div>
-						{% endif %}
+						<div class="text-center gbf gi gmv grs gls">
+							<i class="fa fa-barcode"></i>&nbsp;{{ product.upc }}
+						</div>
 					</div>	
 				{% endif %}
-			<div class="hidden-md hidden-lg text-center gus gds-md">
+			{% if product.short_description %}
+				<div class="gds">{{ product.short_description|safe }}</div>
+			{% endif %}
+			<div class="hidden-md hidden-lg gus-md gds-md">
 				{% if not no_prices %}
-					{% if product.discounted_price %}
-						<div class="label label-primary gbf-md">{{ product.discounted_price|format_price|safe }}</div>
-						<div class="price gbf gb gus">
-							<del class="text-primary">
-								<span>{{ product.price|format_price|safe }}</span>
-							</del>
-						</div>					
-					{% else %}
-						<div class="label label-primary gbf-md">{{ product.price|format_price|safe }}</div>
-					{% endif %}
+					<div class="text-center">
+						{% if product.discounted_price %}
+							<div class="label label-primary gbf-md">{{ product.discounted_price|format_price|safe }}</div>
+							<div class="price gbf gb gus">
+								<del class="text-primary">
+									<span>{{ product.price|format_price|safe }}</span>
+								</del>
+							</div>					
+						{% else %}
+							<div class="label label-primary gbf-md">{{ product.price|format_price|safe }}</div>
+						{% endif %}
+					</div>
+					{% if product.deal_description %}
+							<p>{{ product.deal_description|safe }}</p>
+						{% endif %}
+						{% if product.deal_conditions %}
+							<h4>{% trans "Conditions" %}</h4>
+							<div>{{ product.deal_conditions|safe }}</div>
+						{% endif %}
 					{% if use_order %}
 						<div class="label label-success gbf-md">
 							<i class="fa fa-cart-plus"></i>&nbsp;<a href="{% url 'product-add-to-cart' product.slug %}">{% trans 'Add to cart' %}</a>
@@ -60,7 +63,6 @@
 					{% endif %}
 				{% endif %}
 			</div>
-			<div>{{ product.short_description|safe }}</div>
 			{% if caracteristics %}
 				<ul class="list-group gus-md">
 					{% for name, val in caracteristics.items %}
@@ -83,7 +85,7 @@
 					<i class="fa fa-exclamation"></i>&nbsp;{% trans 'Product temporary unavailable' %}
 				</div>
 			{% endif %}
-			<div class="hidden-xs hidden-sm gus-l gds">
+			<div class="hidden-xs hidden-sm gds">
 				{% if not no_prices %}
 					{% if product.price %}
 						{% if product.discounted_price %}
@@ -98,6 +100,13 @@
 						{% else %}
 							<div class="label label-primary gbf-md grs gls gi">{{ product.price|format_price|safe }}</div>
 						{% endif %}
+						{% if product.deal_description %}
+							<p>{{ product.deal_description|safe }}</p>
+						{% endif %}
+						{% if product.deal_conditions %}
+							<h4>{% trans "Conditions" %}</h4>
+							<div>{{ product.deal_conditions|safe }}</div>
+						{% endif %}
 						{% if use_order %}
 							<div class="gbf-md gi">
 								<a class="btn btn-success{% if product.available != True %} btn-disabled{% endif %}" href="{% if product.available = True %}javascript:$('.dropdown-toggle').dropdown('toggle');fire_request('cart','{% url 'product-add-to-cart' slug=product.slug %}');{% else %}#{% endif %}"{% if product.available != True %} disabled{% endif %}>
@@ -108,6 +117,14 @@
 					{% endif %}
 				{% endif %}
 			</div>
+			{% if product.qrcode %}
+				<div class="gi gp center-xxs-fw"><img src="{{ product.qrcode.url }}" alt="" /></div>
+			{% endif %}
+			{% if product.brand %}
+				<div class="gi gp center-xxs-fw">
+					<img src="{{ product.brand.image.url }}" alt="" />
+				</div>
+			{% endif %}
 			{% if product.description %}
 					</div>
 				</div>

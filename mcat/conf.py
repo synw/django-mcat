@@ -11,6 +11,8 @@ USE_PRICES = getattr(settings, 'MCAT_USE_PRICES', True)
 CURRENCY = getattr(settings, 'MCAT_CURRENCY', '$')
 PRICES_AS_INTEGER = getattr(settings, 'MCAT_PRICES_AS_INTEGER', False)
 
+SITE_URL = getattr(settings, 'SITE_URL', 'localhost:8000')
+
 DEAL_TYPES = (
             ('promotion', _(u'Promotion')),
             ('conditional_offer', _(u'Conditional offer')),

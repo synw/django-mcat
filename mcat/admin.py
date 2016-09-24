@@ -44,7 +44,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ['status', 'created','edited']
     search_fields = ['name','upc','brand__name','category__name','editor__username']
     list_select_related = ['editor','brand','category']
-    readonly_fields = ['editor']
+    readonly_fields = ['editor', 'qrcode']
     save_on_top = True
     fieldsets = (
         ("Description du produit", {
@@ -55,10 +55,10 @@ class ProductAdmin(admin.ModelAdmin):
             'fields': (('name', 'slug'), ('category', 'brand'), ('navimage', 'upc'))
         }),
         (None, {
-            'fields': (('price',),)
+            'fields': (('price', 'available'),)
         }),
         (None, {
-            'fields': (('status', 'short_description'), ('available', 'template_name'))
+            'fields': (('status', 'short_description'), ('template_name'))
         }),
         (_(u'Slideshow options'), {
             'classes': ('collapse',),
@@ -74,7 +74,7 @@ class ProductAdmin(admin.ModelAdmin):
         }),
         (_(u'Extra infos'), {
             'classes': ('collapse',),
-            'fields': (('extra',),)
+            'fields': (('extra', 'qrcode'),)
         }),
     )
     

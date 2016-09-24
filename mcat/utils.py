@@ -1,8 +1,36 @@
 # -*- coding: utf-8 -*-
 
 import re
+import qrcode
+import StringIO
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.utils.encoding import force_unicode
 from mcat.conf import USE_PRICES, PRICES_AS_INTEGER
+
+
+def generate_qr_image(data, protocol, qrversion=1):
+        qr = qrcode.QRCode(
+            version=qrversion,
+            error_correction=qrcode.constants.ERROR_CORRECT_L,
+            box_size=5,
+            border=4,
+        )
+        separator = ':'
+        if protocol == 'http':
+            separator = '://'
+        qr.add_data(protocol+separator+str(data))
+        qr.make()
+        thumb = qr.make_image()
+        return thumb
+    
+def generate_qr_file(filename, data, protocol='http',qrversion=1):
+        thumb = generate_qr_image(data, protocol, qrversion)
+        #~ save image to field
+        thumb_io = StringIO.StringIO()
+        thumb.save(thumb_io)
+        filename = filename+'.png'
+        thumb_file = InMemoryUploadedFile(thumb_io, None, filename, 'image/png',thumb_io.len, None)
+        return thumb_file
 
 def intspace(value):
     """
@@ -61,4 +89,3 @@ def get_price(price):
         if PRICES_AS_INTEGER is True:
             price = int(round(price))
     return price
-
