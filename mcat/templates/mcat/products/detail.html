@@ -32,6 +32,9 @@
 						</div>
 					</div>	
 				{% endif %}
+			<div class="pull-right">
+				<a href="tel:79817923"><i class="fa fa-phone fa-2x"></i></a>
+			</div>
 			{% if product.short_description %}
 				<div class="gds">{{ product.short_description|safe }}</div>
 			{% endif %}
@@ -124,7 +127,7 @@
 				<div class="gi gp center-xxs-fw">
 					<img src="{{ product.brand.image.url }}" alt="" />
 				</div>
-			{% endif %}
+			{% endif %}		
 			{% if product.description %}
 					</div>
 				</div>

@@ -4,7 +4,6 @@ from collections import OrderedDict
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django.contrib.sites.shortcuts import get_current_site
 from mptt.models import TreeForeignKey, MPTTModel
 from jsonfield import JSONField
 from mbase.models import STATUSES, MetaBaseOrderedModel, MetaBaseModel, MetaBaseUniqueSlugModel, MetaBaseNameModel, MetaBaseStatusModel
@@ -95,9 +94,10 @@ class Product(MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel, MetaBaseUni
     class Meta:
         verbose_name=_(u'Product')
         verbose_name_plural =_( u'Products')
-        if USE_PRICES is True:
-            ordering = ('price', 'name','created')
-        ordering = ('name','created')
+        #if USE_PRICES is True:
+        #    ordering = ('price', 'name','created')
+        #ordering = ('name','created')
+        order_with_respect_to = 'category'
 
     def __unicode__(self):
         return unicode(self.name)
@@ -267,12 +267,3 @@ class ProductCaracteristic(MetaBaseModel, MetaBaseNameModel):
                     product.int_carac3_name = self.name
             product.save()
         super(ProductCaracteristic, self).save()
-    
-    
-
-    
-            
-        
-        
-
-
