@@ -50,6 +50,7 @@ USE_PRICE_FILTER = getattr(settings, 'MCAT_USE_PRICE_FILTER', True)
 CODE_MODE = getattr(settings, 'MCAT_CODE_MODE', False)
 
 USE_ORDER = 'mcat_order' in settings.INSTALLED_APPS
+USE_STORES = 'mcat_stores' in settings.INSTALLED_APPS
 
 USE_BRAND = getattr(settings, 'MCAT_USE_BRAND', True)
 
