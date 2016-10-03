@@ -21,7 +21,7 @@ to extend them or get into the code, due to its level of complexity.
 Get the dependencies:
 
   ```bash
-pip install django-watson django-jsonfield easy-thumbnails django-ckeditor django-mptt
+pip install django-watson django-jsonfield easy-thumbnails django-ckeditor django-mptt qrcode
   ```
 
 Add to installed apps:
