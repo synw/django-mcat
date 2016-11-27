@@ -57,6 +57,7 @@ class ProductForm(forms.ModelForm):
         else:
             description_widget = CKEditorUploadingWidget(config_name='mcat')
         short_description_widget = forms.Textarea(attrs={'style': 'min-width:100% !important;', 'rows':6, 'cols':80})
+        description_widget.label = ""
         widgets = {
                    'status': forms.RadioSelect,
                    'description': description_widget,
@@ -65,6 +66,7 @@ class ProductForm(forms.ModelForm):
                    'deal_description' : description_widget,
                    
                    }
+
 
 class ProductCaracteristicInlineForm(forms.ModelForm):
         

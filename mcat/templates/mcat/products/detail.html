@@ -5,7 +5,7 @@
 	<link rel="stylesheet" media="screen, projection" href="{% static 'mcat/mcat.css' %}" />
 {% endblock extra_head %}
 
-{% block title %}{{ category.name }}{% endblock %}
+{% block title %}{{ product.name }}{% endblock %}
 
 {% block content %}
 	<div id="product" class="row">
@@ -83,7 +83,7 @@
 					{% endfor %}
 				</ul>
 			{% endif %}	
-			{% if product.available != True %}
+			{% if product.available is not True %}
 				<div class="text-center alert alert-warning">
 					<i class="fa fa-exclamation"></i>&nbsp;{% trans 'Product temporary unavailable' %}
 				</div>
@@ -112,7 +112,7 @@
 						{% endif %}
 						{% if use_order %}
 							<div class="gbf-md gi">
-								<a class="btn btn-success{% if product.available != True %} btn-disabled{% endif %}" href="{% if product.available = True %}javascript:$('.dropdown-toggle').dropdown('toggle');fire_request('cart','{% url 'product-add-to-cart' slug=product.slug %}');{% else %}#{% endif %}"{% if product.available != True %} disabled{% endif %}>
+								<a class="btn btn-success{% if product.available != True %} btn-disabled{% endif %}" href="{% if product.available == True %}javascript:$('.dropdown-toggle').dropdown('toggle');fire_request('cart','{% url 'product-add-to-cart' slug=product.slug %}');{% else %}#{% endif %}"{% if product.available != True %} disabled{% endif %}>
 									<i class="fa fa-shopping-cart"></i>&nbsp;{% trans 'Add to cart' %}
 								</a>
 							</div>

@@ -2,7 +2,7 @@
 
 
 from django import template
-from django.template import Library, Node, resolve_variable
+from django.template import Node, Variable
 from mcat.conf import CURRENCY, PRICES_AS_INTEGER
 from mcat.utils import intspace, get_price
 
@@ -36,10 +36,10 @@ class AddGetParameter(Node):
         self.values = values
         
     def render(self, context):
-        req = resolve_variable('request', context)
+        req = Variable('request', context)
         params = req.GET.copy()
         for key, value in self.values.items():
-            params[resolve_variable(key, context)] = value.resolve(context)
+            params[Variable(key, context)] = value.resolve(context)
         if 'page' in params.keys():
             del params['page']
         return '?%s' %  params.urlencode({' ' : ''})
@@ -50,10 +50,10 @@ class RemoveGetParameter(Node):
         self.values = values
         
     def render(self, context):
-        req = resolve_variable('request', context)
+        req = Variable('request', context)
         params = req.GET.copy()
         for key in self.values.keys():
-            del params[resolve_variable(key, context)]
+            del params[Variable(key, context)]
         if 'page' in params.keys():
             del params['page']
         return '?%s' %  params.urlencode({' ' : ''})
