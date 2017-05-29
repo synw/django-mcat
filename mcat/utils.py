@@ -2,9 +2,8 @@
 
 import re
 import qrcode
-import StringIO
+from io import StringIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
-from django.utils.encoding import force_unicode
 from mcat.conf import USE_PRICES, PRICES_AS_INTEGER
 
 
@@ -38,7 +37,7 @@ def intspace(value):
     For example, 3000 becomes '3 000' and 45000 becomes '45 000'.
     See django.contrib.humanize app
     """
-    orig = force_unicode(value)
+    orig = value
     new = re.sub("^(-?\d+)(\d{3})", '\g<1> \g<2>', orig)
     if orig == new:
         return new

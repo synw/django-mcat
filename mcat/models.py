@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-
+from __future__ import print_function
 from collections import OrderedDict
 from django.core.urlresolvers import reverse
 from django.db import models
@@ -118,17 +117,17 @@ class Product(MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel, MetaBaseUni
         """
         Used for debug
         """
-        print 'Carac 1: '+str(self.carac1)
-        print 'Carac 2: '+str(self.carac2)
-        print 'Carac 3: '+str(self.carac3)
-        print 'Carac 4: '+str(self.carac4)
-        print 'Carac 5: '+str(self.carac5)
-        print 'Int carac 1: '+str(self.int_carac1)
-        print 'Int carac 1 name: '+str(self.int_carac1_name)
-        print 'Int carac 2: '+str(self.int_carac2)
-        print 'Int carac 2 name: '+str(self.int_carac2_name)
-        print 'Int carac 3: '+str(self.int_carac3)
-        print 'Int carac 3 name: '+str(self.int_carac3_name)
+        print('Carac 1: '+str(self.carac1))
+        print('Carac 2: '+str(self.carac2))
+        print('Carac 3: '+str(self.carac3))
+        print('Carac 4: '+str(self.carac4))
+        print('Carac 5: '+str(self.carac5))
+        print('Int carac 1: '+str(self.int_carac1))
+        print('Int carac 1 name: '+str(self.int_carac1_name))
+        print('Int carac 2: '+str(self.int_carac2))
+        print('Int carac 2 name: '+str(self.int_carac2_name))
+        print('Int carac 3: '+str(self.int_carac3))
+        print('Int carac 3 name: '+str(self.int_carac3_name))
         return
     
     def reset_caracteristics(self):
@@ -226,18 +225,18 @@ class ProductCaracteristic(MetaBaseModel, MetaBaseNameModel):
         return self.name+':'+unicode.strip(self.value)+';'+ftype
     
     def save(self, *args, **kwargs):
-        #print 'save product ----------------'
+        #print('save product ----------------'
         if self.pk:
             product = self.product
             carac_type = CategoryCaracteristic.objects.filter(slug=self.name).select_related('category')[0]
             #if product.category <> carac_type.category:
-            #    print "Wrong carac"
+            #    print("Wrong carac"
             ftype = carac_type.type
             self.value_name = carac_type.get_value_name(self.value, ftype)
             val = self.format_value(ftype)
             field = False
             if ftype in ['choices', 'boolean']:
-                #print self.name+' / '+str(product.carac1)+' > '+str(is_name_in_field(self.name, product.carac1))
+                #print(self.name+' / '+str(product.carac1)+' > '+str(is_name_in_field(self.name, product.carac1))
                 if product.carac1 == '' or is_name_in_field(self.name, product.carac1):
                     product.carac1 = val
                     field = True

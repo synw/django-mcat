@@ -1,5 +1,4 @@
-# -*- coding: utf-8 -*-
-
+from __future__ import print_function
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import admin
 from mptt.admin import MPTTModelAdmin
@@ -81,17 +80,15 @@ class ProductAdmin(admin.ModelAdmin):
     def form_valid(self, form):
         """This is what's called when the form is valid."""
         instance = form.save(commit=False)
-        print "Form valid ----------------"
+        #print("Form valid ----------------")
         return super(ProductAdmin, self).form_valid(form)
     
     def form_invalid(self, form):
         """This is what's called when the form is valid."""
         instance = form.save(commit=False)
-        print "Form invalid ----------------"
+        #print("Form invalid ----------------")
         return super(ProductAdmin, self).form_invalid(form)
         
-    
-
     def save_model(self, request, obj, form, change):
         if getattr(obj, 'editor', None) is None:
             obj.editor = request.user
