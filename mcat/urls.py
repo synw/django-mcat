@@ -15,4 +15,4 @@ urlpatterns.append(url(r'^products/(?P<slug>[-_\w]+)/$', ProductsInCategoryView.
 urlpatterns.append(url(r'^search/$', SearchView.as_view(), name="product-search"))
 urlpatterns.append(url(r'^categories/$', CategoryHomeView.as_view(), name="category-home"))
 urlpatterns.append(url(r'^(?P<slug>[-_\w]+)/$', CategoryView.as_view(), name="category-list"))
-urlpatterns.append(url(r'^', IndexView.as_view(), name="category-home"))
+urlpatterns.append(url(r'^$', IndexView.as_view(), name="category-home"))

@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-
 from django import template
 from django.template import Node, Variable
 from mcat.conf import CURRENCY, PRICES_AS_INTEGER
@@ -11,8 +10,8 @@ register = template.Library()
 @register.filter(is_safe=True)
 def format_price(price):
     price = get_price(price)
-    price = str(intspace(price))
-    return price+'&nbsp;'+CURRENCY
+    price = intspace(str(price))
+    return str(price)+'&nbsp;'+CURRENCY
 
 @register.simple_tag
 def format_from_price(price, currency=True):
@@ -67,7 +66,7 @@ def append_to_get(parser, token):
     name = s[1]
     s = pairs[1].split('=', 1)
     value = s[1]
-    values[name] = parser.compile_filter(unicode.strip(value))
+    values[name] = parser.compile_filter(value.strip(" "))
     return AddGetParameter(values)
 
 @register.tag
@@ -78,7 +77,7 @@ def remove_from_get(parser, token):
     name = s[1]
     s = pairs[1].split('=', 1)
     value = s[1]
-    values[name] = parser.compile_filter(unicode.strip(value))
+    values[name] = parser.compile_filter(value.strip(" "))
     return RemoveGetParameter(values)
 
 @register.simple_tag

@@ -25,7 +25,7 @@ def generate_qr_image(data, protocol, qrversion=1):
 def generate_qr_file(filename, data, protocol='http',qrversion=1):
         thumb = generate_qr_image(data, protocol, qrversion)
         #~ save image to field
-        thumb_io = StringIO.StringIO()
+        thumb_io = StringIO()
         thumb.save(thumb_io)
         filename = filename+'.png'
         thumb_file = InMemoryUploadedFile(thumb_io, None, filename, 'image/png',thumb_io.len, None)
@@ -86,5 +86,5 @@ def get_min_max_prices(products):
 def get_price(price):
     if USE_PRICES is True and price:
         if PRICES_AS_INTEGER is True:
-            price = int(round(price))
+            price = round(price)
     return price

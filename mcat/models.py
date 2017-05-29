@@ -38,8 +38,8 @@ class Brand(MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel, MetaBaseUniqu
         verbose_name_plural = _(u'Brands')
         ordering = ['name']
 
-    def __unicode__(self):
-        return unicode(self.name)
+    def __str__(self):
+        return self.name
     
 
 class Category(MPTTModel, MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel, MetaBaseUniqueSlugModel, Deal):
@@ -53,8 +53,8 @@ class Category(MPTTModel, MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel,
         verbose_name=_(u'Category')
         verbose_name_plural = _(u'Categories')
 
-    def __unicode__(self):
-        return unicode(self.name)
+    def __str__(self):
+        return self.name
 
 
 class Product(MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel, MetaBaseUniqueSlugModel, Deal):
@@ -98,15 +98,15 @@ class Product(MetaBaseModel, MetaBaseNameModel, MetaBaseStatusModel, MetaBaseUni
         #ordering = ('name','created')
         order_with_respect_to = 'category'
 
-    def __unicode__(self):
-        return unicode(self.name)
+    def __str__(self):
+        return self.name
     
     def get_absolute_url(self):
         return reverse("product-detail", kwargs={"category_slug": self.category.slug, "slug":self.slug})
     
     def make_qr_code(self):
         url = SITE_URL+self.get_absolute_url()
-        self.qrcode = generate_qr_file(self.slug, url)
+        #self.qrcode = generate_qr_file(self.slug, url)
         return
     
     def save(self, *args, **kwargs):
@@ -158,8 +158,8 @@ class ProductImage(MetaBaseModel, MetaBaseStatusModel, MetaBaseOrderedModel):
         verbose_name=_(u'Product image')
         verbose_name_plural = _(u'Product images')
 
-    def __unicode__(self):
-        return unicode(self.image.url)
+    def __str__(self):
+        return self.image.url
     
 
 class CategoryCaracteristic(MetaBaseModel, MetaBaseNameModel, MetaBaseUniqueSlugModel, MetaBaseOrderedModel):
@@ -173,16 +173,16 @@ class CategoryCaracteristic(MetaBaseModel, MetaBaseNameModel, MetaBaseUniqueSlug
         verbose_name_plural =_( u'Caracteristics for category')
         ordering = ['order']
 
-    def __unicode__(self):
-        return unicode(self.name)
+    def __str__(self):
+        return self.name
 
     def get_choices(self):
         choices = OrderedDict()
         ftype = encode_ftype(self.type)
         for choice in self.choices.split('\n'):
             splited = choice.split('>')
-            slug = unicode.strip(splited[0])
-            name = unicode.strip(splited[1])
+            slug = splited[0].strip(" ")
+            name = splited[1].strip(" ")
             choices[name] = slug+';'+ftype
         return choices
     
@@ -218,8 +218,8 @@ class ProductCaracteristic(MetaBaseModel, MetaBaseNameModel):
         ordering = ('name', 'created')
         unique_together = ('name', 'product')
 
-    def __unicode__(self):
-        return unicode(self.name)
+    def __str__(self):
+        return self.name
     
     def format_value(self, ftype):
         return self.name+':'+unicode.strip(self.value)+';'+ftype

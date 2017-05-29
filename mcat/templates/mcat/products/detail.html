@@ -61,7 +61,7 @@
 						{% endif %}
 					{% if use_order %}
 						<div class="label label-success gbf-md">
-							<i class="fa fa-cart-plus"></i>&nbsp;<a href="{% url 'product-add-to-cart' product.slug %}">{% trans 'Add to cart' %}</a>
+							<i class="fa fa-cart-plus"></i>&nbsp;<a href="{% url 'add-to-cart' product.slug %}">{% trans 'Add to cart' %}</a>
 						</div>
 					{% endif %}
 				{% endif %}
@@ -112,7 +112,7 @@
 						{% endif %}
 						{% if use_order %}
 							<div class="gbf-md gi">
-								<a class="btn btn-success{% if product.available != True %} btn-disabled{% endif %}" href="{% if product.available == True %}javascript:$('.dropdown-toggle').dropdown('toggle');fire_request('cart','{% url 'product-add-to-cart' slug=product.slug %}');{% else %}#{% endif %}"{% if product.available != True %} disabled{% endif %}>
+								<a class="btn btn-success{% if product.available != True %} btn-disabled{% endif %}" href="{% if product.available == True %}javascript:$('.dropdown-toggle').dropdown('toggle');fire_request('cart','{% url 'add-to-cart' slug=product.slug %}');{% else %}#{% endif %}"{% if product.available != True %} disabled{% endif %}>
 									<i class="fa fa-shopping-cart"></i>&nbsp;{% trans 'Add to cart' %}
 								</a>
 							</div>
